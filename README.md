@@ -1,4 +1,4 @@
-# Netscribes Showcase â€” EC2 Deployment
+# Netscribes Showcase — EC2 Deployment
 
 ## What changed
 Converted from TanStack Start (SSR framework) to a plain Vite + React SPA.
@@ -42,7 +42,7 @@ sudo systemctl reload nginx
 > **Amazon Linux note:** use `/etc/nginx/conf.d/netscribes-showcase.conf` instead of `sites-available/`.
 
 ### 4. Point your subdomain DNS
-Add an A record for `showcase.yourdomain.com` â†’ your EC2 public IP.
+Add an A record for `showcase.yourdomain.com` → your EC2 public IP.
 
 ### 5. HTTPS (recommended)
 ```bash
