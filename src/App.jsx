@@ -1491,6 +1491,9 @@ function HeroTile({ cat, index, onClick, mobile }) {
           color: hov ? "rgba(255,255,255,0.85)" : NS.inkSoft,
           lineHeight: 1.5,
           maxWidth: 320,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
           transition: "color 0.32s",
         }}>{cat.blurb}</p>
       </div>
@@ -1605,6 +1608,7 @@ function StripTile({ cat, active, onClick, borderRight, borderBottom, mobile }) 
           letterSpacing: "-0.02em",
           lineHeight: 1,
           color: active ? "#FFFFFF" : NS.ink,
+          whiteSpace: "nowrap",
         }}>{cat.label}</h3>
       </div>
       <span style={{
@@ -1654,8 +1658,11 @@ function SectionBanner({ cat, mobile }) {
             marginTop: 8,
             color: NS.inkSoft,
             fontSize: 14,
-            maxWidth: 460,
+            maxWidth: "100%",
             lineHeight: 1.55,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}>{cat.blurb}</p>
         </div>
         <div style={{
