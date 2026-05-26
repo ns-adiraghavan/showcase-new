@@ -2127,42 +2127,54 @@ function SampleViewer({ payload, onClose, onBack }) {
         <div style={{
           background: NS.surface,
           borderTop: `3px solid ${accent}`,
-          padding: "12px 16px",
+          padding: "10px 16px",
           display: "flex",
-          alignItems: "center",
-          gap: 12,
+          flexDirection: "column",
+          gap: 8,
           flexShrink: 0,
         }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <span style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: "0.16em",
-              textTransform: "uppercase", color: "#fff",
-              background: accent, padding: "2px 7px", borderRadius: 2,
-            }}>{format}</span>
-            <p style={{
-              fontSize: 13, fontWeight: 500, color: NS.ink,
-              marginTop: 5, whiteSpace: "nowrap",
-              overflow: "hidden", textOverflow: "ellipsis",
-            }}>{sample.title}</p>
+          {/* Row 1: title + action buttons */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span style={{
+                fontSize: 9, fontWeight: 700, letterSpacing: "0.16em",
+                textTransform: "uppercase", color: "#fff",
+                background: accent, padding: "2px 7px", borderRadius: 2,
+              }}>{format}</span>
+              <p style={{
+                fontSize: 13, fontWeight: 500, color: NS.ink,
+                marginTop: 4, whiteSpace: "nowrap",
+                overflow: "hidden", textOverflow: "ellipsis",
+              }}>{sample.title}</p>
+            </div>
+            <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+              {sample.driveViewUrl && (
+                <a href={sample.driveViewUrl} target="_blank" rel="noopener noreferrer"
+                  style={{
+                    background: NS.blue, color: "#fff",
+                    fontSize: 12, fontWeight: 600,
+                    padding: "8px 14px", borderRadius: 2,
+                    textDecoration: "none", whiteSpace: "nowrap",
+                  }}>Open ↗</a>
+              )}
+              <button onClick={onClose} aria-label="Close" style={{
+                background: NS.surface, border: `1px solid ${NS.rule}`,
+                color: NS.ink, cursor: "pointer", borderRadius: "50%",
+                width: 34, height: 34, fontSize: 18,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+              }}>×</button>
+            </div>
           </div>
-          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-            {sample.driveViewUrl && (
-              <a href={sample.driveViewUrl} target="_blank" rel="noopener noreferrer"
-                style={{
-                  background: NS.blue, color: "#fff",
-                  fontSize: 12, fontWeight: 600,
-                  padding: "8px 14px", borderRadius: 2,
-                  textDecoration: "none", whiteSpace: "nowrap",
-                }}>Open ↗</a>
-            )}
-            <button onClick={onClose} aria-label="Close" style={{
-              background: NS.surface, border: `1px solid ${NS.rule}`,
-              color: NS.ink, cursor: "pointer", borderRadius: "50%",
-              width: 34, height: 34, fontSize: 18,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}>×</button>
-          </div>
+          {/* Row 2: back link */}
+          {onBack && (
+            <button onClick={onBack} style={{
+              background: "transparent", border: "none",
+              color: NS.muted, fontSize: 12, cursor: "pointer",
+              padding: 0, textAlign: "left",
+              fontFamily: "'DM Sans', sans-serif",
+            }}>← Back to all samples</button>
+          )}
         </div>
       </div>
     );
