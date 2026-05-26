@@ -2092,6 +2092,11 @@ function SampleViewer({ payload, onClose, onBack }) {
   const accent = CAT_BY_ID[category].color;
   const indLabel = INDUSTRIES.find(i => i.id === sample.industry)?.label;
   const mobile = useMedia("(max-width: 720px)");
+  const portrait = useMedia("(max-width: 720px) and (orientation: portrait)");
+  const isVideo = category === "videos" || category === "social";
+  // On mobile portrait with a video, we render the modal as a full-screen
+  // scroll container: video pinned at top at true 16:9, info pane scrollable below.
+  const mobileVideoPortrait = mobile && portrait && isVideo;
   useEscClose(onClose);
 
   return (
@@ -2100,15 +2105,18 @@ function SampleViewer({ payload, onClose, onBack }) {
       background: mobile ? "rgba(15, 27, 39, 0.7)" : "rgba(15, 27, 39, 0.55)",
       backdropFilter: mobile ? "none" : "blur(8px)",
       WebkitBackdropFilter: mobile ? "none" : "blur(8px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
+      display: "flex",
+      alignItems: mobileVideoPortrait ? "flex-start" : "center",
+      justifyContent: "center",
       padding: mobile ? 0 : 20,
       animation: "ns-fade .25s ease",
-      overflow: "auto",
+      overflowY: "auto",
+      WebkitOverflowScrolling: "touch",
     }}>
       <div onClick={e => e.stopPropagation()} style={{
         width: "100%", maxWidth: 1200,
-        height: mobile ? "auto" : "fit-content",
-        maxHeight: "calc(100vh - 40px)",
+        height: mobileVideoPortrait ? "auto" : (mobile ? "auto" : "fit-content"),
+        maxHeight: mobileVideoPortrait ? "none" : "calc(100vh - 40px)",
         background: NS.surface,
         border: `1px solid ${NS.rule}`,
         borderTop: `3px solid ${accent}`,
@@ -2116,27 +2124,32 @@ function SampleViewer({ payload, onClose, onBack }) {
         flexDirection: mobile ? "column" : "row",
         animation: "ns-pop .35s cubic-bezier(0.22,1,0.36,1)",
         boxShadow: "0 30px 80px rgba(15,27,39,0.18)",
-        overflow: "hidden",
+        overflow: mobileVideoPortrait ? "visible" : "hidden",
         fontFamily: "'DM Sans', sans-serif",
       }}>
+        {/* ── Video / embed area ── */}
         <div style={{
           flex: mobile ? "none" : 1,
           width: mobile ? "100%" : "auto",
-          height: mobile
-            ? (category === "videos" ? "56vw" : "55vw")
-            : "auto",
-          aspectRatio: mobile && category === "videos" ? "16/9" : undefined,
+          // Portrait video: use true 16:9 aspect ratio via padding trick so the
+          // iframe gets its full natural height before the info pane appears below.
+          height: mobileVideoPortrait
+            ? 0
+            : (mobile ? (isVideo ? "56.25vw" : "55vw") : "auto"),
+          paddingBottom: mobileVideoPortrait ? "56.25%" : undefined,
+          aspectRatio: (mobile && !mobileVideoPortrait && isVideo) ? "16/9" : undefined,
           minHeight: mobile ? undefined : "75vh",
           background: NS.paperDeep,
           position: "relative",
           overflow: "hidden",
+          flexShrink: 0,
         }}>
           {sample.driveEmbedUrl ? (
-            (category === "videos" || category === "social") ? (
+            (isVideo) ? (
               <iframe
                 src={sample.driveEmbedUrl}
                 title={sample.title}
-                style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
                 allow="autoplay"
                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
               />
@@ -2161,6 +2174,7 @@ function SampleViewer({ payload, onClose, onBack }) {
             </div>
           )}
         </div>
+        {/* ── Info pane ── */}
         <div style={{
           width: mobile ? "100%" : 300,
           flexShrink: 0,
