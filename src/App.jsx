@@ -24,7 +24,7 @@ const THUMBNAILS = {
     "Infographics": "/thumbnails/design/Infographics.jpg",
     "PPT": "/thumbnails/design/PPT.jpg",
     "Report Designs": "/thumbnails/design/Report design.jpg",
-    "Event Based Assets": "/thumbnails/design/Event based assets.jpg",
+    "Event Based Designs": "/thumbnails/design/Event based assets.jpg",
     "Print Publications": "/thumbnails/design/Print publications.jpg",
     "Web Banners": "/thumbnails/design/web-banner.jpg",
   },
@@ -320,7 +320,7 @@ const CURATED = {
       { title: "Web Banner: Designed to Flatter", desc: "Apparel web banner with conversion-focused messaging — body-positive campaign for a women's fashion brand.", industry: "retail", ...driveFile("1SmHljDO6prjYJmMTIardcCv62GfR-cfZ") },
       { title: "Web Banner: The Dress You Will Love Forever", desc: "Fashion banner for an evergreen product line — emotional copy with visual storytelling for a retail apparel brand.", industry: "retail", ...driveFile("1pFrWSJGVIDoeLVuQowmCpOhoP8isUeU4") },
     ],
-    "Event Based Assets": [
+    "Event Based Designs": [
       { title: "Standee: Hi-Tech Industry Event", desc: "Large-format pull-up standee design for a hi-tech trade event — brand identity applied to print at scale.", industry: "tech", ...driveFile("1eNfZ-Ev3nF5-HZSVA2aG6GdiA98sR59Z") },
     ],
     "Print Publications": [
@@ -1122,7 +1122,7 @@ const MOCK_BY_TYPE = {
   "Web Page": WebPageMock,
   "PPT / Deck": PPTMock, "PPT": PPTMock, "Deck": PPTMock,
   "Infographic": InfographicMock, "Infographics": InfographicMock,
-  "Event Based Assets": EventMock,
+  "Event Based Designs": EventMock,
   "Web Banners": BannerMock,
   "Print Publications": PrintMock,
   "Motion Graphics": MotionMock, "Motion Graphics with Character Animation": MotionMock,
