@@ -1,4 +1,4 @@
-
+﻿
 import { useState, useEffect, useRef } from "react";
 import logoSrc from "./assets/netscribes-logo.png";
 
@@ -79,10 +79,10 @@ const NS = {
 
 const CATS = [
   { id: "content", num: "01", label: "Content",         color: NS.blue,     tag: "Editorial",   blurb: "Long & short-form copy" },
-  { id: "design",  num: "02", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Layouts, reports, banners" },
-  { id: "videos",  num: "03", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Explainers, training, reels" },
-  { id: "social",  num: "04", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Posts, carousels, campaigns" },
-  { id: "gtm",     num: "05", label: "Insights",         color: NS.blueSoft, tag: "Strategy",    blurb: "Case Studies and Sample Reports" },
+  { id: "gtm",     num: "02", label: "Insights",        color: NS.blueSoft, tag: "Strategy",    blurb: "Case Studies and Sample Reports" },
+  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Layouts, reports, banners" },
+  { id: "videos",  num: "04", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Explainers, training, reels" },
+  { id: "social",  num: "05", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Posts, carousels, campaigns" },
 ];
 
 const CAT_BY_ID = Object.fromEntries(CATS.map(c => [c.id, c]));
