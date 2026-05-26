@@ -4,26 +4,26 @@ import logoSrc from "./assets/netscribes-logo.png";
 
 const THUMBNAILS = {
   content: {
-    "Whitepaper": "/thumbnails/content/thought_leadership/Whitepaper.jpg",
-    "POV": "/thumbnails/content/thought_leadership/POV.jpg",
-    "TL Blog": "/thumbnails/content/thought_leadership/TL_Blog.jpg",
-    "eBook": "/thumbnails/content/thought_leadership/ebook.jpg",
-    "Case Study": "/thumbnails/content/short-form/Case_Study.jpg",
-    "Emailer": "/thumbnails/content/short-form/Emailer.jpg",
-    "Video Script": "/thumbnails/content/short-form/Video_Script.jpg",
-    "Brochure": "/thumbnails/content/short-form/brochure.jpg",
+    "Whitepapers": "/thumbnails/content/thought_leadership/Whitepaper.jpg",
+    "POVs": "/thumbnails/content/thought_leadership/POV.jpg",
+    "Blogs": "/thumbnails/content/thought_leadership/TL_Blog.jpg",
+    "eBooks": "/thumbnails/content/thought_leadership/ebook.jpg",
+    "Case Studies": "/thumbnails/content/short-form/Case_Study.jpg",
+    "Emailers": "/thumbnails/content/short-form/Emailer.jpg",
+    "Video Scripts": "/thumbnails/content/short-form/Video_Script.jpg",
+    "Brochures": "/thumbnails/content/short-form/brochure.jpg",
   },
   gtm: {
     "GTM": "/thumbnails/GTM/GTM.jpg",
     "Industry Analysis": "/thumbnails/GTM/Industry Analysis.jpg",
-    "Competitive Intelligence & Benchmarking": "/thumbnails/GTM/Competitive Intelligence & Benchmarking.jpg",
+    "Competitive Benchmarking and Account Intelligence": "/thumbnails/GTM/Competitive Intelligence & Benchmarking.jpg",
     "Consumer Research": "/thumbnails/GTM/Consumer Research.jpg",
     "AI Readiness Assessment": "/thumbnails/GTM/AI Readiness Assessment.jpg",
   },
   design: {
     "Infographics": "/thumbnails/design/Infographics.jpg",
     "PPT": "/thumbnails/design/PPT.jpg",
-    "Report Design": "/thumbnails/design/Report design.jpg",
+    "Report Designs": "/thumbnails/design/Report design.jpg",
     "Event Based Assets": "/thumbnails/design/Event based assets.jpg",
     "Print Publications": "/thumbnails/design/Print publications.jpg",
     "Web Banners": "/thumbnails/design/web-banner.jpg",
@@ -31,16 +31,17 @@ const THUMBNAILS = {
   videos: {
     "Motion Graphics": "/thumbnails/video/Motion graphics.jpg",
     "Motion Graphics with Character Animation": "/thumbnails/video/Motion graphics.jpg",
-    "Footage / Image Based": "/thumbnails/video/Footage-Image based.jpg",
-    "Reels and Shorts": "/thumbnails/video/Reels and shorts.jpg",
-    "Podcast Interviews": "/thumbnails/video/Podcast.jpg",
+    "Footage / Image-Based": "/thumbnails/video/Footage-Image based.jpg",
+    "Reels & Shorts": "/thumbnails/video/Reels and shorts.jpg",
+    "Podcasts": "/thumbnails/video/Podcast.jpg",
     "Podcast / Thought Leadership Interviews": "/thumbnails/video/Podcast.jpg",
     "Training Videos": "/thumbnails/video/Training videos.jpg",
-    "Whiteboard Animation": "/thumbnails/video/Whiteboard animation.jpg",
+    "Whiteboard Animations": "/thumbnails/video/Whiteboard animation.jpg",
+    "Character Animations": "/thumbnails/design/web-banner.jpg",
   },
   social: {
-    "Static Post Design": "/thumbnails/social/Static post.jpg",
-    "Carousel": "/thumbnails/social/Carousel.jpg",
+    "Static Posts": "/thumbnails/social/Static post.jpg",
+    "Carousels": "/thumbnails/social/Carousel.jpg",
     "GIFs": "/thumbnails/social/GIFs.jpg",
     "Teasers": "/thumbnails/social/Teaser.jpg",
     "Memes": "/thumbnails/social/Memes.jpg",
@@ -78,11 +79,11 @@ const NS = {
 // ─── Data ─────────────────────────────────────────────────────────
 
 const CATS = [
-  { id: "content", num: "01", label: "Content",         color: NS.blue,     tag: "Editorial",   blurb: "Long & short-form copy" },
-  { id: "gtm",     num: "02", label: "Insights",        color: NS.blueSoft, tag: "Strategy",    blurb: "Case Studies and Sample Reports" },
-  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Layouts, reports, banners" },
-  { id: "videos",  num: "04", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Explainers, training, reels" },
-  { id: "social",  num: "05", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Posts, carousels, campaigns" },
+  { id: "content", num: "01", label: "Content",         color: NS.blue,     tag: "Editorial",   blurb: "Whitepaper | Blogs | PoV | eBooks | Emailers | Case Studies | Brochures | Scripts" },
+  { id: "gtm",     num: "02", label: "Insights",        color: NS.blueSoft, tag: "Strategy",    blurb: "GTM | Competitive & Account Intelligence | Brand & Consumer Insights | AI Readiness" },
+  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Infographics | PPT | Report | Banners | Events Creatives | Print Publications" },
+  { id: "videos",  num: "04", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Motion Graphics | Stock Footage | Reels & Shorts | Podcasts | Training | Animation" },
+  { id: "social",  num: "05", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Static Posts | GIFs | Teasers | Memes | Carousels | Corporate Comics" },
 ];
 
 const CAT_BY_ID = Object.fromEntries(CATS.map(c => [c.id, c]));
@@ -106,7 +107,7 @@ function driveFile(id) {
 
 const CURATED = {
   content: {
-    "Whitepaper": [
+    "Whitepapers": [
       { title: "Augmented Analytics & the Digital Automotive Space", desc: "Thought leadership paper on how augmented analytics is reshaping OEM strategy and the connected-car ecosystem.", industry: "auto", ...driveFile("1fKIm4sSLQWWu2dyL9He0GVrGobBmuWUj") },
       { title: "New Cybersecurity Requirements for Supply Chains", desc: "Deep-dive whitepaper on post-COVID cybersecurity mandates across global supply chain verticals.", industry: "tech", ...driveFile("1FXF1JK7xJyaAUp2aR7kpdjWEhxKfqwkB") },
       { title: "Building Cyber Resilience and Data Integrity into Supply Chains", desc: "Enterprise whitepaper examining third-party breach vectors and frameworks for supply chain cyber resilience.", industry: "mfg", ...driveFile("1TARJXanFpUGcNOFOemRLSe_KOKy7y7fH") },
@@ -130,7 +131,7 @@ const CURATED = {
       { title: "Preparing Your Workplace for the Opioid Crisis", desc: "Whitepaper on workplace opioid policies — employee assistance programs, safe return-to-work frameworks, and employer legal obligations.", industry: "health", ...driveFile("1kcaukWujSkxdpc07iHzopJPlTjYhWzL2") },
       { title: "The Future of Customer Onboarding", desc: "Whitepaper on digital-first customer onboarding — identity verification, KYC automation, and omnichannel journey design.", industry: "bfsi", ...driveFile("1M44TNZ4xikUr46Nr_NJU0XOqJqJAXT3p") },
     ],
-    "POV": [
+    "POVs": [
       { title: "Over The Top Services: New Business Models", desc: "Executive POV on OTT's impact on telecom revenue, cord-cutting culture, and emerging commercial models.", industry: "telecom", ...driveFile("1KdrrjLwsAXJ0caKmlZk6BWVHeVjILqxg") },
       { title: "Smart Plants: Transforming Your Plant with Optimal ROI", desc: "POV on the Industry 4.0 journey to smart manufacturing — IIoT, cyber-physical systems, and phased ROI.", industry: "mfg", ...driveFile("1D7OVQhk3Jn9E6cE6Jgi-W_E6Llb2Yxgk") },
       { title: "The Market of One: Involving Customers to Deliver Unique Value", desc: "Manufacturing POV on mass customisation strategies, from engineer-to-order to AI-driven recommendation systems.", industry: "mfg", ...driveFile("1pgiZMxTdSTEdbXQ78cIOfi4F9WrrQMbm") },
@@ -138,7 +139,7 @@ const CURATED = {
       { title: "Enabling Condition Monitoring at Scale", desc: "POV on deploying IoT-based condition monitoring across industrial assets — reducing unplanned downtime and shifting to predictive maintenance models.", industry: "mfg", ...driveFile("1Tjokdxr4l9g5UcfgbF_BdoezOIkh19al") },
       { title: "Cloud Smart: A Strategic Framework for Enterprise Cloud Adoption", desc: "POV on moving beyond lift-and-shift to cloud-native architecture — governance, FinOps, and value realisation for enterprise IT leaders.", industry: "tech", ...driveFile("1JqbY38OBamxJMPjU3GXUrv_mhKXdtFcE") },
     ],
-    "TL Blog": [
+    "Blogs": [
       { title: "Towards Green Mobility: How COVID Accelerated EV Adoption", desc: "1,000-word blog on OEM investment case for EVs — incentives, shifting consumer behaviour, and engineering services.", industry: "auto", ...driveFile("1fi50I848zvgZjNgwgPEnC2-Zb-LkTSZ9") },
       { title: "Telecom: OpEx vs CapEx Considerations for FinOps", desc: "Thought leadership blog for telco cloud leaders on governing cloud spend through FinOps and CoE models.", industry: "telecom", ...driveFile("1J18THPkenCv12jJugm4faKGiD3geLq8M") },
       { title: "The IoT Powerhouse: A Game Changer for Retail and CPG", desc: "Blog exploring IoT use cases in retail — smart inventory, supply chain transparency, and the connected store.", industry: "retail", ...driveFile("15crBWTOsoAiVB8YdpreDMORets0hHvN_") },
@@ -172,7 +173,7 @@ const CURATED = {
       { title: "Cinema, Bollywood and the Lifestyle Economy", desc: "Article exploring Bollywood's cultural and commercial influence — content trends, digital platforms, and lifestyle crossovers.", industry: "retail", ...driveFile("17tXROqO7LpS7sD4yhTKXzECqvK-Xw4h-") },
       { title: "Comic Con, Whisky and the Pop Culture Economy", desc: "Article on the intersection of pop culture events and premium consumer categories — fandom, brand activations, and experiential marketing.", industry: "retail", ...driveFile("1jygUA1hE464QoVXOSsSjA0KIRocXfeP3") },
     ],
-    "eBook": [
+    "eBooks": [
       { title: "Thought Leadership eBook: The Future of Healthcare", desc: "Full-length designed eBook on digital health, precision medicine, and the next decade of healthcare delivery.", industry: "health", ...driveFile("1wdUpR8X9YZ2Dd4bhL56Veyph8l3evcKj") },
       { title: "Thought Leadership eBook: IoT and Logistics", desc: "eBook exploring IoT-enabled visibility, predictive maintenance, and last-mile optimisation across logistics networks.", industry: "mfg", ...driveFile("1Vvuq80dY3_P0G9yH1fRDtGluQeTVNJeH") },
       { title: "Thought Leadership eBook: Digital Twins", desc: "Comprehensive guide on deploying digital twin technology in manufacturing and smart infrastructure.", industry: "tech", ...driveFile("1mov4NqP0_DC8jOr6JygM5fn8ObkPS_7F") },
@@ -183,7 +184,7 @@ const CURATED = {
       { title: "Edge Computing: The Next Frontier", desc: "eBook on the business case for edge computing — latency-sensitive applications, industrial IoT deployments, and the convergence of edge and cloud architectures.", industry: "tech", ...driveFile("1Pchu-UbCarVbDnXMSq7IwPDuTT7TyUX7") },
       { title: "Connecting the Shop Floor to the Top Floor", desc: "eBook bridging operational and executive perspectives on smart manufacturing and real-time data flows.", industry: "mfg", ...driveFile("1z2DS31jqES8p_URmR2n2XkMDS5cu7Aqg") },
     ],
-    "Emailer": [
+    "Emailers": [
       { title: "Fintech Email Newsletter: Life Insurance Market Intelligence", desc: "Monthly competitive intelligence newsletter for insurance — premium data, bancassurance rankings, and IRDAI updates.", industry: "bfsi", ...driveFile("1b7S2waOKatMYZPElkgRrc7eSuV1CaSXP") },
       { title: "Banking E-mailer: Sustainability Report Launch", desc: "HTML emailer announcing a bank's annual sustainability report — hero section, data highlights, and CTA.", industry: "bfsi", ...driveFile("1Me5JfZFCXKIdn-Hid_-uwCbZJ5NeCpSr") },
       { title: "Newsletter: 5G Connected Ambulance & Telecom Partnership Updates", desc: "Internal newsletter covering 5G healthcare pilots, NaaS partnerships, and data centre research for a telco.", industry: "telecom", ...driveFile("18yT7QcDTNaLPDC3Q09k5Ux-237H13XDw") },
@@ -199,7 +200,7 @@ const CURATED = {
       { title: "Emailer: Partnership Forum Registration", desc: "Event-driven emailer driving registrations for a business partnership forum — agenda highlights, speaker teaser, and registration CTA.", industry: "tech", ...driveFile("1wXU78qrPn-Nv0CiDHWH_8pAnUeAJcsCn") },
       { title: "Press Release: Bank Account Conversion Campaign", desc: "Press release-style emailer announcing a bank's account conversion programme — clear customer action required and benefit messaging.", industry: "bfsi", ...driveFile("1MsIqWzf1voYqFt049x7sEb4aKnsxBduN") },
     ],
-    "Case Study": [
+    "Case Studies": [
       { title: "Terra Helps Scottish Compressed Air Specialist Standardise H&S", desc: "4-page case study on how a compressed air company achieved supply chain compliance and H&S certification.", industry: "mfg", ...driveFile("18mcP0jQts8BWgKbZwJiSUwHD0OHR9L6h") },
       { title: "French Oil & Gas Major Enables Real-Time Business Flow Observability", desc: "Case study on deploying iControl to eliminate manual monitoring gaps and proactively flag pipeline outages.", industry: "mfg", ...driveFile("1B2KCM9XCBvo9GG-IXBhepgHWtyGHPa1A") },
       { title: "Oil & Gas — Operational Intelligence Case Study", desc: "Detailed case study on real-time business flow observability for a major French oil and gas operator — full delivery narrative with outcomes.", industry: "mfg", ...driveFile("1g2ISgHiZB9WTh4frL5M5J7UrPf_utDj5") },
@@ -218,12 +219,12 @@ const CURATED = {
       { title: "Customer Success Story: IoT for EV Fleet Management", desc: "IoT-enabled EV fleet monitoring case study — battery health analytics, remote diagnostics, and predictive maintenance outcomes.", industry: "auto", ...driveFile("1BmdtOF-qEXSRO75TxIOuPe6qpQVNXU5T") },
       { title: "XYZ Gas: Customer Success Story", desc: "Utility sector case study on operational transformation for a gas distribution company — field force automation, safety compliance, and network optimisation.", industry: "mfg", ...driveFile("11mgiAnFBOU6JhQVyN9NFBxC8OOckOoXQ") },
     ],
-    "Video Script": [
+    "Video Scripts": [
       { title: "Video Script: RPA Testimonial — CFO Office", desc: "Fully blocked 60s testimonial script for an RPA deployment in a global technology firm's finance function.", industry: "tech", ...driveFile("1lxr04nr7GJKnj_lJ_wWzP8RhNIcCDNLR") },
       { title: "Video Script: Explainer for Cognitive Process Automation", desc: "Animated explainer script with scene-level visualization directions for a CPA / AI+RPA product.", industry: "tech", ...driveFile("1J6lm-WcCzp4GCKSheO-4j3k2-U9cIXpj") },
       { title: "Video Script & Visualization: Procurement", desc: "Motion-graphic script with detailed visual directions for a supply chain procurement explainer.", industry: "mfg", ...driveFile("1fZ03ybEle3yfzXmY6jByO3Eklrbd7S9T") },
     ],
-    "Brochure": [
+    "Brochures": [
       { title: "Brochure: IT Services Delivery Center", desc: "Corporate brochure for an IT services delivery centre — capabilities overview, engagement models, and value proposition for enterprise clients.", industry: "tech", ...driveFile("1N-b6nxkdTi4-bPEAGP1VOoQd4HOY4Wg5") },
       { title: "Brochure: Netscribes Intelligence Store — Premium Technology Analysis (A)", desc: "Product brochure for the Netscribes Intelligence Store — positioning, coverage areas, and subscription tiers for technology research buyers.", industry: "tech", ...driveFile("1zgM_qZXSagPFyR4NsZuUWMr9-NjdXrnN") },
       { title: "Brochure: Netscribes Intelligence Store — Premium Technology Analysis (B)", desc: "Alternate design variant for the Netscribes Intelligence Store brochure — updated layout with expanded use case sections.", industry: "tech", ...driveFile("1OUvBWShOq3w4Am4Pn9MiMUL_72JpBUXE") },
@@ -283,7 +284,7 @@ const CURATED = {
       { title: "PPT Template Design: Event", desc: "Branded PowerPoint event template — flexible slide layouts, visual hierarchy, and identity-consistent design for large-format presentations.", industry: "tech", ...driveFile("15UeBuvKK4Nxi-4Ia6SfQzcPLo6c5aQKx") },
       { title: "Survey Summary Report: Financial and Management Reporting", desc: "Designed PPT report on finance function benchmarking — reporting automation, data quality, and CFO priorities.", industry: "bfsi", ...driveFile("1597R2c7j2uozhcZyrlTvVSuea5tkhW7X") },
     ],
-    "Report Design": [
+    "Report Designs": [
       { title: "Survey Summary Report: Enterprise Content and Collaboration in the Cloud", desc: "Research report with designed data visualisation on cloud adoption patterns across enterprise content management.", industry: "tech", ...driveFile("1hkUIVi9f2vWqkW6wj3DqV2-xIqidRNYF") },
       { title: "Survey Summary Report: Supply Chain Analytics", desc: "Benchmarking report on supply chain analytics maturity and technology investment priorities.", industry: "mfg", ...driveFile("1DzgOtgBYFxOWT2s5VOBnT-NVLF9CXfrp") },
       { title: "Report: ConnEurope — Connected Future", desc: "Designed research report on connectivity trends and digital infrastructure development across Continental Europe.", industry: "telecom", ...driveFile("1hJp0NkK7TmaCZ9sq6MKb3-egI9MOEwUd") },
@@ -335,30 +336,39 @@ const CURATED = {
       { title: "Managing Large Workforce", desc: "Motion graphics video on workforce management platform capabilities — animated data flows and ROI highlights.", industry: "tech", ...driveFile("11CxwH0FbhJ0gf-qcLZkZUv8g8apofEms") },
       { title: "Managing Certificates of Insurance", desc: "Animated explainer on certificate of insurance management — workflow automation, compliance tracking, and risk reduction for enterprise procurement.", industry: "mfg", ...driveFile("183l25tAVM_ZRxmkyNuF-NSEWSDCese6f") },
     ],
-    "Footage / Image Based": [
+    "Footage / Image-Based": [
       { title: "Terra OQSURE Brand Video", desc: "Footage and image-based brand video for OQSURE supply chain risk management platform.", industry: "mfg", ...driveFile("1TjpEuHa2c0TRsQon2ouGRUkbIhFmDIp_") },
       { title: "Sports Three Case Study Film", desc: "Case study brand film combining footage, testimonials, and motion graphics.", industry: "mfg", ...driveFile("1SgsXJIWO7SrnZuH2GcwY6_r-RQa9hWIz") },
       { title: "NSA × ABC Post-Event Highlight Film", desc: "Post-event brand film combining footage, keynote highlights, and motion graphic overlays for a B2B technology event.", industry: "tech", ...driveFile("1NJoBXRyqKS53J6Go4dI98yBiMsyfbowB") },
       { title: "ABC Arctic Expedition — Footage-Based Brand Film", desc: "Cinematic footage-based brand video for an Arctic expedition — environment-forward storytelling with brand narrative overlay.", industry: "tech", ...driveFile("1H5DuIoGMz3vEKk8mIEA60MruFS_U_83F") },
     ],
-    "Reels and Shorts": [
+    "Reels & Shorts": [
       { title: "Minxie Fashion — Social Post Reel", desc: "Vertical-format social media reel for a fashion brand — product showcase with motion text and branded colour.", industry: "retail", ...driveFile("1Y8g-pIpkEtv8n5fktvJ2xiZxRo3DAEA3") },
       { title: "Minxie Fashion — Product Sample Reel", desc: "Short-form product reel for a fashion brand — close-up styling shots with fluid transitions and platform-native format.", industry: "retail", ...driveFile("1QYJPyb4np2u7hwYLFStLvMndLCp-SPHT") },
     ],
-    "Podcast Interviews": [
+    "Podcasts": [
       { title: "Terra Supply Chain Podcast", desc: "Edited podcast interview on supply chain resilience and contractor management — captioned, with branded title cards.", industry: "mfg", ...driveFile("1toPnFOS2PQz-0Ck6xmLCm0uJjq3mB2YZ") },
     ],
     "Training Videos": [
       { title: "Training Video: Use Cases on Rule 9you", desc: "Internal training video on compliance rule-sets — screencast with motion title cards and structured module breaks.", industry: "bfsi", ...driveFile("17348wZOD4jTpso8YO8u6FBRYNxSlK3zl") },
     ],
-    "Whiteboard Animation": [
+    "Whiteboard Animations": [
       { title: "Whiteboard Animation: Mind the Gap", desc: "Whiteboard-style animated video bridging the gap between business expectations and technology delivery.", industry: "tech", ...driveFile("1q-19U7s37sc7B2SIZzNi0llUn_kNdvyt") },
       { title: "Whiteboard Training Video", desc: "Whiteboard animation for internal training — process walkthrough with illustrated scenes and voice-over.", industry: "tech", ...driveFile("1L2g6Mrl0C-UZE1zv10suFQjjVrbhrhMn") },
       { title: "Whiteboard Animation: Interview Promotion", desc: "Promotional whiteboard video driving registrations for an executive interview content series.", industry: "tech", ...driveFile("12d6Wu-_mJHDpAWf5EqZdsd6X3kdEG54C") },
     ],
+    "Character Animations": [
+      // ── BFSI ──
+      { title: "Product Vignette: Capital Plan (Sanitize)", desc: "Character-animated product vignette showcasing a capital planning solution — clean 2D character narrative with branded motion.", industry: "bfsi", ...driveFile("1H2KKg5D-iK1tVhAZd1c7-C9TmtCP5pVy") },
+      { title: "Product Vignette: Capital Plan (Sanitization)", desc: "Character-animated product vignette for a capital planning platform — storyline-driven 2D animation with enterprise messaging.", industry: "bfsi", ...driveFile("1nRBYnTc4MshqWDcOD5pLQ5Rws4jMm2Ma") },
+      // ── Technology & Software ──
+      { title: "2D Animation: Sales Enablement EHS", desc: "Character-driven 2D animated video for an EHS sales enablement programme — scenario-based storytelling with clear compliance messaging.", industry: "tech", ...driveFile("1JCffGKj0RMMsYug0MztRa2VhNCqhtoLP") },
+      { title: "Facilities Downtime Management System", desc: "Character animation explaining a facilities downtime management system — workflow visualisation with 2D animated personas.", industry: "tech", ...driveFile("12YZskM1jq1acWiP6IefLwxbO3e_kFTMk") },
+      { title: "Manage Decentralised Cloud Ecosystem by MyCloud", desc: "Character-led 2D animation on decentralised cloud ecosystem management — simplified architecture storytelling for a SaaS platform.", industry: "tech", ...driveFile("1tL5Ic1-VcV-AQBKtyfsGriVDSj6hXF3M") },
+    ],
   },
   social: {
-    "Static Post Design": [
+    "Static Posts": [
       { title: "Social Creative: Future of Digital Insurance", desc: "Static post design for an insurance brand — clean data-driven layout for LinkedIn.", industry: "bfsi", ...driveFile("1nE7QZz-qTENdWW6eWJxx15RhHLPCNktM") },
       { title: "Social Creative: AI Making Sci-Fi a Reality (WEF)", desc: "WEF Davos social static for a tech brand — editorial typography on AI futures for LinkedIn.", industry: "tech", ...driveFile("1k900f3w1unwbEw_FoSF286iXTHRT4Zti") },
       { title: "Social Creative: Internet of Everyone (WEF)", desc: "WEF-themed branded social static — bold statement format with editorial layout for tech brand LinkedIn.", industry: "tech", ...driveFile("1k7n8UW4fD7CuH3CH9vMJGWMSdn1KtSF2") },
@@ -407,7 +417,7 @@ const CURATED = {
       { title: "Meme Series: Trading — Part 3", desc: "Four-part branded meme series for a BFSI/fintech brand — platform-native humour with on-brand visual treatment.", industry: "bfsi", ...driveFile("1El0FiSXLGAV_fhAR_6xf6MXzZ4OjHxOF") },
       { title: "Meme Series: Trading — Part 4", desc: "Four-part branded meme series for a BFSI/fintech brand — platform-native humour with on-brand visual treatment.", industry: "bfsi", ...driveFile("19jBuPumxzjS82asIHgWdrGPyA9HtgULI") },
     ],
-    "Carousel": [
+    "Carousels": [
       { title: "Carousel: Tech Solutions Streamline Collaborations", desc: "5-slide LinkedIn carousel on enterprise tech benefits — each slide pairs a bold stat with a reason-to-believe visual.", industry: "tech", ...driveFile("1IJCyMq4oemXYN8g4rKi9N23o_96geyPN") },
       { title: "Carousel: The Future of Digital Insurance", desc: "Multi-slide BFSI carousel exploring digital insurance trends — visual storytelling format for LinkedIn.", industry: "bfsi", ...driveFile("1RQQIP7vqFYBCtBqrmkpki7RyNdkREWiu") },
       { title: "Carousel: Insurtech in Indian Insurance", desc: "Carousel deep-dive into insurtech innovation in the Indian insurance market — data-rich slides with branded visual treatment.", industry: "bfsi", ...driveFile("1hKMk5qRnmHFLmvO5mQ8WJEJ5ITNxc9v_") },
@@ -463,7 +473,7 @@ const CURATED = {
       { title: "Concept Testing & Opportunity Assessment: Health Food Supplement Dispenser", desc: "GTM study evaluating concept appeal and market opportunity for a health food supplement and dispenser innovation.", industry: "retail", ...driveFile("1oHPqdb2m6C-9WkuvvIgaRUEbqYz4Yri7") },
       { title: "Go-to-Market Strategy for a Company Using AI to Revolutionise Drug Development", desc: "GTM strategy for an AI-powered drug development platform — target market identification, partnership model, and competitive differentiation.", industry: "health", ...driveFile("1yxjFqhdT3dqx7ov-DN0GsRX3D1o0uNXp") },
     ],
-    "Competitive Intelligence & Benchmarking": [
+    "Competitive Benchmarking and Account Intelligence": [
       // ── Telecommunication ──
       { title: "Enterprise Connectivity Service Delivery Process for Indian SMEs", desc: "Competitors' benchmarking study analyzing end-to-end service delivery workflows to pinpoint timeline delays and optimize B2B telecom process efficiency.", industry: "telecom", ...driveFile("1S0d_-frzWrQJJ3pZ2ub8OSiYfkUGlq6I") },
       // ── BFSI ──
@@ -472,6 +482,10 @@ const CURATED = {
       { title: "Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc: "Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry: "bfsi", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
       // ── Technology & Software ──
       { title: "Pricing Analysis for a Cloud-Based SCM Provider", desc: "Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry: "tech", ...driveFile("19XFI2m0RxC4wJxviP17jRpj_LHdCHu8X") },
+      { title: "Account Intelligence Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
+      { title: "Account Intelligence Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
+      { title: "Account Intelligence Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
+      { title: "Account Intelligence Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
       // ── Retail & Ecommerce ──
       { title: "Brand & Product Performance Tracking Study for Cleaning Wipes", desc: "Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry: "retail", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
       { title: "Competitive Landscape Analysis for Juice Market", desc: "Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry: "retail", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
@@ -516,8 +530,8 @@ const CURATED = {
 
 
 const CONTENT_SUBS = [
-  { id: "tl",    name: "Thought Leadership", kind: "parent", formats: ["Whitepaper","POV","TL Blog","eBook"] },
-  { id: "short", name: "Short-form",         kind: "parent", formats: ["Emailer","Case Study","Video Script","Brochure"] },
+  { id: "tl",    name: "Thought Leadership", kind: "parent", formats: ["Whitepapers","POVs","Blogs","eBooks"] },
+  { id: "short", name: "Short-form",         kind: "parent", formats: ["Emailers","Case Studies","Video Scripts","Brochures"] },
 ];
 
 const DESIGN_FORMATS = Object.keys(CURATED.design);
@@ -576,7 +590,7 @@ function FrameBase({ accent, children, label }) {
 
 function WhitepaperMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Whitepaper">
+    <FrameBase accent={accent} label="Whitepapers">
       <g transform="translate(64 14)">
         <rect width="72" height="122" fill="#FFFFFF" stroke={accent} strokeOpacity="0.5" rx="2"/>
         <rect x="6" y="8" width="40" height="3" fill={accent} opacity="0.9"/>
@@ -595,7 +609,7 @@ function WhitepaperMock({ accent }) {
   );
 }
 
-function POVMock({ accent, label = "POV" }) {
+function POVMock({ accent, label = "POVs" }) {
   return (
     <FrameBase accent={accent} label={label}>
       <text x="18" y="34" fill="#0F1B27" fontFamily="'DM Sans', sans-serif" fontSize="14"  opacity="0.95">"</text>
@@ -615,7 +629,7 @@ function POVMock({ accent, label = "POV" }) {
 
 function CaseMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Case Study">
+    <FrameBase accent={accent} label="Case Studies">
       <rect x="14" y="14" width="172" height="40" fill={accent} opacity="0.18" rx="2"/>
       <rect x="20" y="22" width="40" height="2" fill={accent}/>
       <rect x="20" y="28" width="60" height="3" fill="#0F1B27" opacity="0.9"/>
@@ -638,7 +652,7 @@ function CaseMock({ accent }) {
 
 function EbookMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="eBook">
+    <FrameBase accent={accent} label="eBooks">
       <g transform="translate(54 18)">
         <rect x="2" y="2" width="90" height="115" fill={accent} opacity="0.25" rx="2"/>
         <rect x="0" y="0" width="90" height="115" fill="#FFFFFF" stroke={accent} strokeOpacity="0.5" rx="2"/>
@@ -656,7 +670,7 @@ function EbookMock({ accent }) {
 
 function EmailMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Emailer">
+    <FrameBase accent={accent} label="Emailers">
       <rect x="20" y="14" width="160" height="122" fill="#FFFFFF" stroke={accent} strokeOpacity="0.4" rx="2"/>
       <rect x="20" y="14" width="160" height="20" fill={accent} opacity="0.22"/>
       <circle cx="32" cy="24" r="4" fill={accent}/>
@@ -676,7 +690,7 @@ function EmailMock({ accent }) {
 
 function BrochureMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Brochure">
+    <FrameBase accent={accent} label="Brochures">
       <g transform="translate(20 18)">
         <rect width="50" height="114" fill="#FFFFFF" stroke={accent} strokeOpacity="0.4" rx="1"/>
         <rect x="0" y="0" width="50" height="40" fill={accent} opacity="0.3"/>
@@ -707,7 +721,7 @@ function BrochureMock({ accent }) {
 
 function ScriptMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Video Script">
+    <FrameBase accent={accent} label="Video Scripts">
       <g transform="translate(20 16)">
         <rect width="160" height="120" fill="#FFFFFF" stroke={accent} strokeOpacity="0.4" rx="2"/>
         <rect x="8" y="10" width="40" height="2" fill={accent}/>
@@ -1021,7 +1035,7 @@ function MemeMock({ accent }) {
 
 function CarouselMock({ accent }) {
   return (
-    <FrameBase accent={accent} label="Carousel">
+    <FrameBase accent={accent} label="Carousels">
       {[0,1,2,3,4].map(i => (
         <g key={i} transform={`translate(${22 + i*32} ${30 + Math.abs(i-2)*4})`}>
           <rect width="42" height="72" fill="#FFFFFF" stroke={accent} strokeOpacity={i===2 ? 0.9 : 0.3} rx="3"/>
@@ -1094,15 +1108,15 @@ function GenericMock({ accent, label = "Sample" }) {
 }
 
 const MOCK_BY_TYPE = {
-  "Whitepaper": WhitepaperMock,
-  "POV": POVMock,
-  "TL Blog": (p) => <POVMock {...p} label="TL blog"/>, "TL Blogs": (p) => <POVMock {...p} label="TL blog"/>, "Blog": (p) => <POVMock {...p} label="TL blog"/>,
-  "Report": WhitepaperMock, "Reports": WhitepaperMock, "Report Design": PrintMock,
-  "eBook": EbookMock, "eBooks": EbookMock,
-  "Case Study": CaseMock,
-  "Emailer": EmailMock, "Emailer & Newsletters": EmailMock, "Emailer and Newsletters": EmailMock, "Newsletter": EmailMock,
-  "Brochure": BrochureMock,
-  "Video Script": ScriptMock,
+  "Whitepapers": WhitepaperMock,
+  "POVs": POVMock,
+  "Blogs": (p) => <POVMock {...p} label="Blogs"/>, "Blog": (p) => <POVMock {...p} label="Blogs"/>,
+  "Report": WhitepaperMock, "Reports": WhitepaperMock, "Report Designs": PrintMock,
+  "eBooks": EbookMock,
+  "Case Studies": CaseMock,
+  "Emailers": EmailMock, "Emailer & Newsletters": EmailMock, "Emailer and Newsletters": EmailMock, "Newsletter": EmailMock,
+  "Brochures": BrochureMock,
+  "Video Scripts": ScriptMock,
   "Web Copies": (p) => <WebPageMock {...p} label="Web Copy"/>,
   "Landing Page": (p) => <WebPageMock {...p} label="Landing Page"/>,
   "Web Page": WebPageMock,
@@ -1112,17 +1126,18 @@ const MOCK_BY_TYPE = {
   "Web Banners": BannerMock,
   "Print Publications": PrintMock,
   "Motion Graphics": MotionMock, "Motion Graphics with Character Animation": MotionMock,
-  "Footage / Image Based": (p) => <MotionMock {...p} label="Footage"/>,
-  "Reels and Shorts": ReelsMock, "Reels": ReelsMock,
-  "Podcast Interviews": PodcastMock, "Podcast / Thought Leadership Interviews": PodcastMock, "Podcast": PodcastMock,
+  "Footage / Image-Based": (p) => <MotionMock {...p} label="Footage"/>,
+  "Reels & Shorts": ReelsMock, "Reels": ReelsMock,
+  "Podcasts": PodcastMock, "Podcast / Thought Leadership Interviews": PodcastMock, "Podcast": PodcastMock,
   "Training Videos": TrainingMock, "Training Video": TrainingMock,
-  "Whiteboard Animation": WhiteboardMock,
+  "Whiteboard Animations": WhiteboardMock,
+  "Character Animations": MotionMock,
   "Copywriting": CopyMock,
-  "Static Post Design": StaticPostMock, "Static Posts": StaticPostMock,
+  "Static Posts": StaticPostMock,
   "GIFs": GifMock, "GIF": GifMock, "GIFs + Posts": GifMock,
   "Teasers": TeaserMock,
   "Memes": MemeMock,
-  "Carousel": CarouselMock,
+  "Carousels": CarouselMock,
   "Corporate Comics": ComicMock,
 };
 
@@ -1901,7 +1916,7 @@ function FormatCard({ format, category, accent, onClick, disabled }) {
               background: "rgba(255,255,255,0.92)",
               border: `1px solid ${accent}40`,
               backdropFilter: "blur(8px)",
-            }}>{format === "TL Blog" ? "Blogs" : format}</div>
+            }}>{format}</div>
           </div>
         ) : (
           <FormatMock type={format} accent={accent}/>
@@ -1914,7 +1929,7 @@ function FormatCard({ format, category, accent, onClick, disabled }) {
           fontSize: 14, lineHeight: 1.3,
           color: NS.ink,
           letterSpacing: "-0.005em",
-        }}>{format === "TL Blog" ? "Blogs" : format}</h4>
+        }}>{format}</h4>
         <p style={{
           marginTop: 4,
           fontSize: 11,
