@@ -364,8 +364,8 @@ const CURATED = {
     ],
     "Character Animations": [
       // ── BFSI ──
-      { title: "Product Vignette: Capital Plan (Sanitize)", desc: "Character-animated product vignette showcasing a capital planning solution — clean 2D character narrative with branded motion.", industry: "bfsi", ...driveFile("1H2KKg5D-iK1tVhAZd1c7-C9TmtCP5pVy") },
-      { title: "Product Vignette: Capital Plan (Sanitization)", desc: "Character-animated product vignette for a capital planning platform — storyline-driven 2D animation with enterprise messaging.", industry: "bfsi", ...driveFile("1nRBYnTc4MshqWDcOD5pLQ5Rws4jMm2Ma") },
+      { title: "Capital Data Management", desc: "Character-animated product vignette showcasing a capital planning solution — clean 2D character narrative with branded motion.", industry: "bfsi", ...driveFile("1H2KKg5D-iK1tVhAZd1c7-C9TmtCP5pVy") },
+      { title: "Advanced Management Module", desc: "Character-animated product vignette for a capital planning platform — storyline-driven 2D animation with enterprise messaging.", industry: "bfsi", ...driveFile("1nRBYnTc4MshqWDcOD5pLQ5Rws4jMm2Ma") },
       // ── Technology & Software ──
       { title: "2D Animation: Sales Enablement EHS", desc: "Character-driven 2D animated video for an EHS sales enablement programme — scenario-based storytelling with clear compliance messaging.", industry: "tech", ...driveFile("1JCffGKj0RMMsYug0MztRa2VhNCqhtoLP") },
       { title: "Facilities Downtime Management System", desc: "Character animation explaining a facilities downtime management system — workflow visualisation with 2D animated personas.", industry: "tech", ...driveFile("12YZskM1jq1acWiP6IefLwxbO3e_kFTMk") },
