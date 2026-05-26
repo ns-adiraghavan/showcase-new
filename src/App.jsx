@@ -24,7 +24,7 @@ const THUMBNAILS = {
     "Infographics": "/thumbnails/design/Infographics.jpg",
     "PPT": "/thumbnails/design/PPT.jpg",
     "Report Designs": "/thumbnails/design/Report design.jpg",
-    "Event Based Designs": "/thumbnails/design/Event based assets.jpg",
+    "Event Based Assets": "/thumbnails/design/Event based assets.jpg",
     "Print Publications": "/thumbnails/design/Print publications.jpg",
     "Web Banners": "/thumbnails/design/web-banner.jpg",
   },
@@ -81,7 +81,7 @@ const NS = {
 const CATS = [
   { id: "content", num: "01", label: "Content",         color: NS.blue,     tag: "Editorial",   blurb: "Whitepaper | Blogs | PoV | eBooks | Emailers | Case Studies | Brochures | Scripts" },
   { id: "gtm",     num: "02", label: "Insights",        color: NS.blueSoft, tag: "Strategy",    blurb: "GTM | Competitive & Account Intelligence | Brand & Consumer Insights | AI Readiness" },
-  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Infographics | PPT | Reports | Banners | Events Creatives | Print Publications" },
+  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Infographics | PPT | Report | Banners | Events Creatives | Print Publications" },
   { id: "videos",  num: "04", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Motion Graphics | Stock Footage | Reels & Shorts | Podcasts | Training | Animation" },
   { id: "social",  num: "05", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Static Posts | GIFs | Teasers | Memes | Carousels | Corporate Comics" },
 ];
@@ -320,7 +320,7 @@ const CURATED = {
       { title: "Web Banner: Designed to Flatter", desc: "Apparel web banner with conversion-focused messaging — body-positive campaign for a women's fashion brand.", industry: "retail", ...driveFile("1SmHljDO6prjYJmMTIardcCv62GfR-cfZ") },
       { title: "Web Banner: The Dress You Will Love Forever", desc: "Fashion banner for an evergreen product line — emotional copy with visual storytelling for a retail apparel brand.", industry: "retail", ...driveFile("1pFrWSJGVIDoeLVuQowmCpOhoP8isUeU4") },
     ],
-    "Event Based Designs": [
+    "Event Based Assets": [
       { title: "Standee: Hi-Tech Industry Event", desc: "Large-format pull-up standee design for a hi-tech trade event — brand identity applied to print at scale.", industry: "tech", ...driveFile("1eNfZ-Ev3nF5-HZSVA2aG6GdiA98sR59Z") },
     ],
     "Print Publications": [
@@ -1122,7 +1122,7 @@ const MOCK_BY_TYPE = {
   "Web Page": WebPageMock,
   "PPT / Deck": PPTMock, "PPT": PPTMock, "Deck": PPTMock,
   "Infographic": InfographicMock, "Infographics": InfographicMock,
-  "Event Based Designs": EventMock,
+  "Event Based Assets": EventMock,
   "Web Banners": BannerMock,
   "Print Publications": PrintMock,
   "Motion Graphics": MotionMock, "Motion Graphics with Character Animation": MotionMock,
@@ -1627,6 +1627,7 @@ function SectionBanner({ cat, mobile }) {
       maxWidth: 1160,
       margin: "0 auto",
       padding: "0 clamp(20px,4vw,44px)",
+      overflow: "hidden",
     }}>
       <div style={{
         borderLeft: `1px solid ${NS.rule}`,
@@ -1656,12 +1657,13 @@ function SectionBanner({ cat, mobile }) {
           <p style={{
             marginTop: 8,
             color: NS.inkSoft,
-            fontSize: "clamp(10px, 1.1vw, 14px)",
+            fontSize: mobile ? 13 : "clamp(10px, 1.1vw, 14px)",
             maxWidth: "100%",
             lineHeight: 1.55,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "clip",
+            whiteSpace: mobile ? "normal" : "nowrap",
+            overflow: mobile ? "visible" : "hidden",
+            wordBreak: "keep-all",
+            overflowWrap: "normal",
           }}>{cat.blurb}</p>
         </div>
         <div style={{
