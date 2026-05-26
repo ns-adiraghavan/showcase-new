@@ -27,6 +27,7 @@ const THUMBNAILS = {
     "Event Based Assets": "/thumbnails/design/Event based assets.jpg",
     "eBooks": "/thumbnails/design/ebooks.jpg",
     "Print Publications": "/thumbnails/design/Print publications.jpg",
+    "Web Banners": "/thumbnails/design/web-banner.jpg",
   },
   videos: {
     "Motion Graphics": "/thumbnails/video/Motion graphics.jpg",
@@ -82,7 +83,7 @@ const CATS = [
   { id: "design",  num: "02", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Layouts, reports, banners" },
   { id: "videos",  num: "03", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Explainers, training, reels" },
   { id: "social",  num: "04", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Posts, carousels, campaigns" },
-  { id: "gtm",     num: "05", label: "Insights",         color: NS.blueSoft, tag: "Strategy",    blurb: "Go-to-market studies & playbooks" },
+  { id: "gtm",     num: "05", label: "Insights",         color: NS.blueSoft, tag: "Strategy",    blurb: "Case Studies and Sample Reports" },
 ];
 
 const CAT_BY_ID = Object.fromEntries(CATS.map(c => [c.id, c]));
@@ -202,6 +203,7 @@ const CURATED = {
     "Case Study": [
       { title: "Terra Helps Scottish Compressed Air Specialist Standardise H&S", desc: "4-page case study on how a compressed air company achieved supply chain compliance and H&S certification.", industry: "mfg", ...driveFile("18mcP0jQts8BWgKbZwJiSUwHD0OHR9L6h") },
       { title: "French Oil & Gas Major Enables Real-Time Business Flow Observability", desc: "Case study on deploying iControl to eliminate manual monitoring gaps and proactively flag pipeline outages.", industry: "mfg", ...driveFile("1B2KCM9XCBvo9GG-IXBhepgHWtyGHPa1A") },
+      { title: "Oil & Gas — Operational Intelligence Case Study", desc: "Detailed case study on real-time business flow observability for a major French oil and gas operator — full delivery narrative with outcomes.", industry: "mfg", ...driveFile("1g2ISgHiZB9WTh4frL5M5J7UrPf_utDj5") },
       { title: "Europe's Largest Airport Improves Operational Efficiency with IoT", desc: "Smart bin monitoring, check-in desk occupancy sensing, and water management at a 44M-passenger airport.", industry: "tech", ...driveFile("1agrcgo_D7Bo5FyjMZ7qbwd8eEX0StdP7") },
       { title: "Digital Transformation: Consumer Goods Case Study", desc: "Delivering immersive consumer experiences across 850+ brand touchpoints in 58 locales.", industry: "retail", ...driveFile("1sRxqlFbCSZn2fZtQs36XBTmUrDbhB_zD") },
       { title: "Workday HR-IT Governance: A Case Study", desc: "Case study on implementing Workday for HR-IT governance — streamlining people operations, payroll compliance, and workforce analytics.", industry: "tech", ...driveFile("1xQdr1fSfxl-FCftHy5CRloUxpAscAwJe") },
@@ -240,6 +242,10 @@ const CURATED = {
       { title: "eBrochure: Azure Apps Modernisation", desc: "Digital brochure on cloud application modernisation with Azure — migration pathways, service models, and ROI scenarios.", industry: "tech", ...driveFile("1uC9eFnu_eShnupbo3zpDflUaYKq55NLg") },
       { title: "Datasheet: Key Management Services", desc: "Technical datasheet on enterprise key management — encryption standards, compliance coverage, and integration architecture.", industry: "tech", ...driveFile("1QYG0c5zpw0QJ9-9_Wi3ufb9O7aWIFxFQ") },
       { title: "Report: Emerging Trends in Blockchain and Finance", desc: "Research brochure on blockchain applications in financial services — DeFi, CBDC, cross-border payments, and regulatory landscape.", industry: "bfsi", ...driveFile("1KbP0wy1jLSF5DTN00bFgvIDtzz6-NAfD") },
+      { title: "Survey Report: Finance & Management Reporting", desc: "Research survey report on enterprise finance and management reporting practices — benchmarks, tooling, and process maturity across organisations.", industry: "bfsi", ...driveFile("1597R2c7j2uozhcZyrlTvVSuea5tkhW7X") },
+      { title: "Survey Report: Finance Data & Analytics", desc: "Research survey report on the state of finance data and analytics — maturity assessment, key challenges, and technology adoption insights.", industry: "bfsi", ...driveFile("1EiGBG_7uXdLd8lRpgXfryMV-I2DZoUAs") },
+      { title: "SlideShare: Multi-Modal Insurance", desc: "SlideShare-format presentation on multi-modal insurance delivery models — consumer trends, channel mix, and digital-first distribution.", industry: "bfsi", ...driveFile("15O5QlCaDiJLjm6VYQ1ldk7o7RiFk91JO") },
+      { title: "PPT Template: Event Design", desc: "Branded PowerPoint event template design — layout versatility demonstrated across agenda, speaker, and data slides.", industry: "tech", ...driveFile("15UeBuvKK4Nxi-4Ia6SfQzcPLo6c5aQKx") },
     ],
   },
   design: {
@@ -302,8 +308,17 @@ const CURATED = {
       { title: "Web Banner: Robust Connectivity for Fleet Management", desc: "Digital web banner for a telecom connectivity solution targeting fleet operators — bold headline with clear CTA.", industry: "telecom", ...driveFile("187HBFR9ct1P9HRqAThNk0P-aVdC_7w8h") },
       { title: "Web Banner: Navigating IoT Connectivity Challenges", desc: "Banner for an IoT connectivity platform — industry insight messaging designed for enterprise tech audiences.", industry: "tech", ...driveFile("1fvZ3KkILb0cf-SeoP3OoQLyWRJBtuTdd") },
       { title: "Web Banner: Borderless Global Connectivity for Automobiles", desc: "Automotive connectivity web banner highlighting cross-border network coverage for connected vehicle platforms.", industry: "auto", ...driveFile("1ymv9SOJqgx8O2Z_9eFuP-m8Ye19N8_HM") },
-      { title: "Web Banner: Hyperconnected Ecosystem", desc: "Web banner for a telecom/IoT brand promoting a hyperconnected enterprise ecosystem narrative.", industry: "telecom", ...driveFile("1wbcLn1aaK2HgGo_TTGkswi7Gs4lAFlQM") },
+      { title: "Web Banner: Hyperconnected Ecosystem (Variant A)", desc: "Web banner for a telecom/IoT brand promoting a hyperconnected enterprise ecosystem narrative.", industry: "telecom", ...driveFile("1wbcLn1aaK2HgGo_TTGkswi7Gs4lAFlQM") },
+      { title: "Web Banner: Hyperconnected Ecosystem (Variant B)", desc: "Alternate web banner design for a telecom/IoT brand promoting a hyperconnected enterprise ecosystem narrative.", industry: "telecom", ...driveFile("1JpMdbAOLy6kooaxueMsi0FnG-Q3gWBBm") },
       { title: "Web Banner: Emailer Design Options", desc: "Multi-format banner and emailer design set demonstrating layout versatility across digital touchpoints.", industry: "tech", ...driveFile("1Ko5epJ-1hwuXwtBemAyujCmATK3kuhHR") },
+      { title: "Web Banner: Industry 4.0 with 5G", desc: "Web banner promoting a 5G-enabled Industry 4.0 solution — bold industrial messaging for manufacturing and tech audiences.", industry: "telecom", ...driveFile("1JMscXv_OSgOuEfurX0IPQvu_tjEfUoO-") },
+      { title: "Web Banner: Sustainability Meet Your Goals", desc: "Corporate sustainability web banner with bold ESG messaging designed for enterprise brand campaigns.", industry: "mfg", ...driveFile("1b2Y24aivxOKUe1Fp8qrqVM-eAQLei-Db") },
+      { title: "Web Banner: ABC Building a Better Future Together", desc: "Brand web banner with partnership and CSR messaging for a manufacturing or tech enterprise client.", industry: "mfg", ...driveFile("1OGAlKztu23UZwRbN2XHlUEVEnvtj35my") },
+      { title: "Web Banner: Unified Platform for Vehicle Management", desc: "Automotive sector web banner promoting a unified fleet management platform — clean design with strong CTA.", industry: "auto", ...driveFile("1oTk9SrCO3c1niH7eh_TiFP4TM60i78d0") },
+      { title: "Web Banner: Style on the Go (Retail)", desc: "Retail-focused digital banner for a lifestyle/fashion brand — product-first creative with promotional messaging.", industry: "retail", ...driveFile("1_-2ZH5BTzoukQ4wdHgzxBjDkTp7nxEUF") },
+      { title: "Web Banner: Fashion Knitted Tank Top", desc: "Fashion retail banner showcasing a summer essentials campaign — clean product visual with aspirational copy.", industry: "retail", ...driveFile("1eM4C5bJN8gTv-vRH4OA7unLZdqc05Ofv") },
+      { title: "Web Banner: Designed to Flatter", desc: "Apparel web banner with conversion-focused messaging — body-positive campaign for a women's fashion brand.", industry: "retail", ...driveFile("1SmHljDO6prjYJmMTIardcCv62GfR-cfZ") },
+      { title: "Web Banner: The Dress You Will Love Forever", desc: "Fashion banner for an evergreen product line — emotional copy with visual storytelling for a retail apparel brand.", industry: "retail", ...driveFile("1pFrWSJGVIDoeLVuQowmCpOhoP8isUeU4") },
     ],
     "Event Based Assets": [
       { title: "Standee: Hi-Tech Industry Event", desc: "Large-format pull-up standee design for a hi-tech trade event — brand identity applied to print at scale.", industry: "tech", ...driveFile("1eNfZ-Ev3nF5-HZSVA2aG6GdiA98sR59Z") },
@@ -370,6 +385,13 @@ const CURATED = {
       { title: "Social Creative: Step Into Digital Resilience", desc: "Branded social static for a cybersecurity or digital transformation brand — bold visual with resilience and innovation messaging.", industry: "tech", ...driveFile("1atRfclRSrlAMFuRRi9xu9cAD77XAl579") },
       { title: "Social Creative: Digital Engineering in Financial Services", desc: "Targeted social post for a digital engineering brand — financial services industry focus with strong B2B messaging.", industry: "bfsi", ...driveFile("1_ZUS_hZ2f6yeIG03VEa1JrRvmVSeqe6f") },
       { title: "Social Creative: Seeking a Smart Solution for Transition", desc: "Branded social post on digital transition — designed for enterprise tech or consulting brand LinkedIn campaigns.", industry: "tech", ...driveFile("1wwVnHxZmBGxcBMPFwso4zxz2aUvIGGMQ") },
+      { title: "Social Creative: Hiring Dictionary — Java", desc: "Tech brand static post showcasing software hiring glossary content — engaging educational format for LinkedIn.", industry: "tech", ...driveFile("1pizR3L_6ogG2n3myZnJE8ORFVr2K2cV-") },
+      { title: "Social Creative: Cannabis Awareness (A)", desc: "Health-sector social static on cannabis legalisation awareness — clean editorial design for regulated industry brands.", industry: "health", ...driveFile("1ekZYernICcRojvwSQYRlX4JBF0BXBF9w") },
+      { title: "Social Creative: Cannabis Awareness (B)", desc: "Health-sector social static on cannabis legalisation — bold visual treatment for regulated healthcare brand social channels.", industry: "health", ...driveFile("1gypUOyOpgd-u7KCYfN216sKluC48nnE7") },
+      { title: "Social Creative: Diwali Campaign", desc: "Festive social media creative for a Diwali brand campaign — vibrant visual identity with celebratory messaging.", industry: "retail", ...driveFile("1Ipskh--H7Wv7S_enkiMkP81-43rXExZZ") },
+      { title: "Social Creative: Data Management Journey", desc: "Branded static social post for a data management platform — strong enterprise messaging with clean B2B visual design.", industry: "tech", ...driveFile("1haGDVxWNFOZnb8SdwOGPZQK9kArUJu6j") },
+      { title: "Social Creative: All the Expertise You Need", desc: "Brand awareness static post highlighting service breadth and expertise — clean professional design for B2B LinkedIn.", industry: "tech", ...driveFile("1edSk9TVThVPZHCQHqnLsO1tLrs-Qgyyg") },
+      { title: "Social Creative: Customer Success — eAuction Platform", desc: "Client success story static post for an eAuction platform — impact-led messaging with B2B social creative format.", industry: "tech", ...driveFile("1pFc2_rMHtENvFOHNYgAqE82nf0hKwdDr") },
     ],
     "GIFs": [
       { title: "GIF: Think Digital Transformation — Award Campaign", desc: "Looping animated GIF for a digital transformation award campaign — kinetic type, social-optimised.", industry: "tech", ...driveFile("1xvJlPDQdga9mIdaYPf0QklBTdYR8zrD0") },
@@ -380,6 +402,10 @@ const CURATED = {
       { title: "GIF: Tech Award Campaign", desc: "Branded GIF for a technology award campaign — animated reveal with bold brand identity.", industry: "tech", ...driveFile("1ZRnstcoCXBT3l05WjeWMYU8luYvbp_6i") },
       { title: "GIF: Survey Promotional — Research Panel", desc: "Animated promotional GIF for a market research survey campaign — clear incentive messaging and CTA for panel recruitment.", industry: "tech", ...driveFile("1DtU84M3YcblOr2LWxd2mgxwZ953PxsRY") },
       { title: "GIF: Body Cream Features & Benefits", desc: "Animated product GIF showcasing body cream features and benefits — smooth motion design for retail and beauty brand social channels.", industry: "retail", ...driveFile("1LW2KeQWvB8GGp7pfRiM0cnfgjMiKkOEm") },
+      { title: "GIF: Training & Skills Development", desc: "Animated GIF promoting training and skills development programmes — motion-graphic design for enterprise HR and L&D social channels.", industry: "tech", ...driveFile("1hmYFtnpW2p_16nEt10RbfhkQ7GXBshJm") },
+      { title: "GIF: Survey Promotional — Korean Market", desc: "Localised animated promotional GIF for a market research survey in Korea — culturally adapted design for panel recruitment.", industry: "tech", ...driveFile("1tV3WO_yeW6Vmwz0BLhyJejcRGcOXExxg") },
+      { title: "GIF: Survey Promotional — Incentive Campaign", desc: "Animated promotional GIF for a survey incentive campaign — clear offer messaging with motion-graphic CTA.", industry: "tech", ...driveFile("1JALLhF_pHaRmloBUK6gTIKobDBTXIh74") },
+      { title: "GIF: COVID-19 Survey Promotion", desc: "Animated GIF promoting a COVID-19 research survey — urgent campaign messaging with motion design for social and digital distribution.", industry: "health", ...driveFile("1-Hgyx3kDubj2hHk4cTJQtfP7TeAqtshE") },
     ],
     "Teasers": [
       { title: "Video Teaser: Perspectives Volume", desc: "15-second social teaser driving views to a thought leadership content series — fast cuts with branded typography.", industry: "tech", ...driveFile("1PaTvYixFwW7u7rH1AaF2mLURYobn0bFN") },
@@ -405,14 +431,16 @@ const CURATED = {
   },
   gtm: {
     "Industry Analysis": [
+      // ── Telecommunication ──
+      { title: "ISP Market Landscape Study", desc: "Market assessment and landscape study of the ISP ecosystem, regulatory frameworks, and key players across Nigeria and DRC to support strategic market entry decisions.", industry: "telecom", ...driveFile("1UcAgLoyYIWWv-KxXFLp9qkxHt_4Or96T") },
       // ── BFSI ──
       { title: "Enabling Growth Strategies for Cross-border Digital Payment Platforms in China", desc: "Industry analysis examining regulatory frameworks, competitive dynamics, and strategic growth levers for digital payment platforms expanding into China.", industry: "bfsi", ...driveFile("1I4v4ieFuClmru2jUSHfqRLi1sEUbjAD1") },
       { title: "Leave Management Solutions in the US Group Benefits Market", desc: "Market analysis of leave management solution providers and adoption trends within the US employer-sponsored group benefits landscape.", industry: "bfsi", ...driveFile("1qCnNYi_EropVruwNPyrB6TrwnyMTYnCf") },
       // ── Technology & Software ──
-      { title: "Cloud Adoption and Innovation Impact Assessment in South Africa and UAE", desc: "Industry analysis of cloud adoption maturity, innovation impact, and market opportunity across South Africa and the UAE.", industry: "tech", ...driveFile("1x-oE6Nxr3d_I-wfdUGcfYOTzQfO_c8FH") },
-      { title: "IoT Application Trends in Seaports and Airports", desc: "Landscape study of IoT deployment patterns and emerging use cases across seaport and airport infrastructure globally.", industry: "tech", ...driveFile("1xEEmufT_csgUIIqD16Qzl_KTyQ2wCEZ7") },
-      { title: "Video Codec Technology Landscape Study", desc: "Technology landscape analysis of video codec standards, competitive positioning, and adoption trends across media and streaming verticals.", industry: "tech", ...driveFile("1IEC8o3xWa4SXILBaATS5hl0jXjOPyEbJ") },
-      { title: "Captive Market Assessment and ICT Opportunity Analysis in India", desc: "Market assessment of India's captive centre ecosystem and ICT investment opportunities across key verticals.", industry: "tech", ...driveFile("1EWWod3hotQIQx66_PuNvjSP3qZrQWTVO") },
+      { title: "Cloud Adoption and Innovation Impact Assessment in South Africa and UAE", desc: "Industry analysis of cloud adoption maturity, innovation impact, and market opportunity across South Africa and the UAE.", industry: "tech", ...driveFile("1g5_zqjDOmT5U9xn6p_QVuQph0sRkevX-") },
+      { title: "IoT Application Trends in Seaports and Airports", desc: "Landscape study of IoT deployment patterns and emerging use cases across seaport and airport infrastructure globally.", industry: "tech", ...driveFile("1FicDoEbaf4MxOAh_bKBuMju0P-CYxTKK") },
+      { title: "Video Codec Technology Landscape Study", desc: "Technology landscape analysis of video codec standards, competitive positioning, and adoption trends across media and streaming verticals.", industry: "tech", ...driveFile("1y7xeXtTR8SVqF1LthEFAhuw_PC7K1c8W") },
+      { title: "Captive Market Assessment and ICT Opportunity Analysis in India", desc: "Market assessment of India's captive centre ecosystem and ICT investment opportunities across key verticals.", industry: "tech", ...driveFile("1XlxWFTP6-KiiJeAJ7j_t15rVRWIddsQj") },
       // ── Retail & Ecommerce ──
       { title: "Market Assessment – Identified Category Growth Potential of Natural & Organic Hair Care", desc: "Category-level market assessment identifying growth opportunity pockets within the natural and organic hair care segment.", industry: "retail", ...driveFile("1tFNxKAhP8dNrR6gCK5GYu7WCp-4AdgZp") },
       // ── Healthcare ──
@@ -423,58 +451,35 @@ const CURATED = {
       { title: "Market Assessment Study on the Indian Plastic Circular Economy", desc: "Industry analysis examining circular economy maturity, regulatory tailwinds, and opportunity landscape within India's plastics sector.", industry: "mfg", ...driveFile("1k3pQg3-SHt_TRvSSq2WWiNix7anXbQ3s") },
     ],
     "GTM": [
-      {
-        title: "ISP Market Landscape Study",
-        desc: "Market assessment and landscape study of the ISP ecosystem, regulatory frameworks, and key players across Nigeria and DRC to support strategic market entry decisions.",
-        industry: "telecom",
-        ...driveFile("1UcAgLoyYIWWv-KxXFLp9qkxHt_4Or96T"),
-      },
-      {
-        title: "Enterprise Connectivity Service Delivery Process for Indian SMEs",
-        desc: "Competitors' benchmarking study analyzing end-to-end service delivery workflows to pinpoint timeline delays and optimize B2B telecom process efficiency.",
-        industry: "telecom",
-        ...driveFile("1S0d_-frzWrQJJ3pZ2ub8OSiYfkUGlq6I"),
-      },
-      {
-        title: "AI Adoption in Telecom Sector",
-        desc: "Global benchmarking study evaluating regional AI maturity, high-impact operator use cases, and capability gaps to sharpen GTM positioning.",
-        industry: "telecom",
-        ...driveFile("10abj6wddyAktZvwSu3mt-S-kYHDh0fWU"),
-      },
       // ── BFSI ──
       { title: "GTM Strategy for a Personal Finance Management App", desc: "Go-to-market strategy defining target segments, channel mix, and launch sequencing for a personal finance management application.", industry: "bfsi", ...driveFile("1RaM068TLcSBPsf5pXviB7qotsd-M75BZ") },
       // ── Technology & Software ──
-      { title: "GTM Strategy for a Cloud-Based Cybersecurity Startup", desc: "Go-to-market strategy covering ICP definition, competitive positioning, and sales motion design for a cloud-native cybersecurity startup.", industry: "tech", ...driveFile("1_d453HbhK36dZz5mJGzYbpQzLaIRV4mA") },
-      { title: "GTM Strategy and Roadmap Building for a Tech Giant", desc: "Comprehensive GTM strategy and execution roadmap developed for a large technology company entering a new product category.", industry: "tech", ...driveFile("1_6Nb1kJih9sxT-1xAK1ZduqLstzQOrJG") },
-      { title: "Smart Mobility Ecosystem Mapping and Opportunity Analysis Across Global Cities", desc: "GTM opportunity analysis mapping smart mobility players, investment flows, and entry points across major global urban markets.", industry: "tech", ...driveFile("1VpIqq8osbGThXLy7X_eGnNSSczYdQQ2d") },
-      { title: "Global Esports Market Landscape Study", desc: "GTM landscape study of the global esports market — audience segmentation, monetisation models, and brand partnership opportunities.", industry: "tech", ...driveFile("1bDI_Zh2YckU933TtzDTjNJ7LXDS8dszP") },
-      { title: "Impact of Campaign Effectiveness for a Business Management Software Provider", desc: "GTM effectiveness assessment measuring campaign reach, lead quality, and pipeline contribution for a B2B software provider.", industry: "tech", ...driveFile("12-mXJyFmbdEy3S4IpfS-wFKoC06zfTL6") },
+      { title: "GTM Strategy for a Cloud-Based Cybersecurity Startup", desc: "Go-to-market strategy covering ICP definition, competitive positioning, and sales motion design for a cloud-native cybersecurity startup.", industry: "tech", ...driveFile("1qEOel1i99XvYgqo_1w0TsKvcOK2LAXzz") },
+      { title: "GTM Strategy and Roadmap Building for a Tech Giant", desc: "Comprehensive GTM strategy and execution roadmap developed for a large technology company entering a new product category.", industry: "tech", ...driveFile("1GqIZ33r4uTZfEDAi6FmCat5Aq7N_vDSU") },
+      { title: "Smart Mobility Ecosystem Mapping and Opportunity Analysis Across Global Cities", desc: "GTM opportunity analysis mapping smart mobility players, investment flows, and entry points across major global urban markets.", industry: "tech", ...driveFile("1E4BPBJF7ej-OUE7DAx51DldTFskURgz1") },
+      { title: "Global Esports Market Landscape Study", desc: "GTM landscape study of the global esports market — audience segmentation, monetisation models, and brand partnership opportunities.", industry: "tech", ...driveFile("1D-Fy02_vpfPn5N8WTw7grDsF_TLnVnNU") },
+      { title: "Impact of Campaign Effectiveness for a Business Management Software Provider", desc: "GTM effectiveness assessment measuring campaign reach, lead quality, and pipeline contribution for a B2B software provider.", industry: "tech", ...driveFile("1MJ8ebm75KnrWoxG98KkB0K8M0yVniy3W") },
       // ── Telecom ──
       { title: "IT and Emerging Tech Strategy for a Telecom Ecosystem Player", desc: "GTM and technology strategy study mapping IT modernisation priorities and emerging tech adoption pathways for a telecom ecosystem participant.", industry: "telecom", ...driveFile("1v_67mRI-JCVZj_R8q--7DVGU58FuQBSA") },
       { title: "GTM Strategy for a Telecom Network Provider", desc: "End-to-end go-to-market strategy for a telecom network provider — segment prioritisation, value proposition design, and channel activation.", industry: "telecom", ...driveFile("1gfWwabDqZAcfH5uXSkVjP4JQkoxUMk6n") },
       // ── Automotive ──
       { title: "Market Assessment for Automotive Semi-active Suspension Technologies", desc: "GTM market assessment sizing the semi-active suspension technology opportunity — OEM adoption trends, key suppliers, and regional demand signals.", industry: "auto", ...driveFile("1ntsutMQ_mA5KTicJ5-h7ez2sOzTyYi1c") },
-      // ── Retail & E-commerce ──
-      { title: "Concept Testing – Identified 3 Winning Flavor Territories for Cider Category Innovation Pipeline", desc: "Concept testing study identifying three winning flavor territories to inform cider category innovation pipeline and product development priorities.", industry: "retail", ...driveFile("1suEViXrD19MVg8qJXmWo-XbYuhkEM-hJ") },
-      { title: "Concept Testing – Product Innovation Recommendations for a QSR Chain", desc: "Concept testing and product innovation recommendations developed for a quick-service restaurant chain to guide menu expansion strategy.", industry: "retail", ...driveFile("1IM-SYWOE58legIiTah0m9CUby18X7B8f") },
-      { title: "GTM & Market Potential for Flavored Milk and Convergence Drinks", desc: "Go-to-market strategy and market potential analysis for flavored milk and convergence drink categories — sizing, positioning, and channel strategy.", industry: "retail", ...driveFile("1dTowHuT15m6NhJOxniB5yHxastVd4MRL") },
-      { title: "Concept Testing & Opportunity Assessment for Health Food Supplement and Dispenser Concept", desc: "Concept testing and market opportunity assessment for a health food supplement product and dispenser concept — consumer validation and go-to-market readiness.", industry: "retail", ...driveFile("1oHPqdb2m6C-9WkuvvIgaRUEbqYz4Yri7") },
       // ── Healthcare ──
       { title: "Product Concept Testing for CT and MRI Products", desc: "GTM concept validation study for diagnostic imaging products — clinician feedback, feature prioritisation, and market readiness assessment.", industry: "health", ...driveFile("1zT8HVukcH-ltFkI9BxFbwjxKuUXb78P4") },
       { title: "Go-to-Market Study for iPSC Stem Cell Therapies", desc: "GTM feasibility study for iPSC-derived stem cell therapies — regulatory pathway mapping, payer landscape, and commercialisation strategy.", industry: "health", ...driveFile("15mnFz9OQofDnNnDk7HzHEt57lFYvcNfm") },
       { title: "Go-to-Market Strategy for a Company Using AI to Revolutionise Drug Development", desc: "GTM strategy for an AI-powered drug development platform — target market identification, partnership model, and competitive differentiation.", industry: "health", ...driveFile("1yxjFqhdT3dqx7ov-DN0GsRX3D1o0uNXp") },
     ],
     "Competitive Intelligence & Benchmarking": [
+      // ── Telecommunication ──
+      { title: "Enterprise Connectivity Service Delivery Process for Indian SMEs", desc: "Competitors' benchmarking study analyzing end-to-end service delivery workflows to pinpoint timeline delays and optimize B2B telecom process efficiency.", industry: "telecom", ...driveFile("1S0d_-frzWrQJJ3pZ2ub8OSiYfkUGlq6I") },
       // ── BFSI ──
       { title: "Airline Loyalty Programs & Co-branded Credit Cards Benchmarking", desc: "Competitive benchmarking of airline co-branded credit card programmes — rewards architecture, partner economics, and cardholder acquisition strategies.", industry: "bfsi", ...driveFile("1VQHt0UZy5Q2FLhNmShUtLmIV_Ek3gswW") },
       { title: "Comparative Review of Cashback Credit Cards in the US", desc: "Side-by-side competitive analysis of leading cashback credit card products in the US market — earn rates, redemption mechanics, and fee structures.", industry: "bfsi", ...driveFile("1CEqhA2kNvql4_x0fDqn6_7eHp5ABic7d") },
       { title: "Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc: "Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry: "bfsi", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
       // ── Technology & Software ──
-      { title: "Pricing Analysis for a Cloud-Based SCM Provider", desc: "Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry: "tech", ...driveFile("19XFI2m0RxC4wJxviP17jRpj_LHdCHu8X") },
+      { title: "Pricing Analysis for a Cloud-Based SCM Provider", desc: "Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry: "tech", ...driveFile("1gacDDjgWvbl0QK2RbnU_4DugwqNyHbx4") },
       // ── Retail & Ecommerce ──
       { title: "Brand & Product Performance Tracking Study for Cleaning Wipes", desc: "Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry: "retail", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
-      // ── Retail & E-commerce ──
-      { title: "Competitive Landscape Analysis for Juice Market", desc: "Competitive intelligence study on the juice market — player mapping, product portfolio benchmarking, and white space identification.", industry: "retail", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
       // ── Manufacturing ──
       { title: "Middle East Portable Air Compressor and Hand-held Tool Market and Rivalry", desc: "Competitive intelligence on the Middle East market for portable air compressors and handheld power tools — rival capabilities and channel strategies.", industry: "mfg", ...driveFile("1-uxzXR3sRlI3sFlnvTeX2mWHRDRA0nvn") },
     ],
@@ -483,7 +488,7 @@ const CURATED = {
       { title: "Consumer Payments Trend Analysis & Declining Retail Credit Card Relevance", desc: "Consumer research study on shifting payment preferences and the declining relevance of retail credit cards among digitally-native consumers.", industry: "bfsi", ...driveFile("1I8YddJ9L5MH2H06H3kqHiFyqVWHAX_wr") },
       { title: "Engagement Perception for an International Bank", desc: "Primary research study measuring customer engagement perceptions, satisfaction drivers, and loyalty indicators for an international retail bank.", industry: "bfsi", ...driveFile("1ev3tJR6XmJ6DH3UuXBYZUQyZ-ScIdHHn") },
       // ── Technology & Software ──
-      { title: "Customer Insights for 3D Printing Business", desc: "Consumer and B2B buyer research for a 3D printing company — use case discovery, willingness-to-pay, and purchase decision mapping.", industry: "tech", ...driveFile("1UVXsMr4jX7QLEAPrQ-kwpYR8IUPqrVER") },
+      { title: "Customer Insights for 3D Printing Business", desc: "Consumer and B2B buyer research for a 3D printing company — use case discovery, willingness-to-pay, and purchase decision mapping.", industry: "tech", ...driveFile("1iLEn4x245oWUvQVqvVFKxmyLSlZZ7Eve") },
       // ── Retail & Ecommerce ──
       { title: "Home Fitness Brand Performance Assessment", desc: "Consumer research assessing brand health, product satisfaction, and category engagement for a home fitness brand post-pandemic.", industry: "retail", ...driveFile("146-JQwHnYONXWyug_4TWuwZ6Wj2CHHEt") },
       { title: "Brand Track & Product Evaluation – Improved Product Satisfaction After Redesign", desc: "Brand tracking study documenting measurable improvements in consumer product satisfaction following a packaging and formula redesign.", industry: "retail", ...driveFile("1JYPFSSrSn7KFEoPhMPV1tJogEhoRqZOu") },
@@ -494,11 +499,6 @@ const CURATED = {
       { title: "Consumer Behavior Analysis for an E-Commerce Company", desc: "Shopper behaviour research for an e-commerce platform — basket composition, session patterns, and churn risk indicators.", industry: "retail", ...driveFile("1xruBD853cPSImWzfEowVhkW5pxZGI--l") },
       { title: "User & Attitude Study for a Major Apparel Retailer", desc: "Quantitative U&A study for a large apparel retailer — category engagement, brand repertoire, and shopper attitude segmentation.", industry: "retail", ...driveFile("1AbS25qU1SW5BqdZ4bXI6E_eDAhmv1Kk2") },
       { title: "Consumer Persona Development – Enabled Growth in Online Sales for Premium Ayurvedic Skincare", desc: "Consumer persona development work that informed digital strategy and enabled online sales growth for a premium Ayurvedic skincare brand.", industry: "retail", ...driveFile("1L00_jh7PlE_2ewW5aip7W2wUZWHwgEyW") },
-      // ── Retail & E-commerce (Food & Beverage) ──
-      { title: "Customer Segmentation for a Premium Organic Food Retailer", desc: "Consumer segmentation study for a premium organic food retailer — shopper profiles, purchase motivations, and channel preferences.", industry: "retail", ...driveFile("1vaaUxA_aNScU5-UXXLbuzWxiLrcnmNQw") },
-      { title: "Consumer Insights & Trend Mapping – Women Adult Beverages", desc: "Consumer insights and trend mapping study focused on women in the adult beverages category — usage occasions, brand perceptions, and emerging preferences.", industry: "retail", ...driveFile("1dc0qoUHqf4L_dF4gyOne-jgQ1vEHS8wS") },
-      { title: "Product Positioning Study for Medjool Dates", desc: "Consumer research study on product positioning for Medjool dates — taste perceptions, health associations, and competitive placement strategy.", industry: "retail", ...driveFile("1mZXYuwWBepz0g30gsGqMRGrbpUM6Rev8") },
-      { title: "Brand Perception and Consumer Behavior Study for Premium Alcohol", desc: "Brand perception and consumer behaviour study for a premium alcohol brand — purchase drivers, lifestyle associations, and loyalty indicators.", industry: "retail", ...driveFile("1DirIDYg7Im9lEiYaBVQooA0wCB4vKWf8") },
       // ── Automotive ──
       { title: "Customer Perceptions on In-vehicle Health & Wellness Study", desc: "Primary research study on driver and passenger perceptions of in-vehicle health and wellness features — willingness-to-pay and feature prioritisation.", industry: "auto", ...driveFile("1yOAxwrMmQg6wOCrax1GELD9mfs7WUUun") },
       // ── Healthcare ──
@@ -507,8 +507,10 @@ const CURATED = {
       { title: "Customer Satisfaction for Petrochemical Products", desc: "B2B customer satisfaction research for a petrochemical products portfolio — supplier NPS, product performance ratings, and renewal intent.", industry: "mfg", ...driveFile("1vbaayaNvuL45j9SJTwKt77hh5PjBdD2I") },
     ],
     "AI Readiness Assessment": [
+      // ── Telecommunication ──
+      { title: "AI Adoption in Telecom Sector", desc: "Global benchmarking study evaluating regional AI maturity, high-impact operator use cases, and capability gaps to sharpen GTM positioning.", industry: "telecom", ...driveFile("10abj6wddyAktZvwSu3mt-S-kYHDh0fWU") },
       // ── Technology & Software ──
-      { title: "AI Ethics and Transparency Impact Assessment", desc: "Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry: "tech", ...driveFile("1ggtWzS3z5NkYro1QefJMT5oW9upYzPYV") },
+      { title: "AI Ethics and Transparency Impact Assessment", desc: "Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry: "tech", ...driveFile("1wXRTTI0H3xtez_0dEqNHssda7-eXHdsY") },
     ],
   },
 };
@@ -1647,7 +1649,7 @@ function SectionBanner({ cat, mobile }) {
           fontSize: 11,
           color: NS.muted,
           letterSpacing: "0.08em",
-        }}>{cat.num} / 04</div>
+        }}></div>
       </div>
     </div>
   );
@@ -1948,13 +1950,21 @@ function SamplePicker({ payload, onClose, onPick }) {
   const samples = (CURATED[category] && CURATED[category][format]) || [];
   useEscClose(onClose);
 
-  const ordered = industry
-    ? [...samples].sort((a, b) => {
-        const am = a.industry === industry ? 0 : 1;
-        const bm = b.industry === industry ? 0 : 1;
-        return am - bm;
-      })
-    : samples;
+  const INDUSTRY_ORDER = ["telecom", "tech"];
+  const ordered = [...samples].sort((a, b) => {
+    const ai = INDUSTRY_ORDER.indexOf(a.industry);
+    const bi = INDUSTRY_ORDER.indexOf(b.industry);
+    // If filtering by industry, prioritize matching
+    if (industry) {
+      const am = a.industry === industry ? -1 : 0;
+      const bm = b.industry === industry ? -1 : 0;
+      if (am !== bm) return am - bm;
+    }
+    // Then sort by priority order (telecom, tech first)
+    const aOrder = ai === -1 ? 999 : ai;
+    const bOrder = bi === -1 ? 999 : bi;
+    return aOrder - bOrder;
+  });
 
   return (
     <div onClick={onClose} style={{
@@ -2438,3 +2448,4 @@ function GlobalStyles() {
 }
 
 export default NetscribesShowcase;
+
