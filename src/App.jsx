@@ -16,7 +16,7 @@ const THUMBNAILS = {
   gtm: {
     "GTM": "/thumbnails/GTM/GTM.jpg",
     "Industry Analysis": "/thumbnails/GTM/Industry Analysis.jpg",
-    "Competitive Benchmarking and Account Intelligence": "/thumbnails/GTM/Competitive Intelligence & Benchmarking.jpg",
+    "Competitive Benchmarking & Account Intelligence": "/thumbnails/GTM/Competitive Intelligence & Benchmarking.jpg",
     "Consumer Research": "/thumbnails/GTM/Consumer Research.jpg",
     "AI Readiness Assessment": "/thumbnails/GTM/AI Readiness Assessment.jpg",
   },
@@ -473,7 +473,7 @@ const CURATED = {
       { title: "Concept Testing & Opportunity Assessment: Health Food Supplement Dispenser", desc: "GTM study evaluating concept appeal and market opportunity for a health food supplement and dispenser innovation.", industry: "retail", ...driveFile("1oHPqdb2m6C-9WkuvvIgaRUEbqYz4Yri7") },
       { title: "Go-to-Market Strategy for a Company Using AI to Revolutionise Drug Development", desc: "GTM strategy for an AI-powered drug development platform — target market identification, partnership model, and competitive differentiation.", industry: "health", ...driveFile("1yxjFqhdT3dqx7ov-DN0GsRX3D1o0uNXp") },
     ],
-    "Competitive Benchmarking and Account Intelligence": [
+    "Competitive Benchmarking & Account Intelligence": [
       // ── Telecommunication ──
       { title: "Enterprise Connectivity Service Delivery Process for Indian SMEs", desc: "Competitors' benchmarking study analyzing end-to-end service delivery workflows to pinpoint timeline delays and optimize B2B telecom process efficiency.", industry: "telecom", ...driveFile("1S0d_-frzWrQJJ3pZ2ub8OSiYfkUGlq6I") },
       // ── BFSI ──
@@ -482,10 +482,10 @@ const CURATED = {
       { title: "Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc: "Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry: "bfsi", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
       // ── Technology & Software ──
       { title: "Pricing Analysis for a Cloud-Based SCM Provider", desc: "Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry: "tech", ...driveFile("19XFI2m0RxC4wJxviP17jRpj_LHdCHu8X") },
-      { title: "Account Intelligence Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
-      { title: "Account Intelligence Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
-      { title: "Account Intelligence Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
-      { title: "Account Intelligence Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
+      { title: "Account Intelligence Sample Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
+      { title: "Account Intelligence Sample Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
+      { title: "Account Intelligence Sample Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
+      { title: "Account Intelligence Sample Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
       // ── Retail & Ecommerce ──
       { title: "Brand & Product Performance Tracking Study for Cleaning Wipes", desc: "Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry: "retail", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
       { title: "Competitive Landscape Analysis for Juice Market", desc: "Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry: "retail", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
@@ -2097,11 +2097,11 @@ function SampleViewer({ payload, onClose, onBack }) {
   return (
     <div onClick={onClose} style={{
       position: "fixed", inset: 0, zIndex: 1000,
-      background: "rgba(15, 27, 39, 0.55)",
-      backdropFilter: "blur(8px)",
-      WebkitBackdropFilter: "blur(8px)",
+      background: mobile ? "rgba(15, 27, 39, 0.7)" : "rgba(15, 27, 39, 0.55)",
+      backdropFilter: mobile ? "none" : "blur(8px)",
+      WebkitBackdropFilter: mobile ? "none" : "blur(8px)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      padding: mobile ? 12 : 20,
+      padding: mobile ? 0 : 20,
       animation: "ns-fade .25s ease",
       overflow: "auto",
     }}>
@@ -2122,7 +2122,10 @@ function SampleViewer({ payload, onClose, onBack }) {
         <div style={{
           flex: mobile ? "none" : 1,
           width: mobile ? "100%" : "auto",
-          height: mobile ? "55vw" : "auto",
+          height: mobile
+            ? (category === "videos" ? "56vw" : "55vw")
+            : "auto",
+          aspectRatio: mobile && category === "videos" ? "16/9" : undefined,
           minHeight: mobile ? undefined : "75vh",
           background: NS.paperDeep,
           position: "relative",
