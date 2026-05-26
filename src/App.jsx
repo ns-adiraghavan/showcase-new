@@ -37,7 +37,7 @@ const THUMBNAILS = {
     "Podcast / Thought Leadership Interviews": "/thumbnails/video/Podcast.jpg",
     "Training Videos": "/thumbnails/video/Training videos.jpg",
     "Whiteboard Animations": "/thumbnails/video/Whiteboard animation.jpg",
-    "Character Animations": "/thumbnails/design/web-banner.jpg",
+    "Character Animations": "/thumbnails/video/Character animation.jpg",
   },
   social: {
     "Static Posts": "/thumbnails/social/Static post.jpg",
