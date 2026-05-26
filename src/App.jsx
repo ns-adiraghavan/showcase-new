@@ -81,7 +81,7 @@ const NS = {
 const CATS = [
   { id: "content", num: "01", label: "Content",         color: NS.blue,     tag: "Editorial",   blurb: "Whitepaper | Blogs | PoV | eBooks | Emailers | Case Studies | Brochures | Scripts" },
   { id: "gtm",     num: "02", label: "Insights",        color: NS.blueSoft, tag: "Strategy",    blurb: "GTM | Competitive & Account Intelligence | Brand & Consumer Insights | AI Readiness" },
-  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Infographics | PPT | Report | Banners | Events Creatives | Print Publications" },
+  { id: "design",  num: "03", label: "Design",          color: NS.red,      tag: "Visual",      blurb: "Infographics | PPT | Reports | Banners | Events Creatives | Print Publications" },
   { id: "videos",  num: "04", label: "Videos",          color: NS.redDeep,  tag: "Motion",      blurb: "Motion Graphics | Stock Footage | Reels & Shorts | Podcasts | Training | Animation" },
   { id: "social",  num: "05", label: "Social Media",    color: NS.blueDeep, tag: "Distributed", blurb: "Static Posts | GIFs | Teasers | Memes | Carousels | Corporate Comics" },
 ];
