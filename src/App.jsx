@@ -1491,9 +1491,8 @@ function HeroTile({ cat, index, onClick, mobile }) {
           color: hov ? "rgba(255,255,255,0.85)" : NS.inkSoft,
           lineHeight: 1.5,
           maxWidth: 320,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
+          wordBreak: "keep-all",
+          overflowWrap: "normal",
           transition: "color 0.32s",
         }}>{cat.blurb}</p>
       </div>
@@ -1657,12 +1656,12 @@ function SectionBanner({ cat, mobile }) {
           <p style={{
             marginTop: 8,
             color: NS.inkSoft,
-            fontSize: 14,
+            fontSize: "clamp(10px, 1.1vw, 14px)",
             maxWidth: "100%",
             lineHeight: 1.55,
             whiteSpace: "nowrap",
             overflow: "hidden",
-            textOverflow: "ellipsis",
+            textOverflow: "clip",
           }}>{cat.blurb}</p>
         </div>
         <div style={{
