@@ -364,8 +364,8 @@ const CURATED = {
     ],
     "Character Animations": [
       // ── BFSI ──
-      { title: "Capital Data Management", desc: "Character-animated product vignette showcasing a capital planning solution — clean 2D character narrative with branded motion.", industry: "bfsi", ...driveFile("1H2KKg5D-iK1tVhAZd1c7-C9TmtCP5pVy") },
-      { title: "Advanced Data Module", desc: "Character-animated product vignette for a capital planning platform — storyline-driven 2D animation with enterprise messaging.", industry: "bfsi", ...driveFile("1nRBYnTc4MshqWDcOD5pLQ5Rws4jMm2Ma") },
+      { title: "Product Vignette: Capital Plan (Sanitize)", desc: "Character-animated product vignette showcasing a capital planning solution — clean 2D character narrative with branded motion.", industry: "bfsi", ...driveFile("1H2KKg5D-iK1tVhAZd1c7-C9TmtCP5pVy") },
+      { title: "Product Vignette: Capital Plan (Sanitization)", desc: "Character-animated product vignette for a capital planning platform — storyline-driven 2D animation with enterprise messaging.", industry: "bfsi", ...driveFile("1nRBYnTc4MshqWDcOD5pLQ5Rws4jMm2Ma") },
       // ── Technology & Software ──
       { title: "2D Animation: Sales Enablement EHS", desc: "Character-driven 2D animated video for an EHS sales enablement programme — scenario-based storytelling with clear compliance messaging.", industry: "tech", ...driveFile("1JCffGKj0RMMsYug0MztRa2VhNCqhtoLP") },
       { title: "Facilities Downtime Management System", desc: "Character animation explaining a facilities downtime management system — workflow visualisation with 2D animated personas.", industry: "tech", ...driveFile("12YZskM1jq1acWiP6IefLwxbO3e_kFTMk") },
@@ -2099,11 +2099,76 @@ function SampleViewer({ payload, onClose, onBack }) {
   const mobile = useMedia("(max-width: 720px)");
   const portrait = useMedia("(max-width: 720px) and (orientation: portrait)");
   const isVideo = category === "videos" || category === "social";
-  // On mobile portrait with a video, we render the modal as a full-screen
-  // scroll container: video pinned at top at true 16:9, info pane scrollable below.
+  // On mobile portrait + video: go full-screen so Drive's native player
+  // controls render naturally without any clipping or container tricks.
   const mobileVideoPortrait = mobile && portrait && isVideo;
   useEscClose(onClose);
 
+  // ── Full-screen video mode for mobile portrait ──────────────────
+  if (mobileVideoPortrait) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 1000,
+        background: "#000",
+        display: "flex", flexDirection: "column",
+        fontFamily: "'DM Sans', sans-serif",
+        animation: "ns-fade .2s ease",
+      }}>
+        {/* iframe fills the whole screen — Drive controls render at the
+            very bottom edge with nothing clipping them */}
+        <iframe
+          src={sample.driveEmbedUrl}
+          title={sample.title}
+          style={{ flex: 1, width: "100%", border: "none", display: "block" }}
+          allow="autoplay"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+        />
+        {/* Thin info strip below the video */}
+        <div style={{
+          background: NS.surface,
+          borderTop: `3px solid ${accent}`,
+          padding: "12px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          flexShrink: 0,
+        }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <span style={{
+              fontSize: 9, fontWeight: 700, letterSpacing: "0.16em",
+              textTransform: "uppercase", color: "#fff",
+              background: accent, padding: "2px 7px", borderRadius: 2,
+            }}>{format}</span>
+            <p style={{
+              fontSize: 13, fontWeight: 500, color: NS.ink,
+              marginTop: 5, whiteSpace: "nowrap",
+              overflow: "hidden", textOverflow: "ellipsis",
+            }}>{sample.title}</p>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+            {sample.driveViewUrl && (
+              <a href={sample.driveViewUrl} target="_blank" rel="noopener noreferrer"
+                style={{
+                  background: NS.blue, color: "#fff",
+                  fontSize: 12, fontWeight: 600,
+                  padding: "8px 14px", borderRadius: 2,
+                  textDecoration: "none", whiteSpace: "nowrap",
+                }}>Open ↗</a>
+            )}
+            <button onClick={onClose} aria-label="Close" style={{
+              background: NS.surface, border: `1px solid ${NS.rule}`,
+              color: NS.ink, cursor: "pointer", borderRadius: "50%",
+              width: 34, height: 34, fontSize: 18,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>×</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Standard modal (desktop + landscape) ───────────────────────
   return (
     <div onClick={onClose} style={{
       position: "fixed", inset: 0, zIndex: 1000,
@@ -2111,7 +2176,7 @@ function SampleViewer({ payload, onClose, onBack }) {
       backdropFilter: mobile ? "none" : "blur(8px)",
       WebkitBackdropFilter: mobile ? "none" : "blur(8px)",
       display: "flex",
-      alignItems: mobileVideoPortrait ? "flex-start" : "center",
+      alignItems: "center",
       justifyContent: "center",
       padding: mobile ? 0 : 20,
       animation: "ns-fade .25s ease",
@@ -2120,8 +2185,8 @@ function SampleViewer({ payload, onClose, onBack }) {
     }}>
       <div onClick={e => e.stopPropagation()} style={{
         width: "100%", maxWidth: 1200,
-        height: mobileVideoPortrait ? "auto" : (mobile ? "auto" : "fit-content"),
-        maxHeight: mobileVideoPortrait ? "none" : "calc(100vh - 40px)",
+        height: mobile ? "auto" : "fit-content",
+        maxHeight: "calc(100vh - 40px)",
         background: NS.surface,
         border: `1px solid ${NS.rule}`,
         borderTop: `3px solid ${accent}`,
@@ -2129,24 +2194,15 @@ function SampleViewer({ payload, onClose, onBack }) {
         flexDirection: mobile ? "column" : "row",
         animation: "ns-pop .35s cubic-bezier(0.22,1,0.36,1)",
         boxShadow: "0 30px 80px rgba(15,27,39,0.18)",
-        overflow: mobileVideoPortrait ? "visible" : "hidden",
+        overflow: "hidden",
         fontFamily: "'DM Sans', sans-serif",
       }}>
         {/* ── Video / embed area ── */}
-        {/* Drive's player renders a ~60px controls bar inside the iframe.
-            On mobile portrait we add DRIVE_CTRL_PX of extra height so those
-            controls are never clipped. The iframe height is reduced by the
-            same amount so the video content stays perfectly 16:9. */}
         <div style={{
           flex: mobile ? "none" : 1,
           width: mobile ? "100%" : "auto",
-          height: mobileVideoPortrait
-            ? 0
-            : (mobile ? (isVideo ? "56.25vw" : "55vw") : "auto"),
-          paddingBottom: mobileVideoPortrait
-            ? `calc(56.25% + ${DRIVE_CTRL_PX}px)`
-            : undefined,
-          aspectRatio: (mobile && !mobileVideoPortrait && isVideo) ? "16/9" : undefined,
+          height: mobile ? (isVideo ? "56.25vw" : "55vw") : "auto",
+          aspectRatio: mobile && isVideo ? "16/9" : undefined,
           minHeight: mobile ? undefined : "75vh",
           background: NS.paperDeep,
           position: "relative",
@@ -2158,15 +2214,7 @@ function SampleViewer({ payload, onClose, onBack }) {
               <iframe
                 src={sample.driveEmbedUrl}
                 title={sample.title}
-                style={{
-                  position: "absolute",
-                  top: 0, left: 0,
-                  width: "100%",
-                  height: mobileVideoPortrait
-                    ? `calc(100% - ${DRIVE_CTRL_PX}px)`
-                    : "100%",
-                  border: "none", display: "block",
-                }}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
                 allow="autoplay"
                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
               />
