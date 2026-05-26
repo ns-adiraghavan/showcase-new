@@ -88,6 +88,11 @@ const CATS = [
 
 const CAT_BY_ID = Object.fromEntries(CATS.map(c => [c.id, c]));
 
+// Height of Google Drive's native player controls bar (px).
+// The video container is padded by this amount so the controls
+// are never clipped by overflow:hidden on mobile portrait.
+const DRIVE_CTRL_PX = 60;
+
 const INDUSTRIES = [
   { id: "tech",    label: "Technology & Software" },
   { id: "auto",    label: "Automotive" },
@@ -2128,15 +2133,19 @@ function SampleViewer({ payload, onClose, onBack }) {
         fontFamily: "'DM Sans', sans-serif",
       }}>
         {/* ── Video / embed area ── */}
+        {/* Drive's player renders a ~60px controls bar inside the iframe.
+            On mobile portrait we add DRIVE_CTRL_PX of extra height so those
+            controls are never clipped. The iframe height is reduced by the
+            same amount so the video content stays perfectly 16:9. */}
         <div style={{
           flex: mobile ? "none" : 1,
           width: mobile ? "100%" : "auto",
-          // Portrait video: use true 16:9 aspect ratio via padding trick so the
-          // iframe gets its full natural height before the info pane appears below.
           height: mobileVideoPortrait
             ? 0
             : (mobile ? (isVideo ? "56.25vw" : "55vw") : "auto"),
-          paddingBottom: mobileVideoPortrait ? "56.25%" : undefined,
+          paddingBottom: mobileVideoPortrait
+            ? `calc(56.25% + ${DRIVE_CTRL_PX}px)`
+            : undefined,
           aspectRatio: (mobile && !mobileVideoPortrait && isVideo) ? "16/9" : undefined,
           minHeight: mobile ? undefined : "75vh",
           background: NS.paperDeep,
@@ -2149,7 +2158,15 @@ function SampleViewer({ payload, onClose, onBack }) {
               <iframe
                 src={sample.driveEmbedUrl}
                 title={sample.title}
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
+                style={{
+                  position: "absolute",
+                  top: 0, left: 0,
+                  width: "100%",
+                  height: mobileVideoPortrait
+                    ? `calc(100% - ${DRIVE_CTRL_PX}px)`
+                    : "100%",
+                  border: "none", display: "block",
+                }}
                 allow="autoplay"
                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
               />
