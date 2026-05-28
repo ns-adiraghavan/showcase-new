@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import logoSrc from "./assets/netscribes-logo.png";
 
-// ─── Tokens ───────────────────────────────────────────────────────
+// ─── Tokens — exact match to main showcase ────────────────────────
 const NS = {
   blue:      "#005F86",
   blueDeep:  "#003A52",
@@ -14,6 +14,7 @@ const NS = {
   inkSoft:   "#3C4754",
   muted:     "#6E7884",
   rule:      "rgba(0,95,134,0.13)",
+  ruleSoft:  "rgba(0,95,134,0.07)",
 };
 
 const ACCENT = {
@@ -23,8 +24,6 @@ const ACCENT = {
   forest: "#2D6B4A",
   steel:  "#1E4976",
   rust:   "#A03020",
-  slate:  "#3B5068",
-  indigo: "#2D3A8C",
 };
 
 function driveFile(id) {
@@ -99,602 +98,612 @@ const RESEARCH_DATA = [
   { title:"AI Ethics and Transparency Impact Assessment", desc:"Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry:"tech", studyType:"AI Readiness", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1ggtWzS3z5NkYro1QefJMT5oW9upYzPYV") },
 ];
 
-// ─── Sector + study config ────────────────────────────────────────
 const SECTORS = [
-  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  blurb:"EV transition, OEM strategy, ADAS and mobility.", spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
-  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, blurb:"Fintech, embedded finance, payments and insurance.", spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
-  { id:"tech",    label:"Technology & Software", accent:NS.blue,       blurb:"SaaS, AI adoption, cloud strategy and B2B GTM.", spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
-  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   blurb:"5G, spectrum strategy and enterprise connectivity.", spotlight:"AI Adoption in Telecom Sector" },
-  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   blurb:"Pharma CI, digital health and payer dynamics.", spotlight:"Product Concept Testing for CT and MRI Products" },
-  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  blurb:"Industry 4.0, automation ROI and supply chains.", spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
-  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        blurb:"Shopper insights, brand equity and channel strategy.", spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
-  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   blurb:"Consumer preference, concept testing, beverage trends.", spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
+  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  tag:"Mobility",   blurb:"EV transition, OEM strategy, ADAS and mobility.", spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
+  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, tag:"Finance",    blurb:"Fintech, embedded finance, payments and insurance.", spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
+  { id:"tech",    label:"Technology & Software", accent:NS.blue,       tag:"Technology", blurb:"SaaS, AI adoption, cloud strategy and B2B GTM.", spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
+  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   tag:"Telecom",    blurb:"5G, spectrum strategy and enterprise connectivity.", spotlight:"AI Adoption in Telecom Sector" },
+  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   tag:"Health",     blurb:"Pharma CI, digital health and payer dynamics.", spotlight:"Product Concept Testing for CT and MRI Products" },
+  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  tag:"Industrial", blurb:"Industry 4.0, automation ROI and supply chains.", spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
+  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        tag:"Retail",     blurb:"Shopper insights, brand equity and channel strategy.", spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
+  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   tag:"F&B",        blurb:"Consumer preference, concept testing and beverage trends.", spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
 ];
 
 const STUDY_TYPES = [
-  { id:"Industry Analysis",      label:"Industry Analysis",       accent:NS.blue,        desc:"Market sizing, landscape studies, TAM modelling and demand forecasting." },
-  { id:"GTM",                    label:"GTM Strategy",            accent:ACCENT.teal,    desc:"Market entry, beachhead identification, channel selection and launch sequencing." },
-  { id:"Competitive Benchmarking", label:"Competitive Benchmarking", accent:ACCENT.amber, desc:"Rival profiling, win/loss analysis, account intelligence and pricing research." },
-  { id:"Consumer Research",      label:"Consumer Research",       accent:ACCENT.plum,    desc:"Attitude & usage studies, segmentation, needs mapping and brand tracking." },
-  { id:"AI Readiness",           label:"AI Readiness Assessment", accent:ACCENT.forest,  desc:"Enterprise maturity benchmarking across data, talent, infrastructure and deployment readiness." },
+  { id:"Industry Analysis",        label:"Industry Analysis",       accent:NS.blue,        tag:"Landscape", desc:"Market sizing, landscape studies, TAM modelling and demand forecasting." },
+  { id:"GTM",                      label:"GTM Strategy",            accent:ACCENT.teal,    tag:"GTM",       desc:"Market entry, beachhead identification, channel selection and launch sequencing." },
+  { id:"Competitive Benchmarking", label:"Competitive Benchmarking",accent:ACCENT.amber,   tag:"Intel",     desc:"Rival profiling, win/loss analysis, account intelligence and pricing research." },
+  { id:"Consumer Research",        label:"Consumer Research",       accent:ACCENT.plum,    tag:"Consumer",  desc:"Attitude & usage studies, segmentation, needs mapping and brand tracking." },
+  { id:"AI Readiness",             label:"AI Readiness Assessment", accent:ACCENT.forest,  tag:"AI",        desc:"Enterprise maturity benchmarking across data, talent, infrastructure and deployment." },
 ];
 
-// Map dot positions — equirectangular 800×400
 const GEO_DOTS = [
-  { id:"North America",  label:"North America",       cx:175, cy:148 },
-  { id:"Europe",         label:"Europe",              cx:455, cy:120 },
-  { id:"Middle East",    label:"Middle East",         cx:537, cy:188 },
-  { id:"Africa",         label:"Africa",              cx:462, cy:255 },
-  { id:"South Asia",     label:"South Asia",          cx:600, cy:200 },
-  { id:"Southeast Asia", label:"Southeast Asia",      cx:660, cy:242 },
-  { id:"Asia",           label:"East & Central Asia", cx:672, cy:152 },
-  { id:"Global",         label:"Global / Multi-region", cx:320, cy:305 },
+  { id:"North America",  label:"North America",          cx:175, cy:148 },
+  { id:"Europe",         label:"Europe",                 cx:455, cy:120 },
+  { id:"Middle East",    label:"Middle East",            cx:537, cy:188 },
+  { id:"Africa",         label:"Africa",                 cx:462, cy:255 },
+  { id:"South Asia",     label:"South Asia",             cx:600, cy:200 },
+  { id:"Southeast Asia", label:"Southeast Asia",         cx:660, cy:242 },
+  { id:"Asia",           label:"East & Central Asia",    cx:672, cy:152 },
+  { id:"Global",         label:"Global / Multi-region",  cx:320, cy:305 },
 ];
 
 // ─── Hooks ────────────────────────────────────────────────────────
-function useFadeIn(threshold = 0.07) {
+function useFadeIn(t=0.07) {
   const ref = useRef(null);
-  const [vis, setVis] = useState(false);
+  const [v, sv] = useState(false);
   useEffect(() => {
     const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } }, { threshold });
-    obs.observe(el);
-    return () => obs.disconnect();
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { sv(true); o.disconnect(); } }, { threshold:t });
+    o.observe(el); return () => o.disconnect();
   }, []);
-  return [ref, vis];
+  return [ref, v];
 }
-
 function useLock(on) {
-  useEffect(() => {
-    document.body.style.overflow = on ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [on]);
+  useEffect(() => { document.body.style.overflow = on ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [on]);
 }
 
-// ─── Case viewer modal ────────────────────────────────────────────
+// ─── Case Viewer ──────────────────────────────────────────────────
 function CaseViewer({ item, accent, onClose }) {
   useLock(true);
-  useEffect(() => {
-    const h = e => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
-  }, [onClose]);
-
+  useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
+  const sector = SECTORS.find(s=>s.id===item.industry);
+  const study  = STUDY_TYPES.find(s=>s.id===item.studyType);
   return (
-    <div onClick={e => e.target === e.currentTarget && onClose()} style={{
-      position:"fixed", inset:0, zIndex:4000,
-      background:"rgba(15,27,39,0.72)", backdropFilter:"blur(8px)",
-      display:"flex", alignItems:"center", justifyContent:"center", padding:24,
-    }}>
-      <div style={{
-        background:NS.surface, borderRadius:3, width:"100%", maxWidth:900,
-        maxHeight:"92vh", display:"flex", flexDirection:"column",
-        boxShadow:"0 40px 100px rgba(0,0,0,0.32)",
-        animation:"rc-pop 0.22s ease both",
-      }}>
-        {/* Coloured top bar */}
-        <div style={{ height:4, background: accent || NS.blue, borderRadius:"3px 3px 0 0", flexShrink:0 }} />
-        {/* Header */}
-        <div style={{ padding:"20px 24px 16px", borderBottom:`1px solid ${NS.rule}`, flexShrink:0 }}>
-          <div style={{ display:"flex", alignItems:"flex-start", gap:16, justifyContent:"space-between" }}>
+    <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:4000,background:"rgba(15,27,39,0.75)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
+      <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:900,maxHeight:"92vh",display:"flex",flexDirection:"column",boxShadow:"0 40px 100px rgba(0,0,0,0.35)",animation:"rc-pop 0.2s ease both" }}>
+        <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
+        <div style={{ padding:"20px 24px 16px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0 }}>
+          <div style={{ display:"flex",alignItems:"flex-start",gap:16,justifyContent:"space-between" }}>
             <div style={{ flex:1 }}>
-              <div style={{ display:"flex", gap:6, marginBottom:9, flexWrap:"wrap" }}>
-                <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.11em", textTransform:"uppercase", color: accent || NS.blue, background:`${accent || NS.blue}14`, padding:"2px 7px", borderRadius:2 }}>{item.studyType}</span>
-                {item.primaryType && <span style={{ fontSize:10, fontWeight:600, letterSpacing:"0.1em", textTransform:"uppercase", color:NS.muted, background:NS.paperDeep, padding:"2px 7px", borderRadius:2 }}>{item.primaryType}</span>}
-                {item.geo.slice(0,3).map(g => <span key={g} style={{ fontSize:10, fontWeight:500, color:NS.muted, background:NS.paperDeep, padding:"2px 7px", borderRadius:2 }}>{g}</span>)}
+              <div style={{ display:"flex",gap:6,marginBottom:9,flexWrap:"wrap" }}>
+                {study   && <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.11em",textTransform:"uppercase",color:accent,background:`${accent}14`,padding:"2px 7px",borderRadius:2 }}>{study.label}</span>}
+                {sector  && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{sector.label}</span>}
+                {item.primaryType && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{item.primaryType}</span>}
+                {item.geo.slice(0,3).map(g=><span key={g} style={{ fontSize:10,fontWeight:500,color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{g}</span>)}
               </div>
-              <h2 style={{ fontSize:"clamp(15px,1.8vw,19px)", fontWeight:600, color:NS.ink, lineHeight:1.35, letterSpacing:"-0.01em" }}>{item.title}</h2>
-              <p style={{ marginTop:5, fontSize:13, color:NS.muted, lineHeight:1.6, maxWidth:600 }}>{item.desc}</p>
-              <a href={item.driveViewUrl} target="_blank" rel="noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:5, marginTop:9, fontSize:11, fontWeight:700, letterSpacing:"0.07em", textTransform:"uppercase", color: accent || NS.blue, textDecoration:"none" }}>Open in Drive ↗</a>
+              <h2 style={{ fontSize:"clamp(15px,1.8vw,19px)",fontWeight:700,color:NS.ink,lineHeight:1.35,letterSpacing:"-0.015em" }}>{item.title}</h2>
+              <p style={{ marginTop:5,fontSize:13,color:NS.muted,lineHeight:1.6,maxWidth:600 }}>{item.desc}</p>
+              <a href={item.driveViewUrl} target="_blank" rel="noreferrer" style={{ display:"inline-flex",alignItems:"center",gap:5,marginTop:9,fontSize:11,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",color:accent,textDecoration:"none" }}>Open in Drive ↗</a>
             </div>
-            <button onClick={onClose} style={{ flexShrink:0, width:30, height:30, borderRadius:"50%", border:`1px solid ${NS.rule}`, background:NS.paper, cursor:"pointer", fontSize:14, color:NS.muted, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'DM Sans', sans-serif" }}>✕</button>
+            <button onClick={onClose} style={{ flexShrink:0,width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif" }}>✕</button>
           </div>
         </div>
-        <div style={{ flex:1, minHeight:0, background:NS.paperDeep }}>
-          <iframe src={item.driveEmbedUrl} title={item.title} style={{ width:"100%", height:"100%", minHeight:460, border:"none" }} allow="autoplay" />
+        <div style={{ flex:1,minHeight:0,background:NS.paperDeep }}>
+          <iframe src={item.driveEmbedUrl} title={item.title} style={{ width:"100%",height:"100%",minHeight:460,border:"none" }} allow="autoplay" />
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Items popup ──────────────────────────────────────────────────
+// ─── Items Popup — uneven masonry tile layout ─────────────────────
 function ItemsPopup({ title, accent, items, onClose, onOpen }) {
   useLock(true);
-  useEffect(() => {
-    const h = e => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
-  }, [onClose]);
+  useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
+
+  // Distribute items into 2 columns, alternating tall/short to create uneven feel
+  const col1 = items.filter((_,i)=>i%2===0);
+  const col2 = items.filter((_,i)=>i%2===1);
 
   return (
-    <div onClick={e => e.target === e.currentTarget && onClose()} style={{
-      position:"fixed", inset:0, zIndex:3000,
-      background:"rgba(15,27,39,0.62)", backdropFilter:"blur(6px)",
-      display:"flex", alignItems:"center", justifyContent:"center", padding:24,
-    }}>
-      <div style={{
-        background:NS.surface, borderRadius:3, width:"100%", maxWidth:640,
-        maxHeight:"88vh", display:"flex", flexDirection:"column",
-        boxShadow:"0 32px 80px rgba(0,0,0,0.24)",
-        animation:"rc-pop 0.2s ease both",
-      }}>
-        <div style={{ height:4, background: accent, borderRadius:"3px 3px 0 0", flexShrink:0 }} />
-        <div style={{ padding:"22px 24px 16px", borderBottom:`1px solid ${NS.rule}`, flexShrink:0 }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <h3 style={{ fontSize:20, fontWeight:700, color:NS.ink, letterSpacing:"-0.02em" }}>{title}</h3>
-            <button onClick={onClose} style={{ width:30, height:30, borderRadius:"50%", border:`1px solid ${NS.rule}`, background:NS.paper, cursor:"pointer", fontSize:14, color:NS.muted, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'DM Sans', sans-serif", flexShrink:0 }}>✕</button>
-          </div>
+    <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:3000,background:"rgba(15,27,39,0.65)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
+      <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:780,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
+        {/* Accent header bar */}
+        <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
+        <div style={{ padding:"20px 24px 14px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between" }}>
+          <h3 style={{ fontSize:20,fontWeight:700,color:NS.ink,letterSpacing:"-0.02em" }}>{title}</h3>
+          <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
         </div>
-        <div style={{ flex:1, overflowY:"auto", padding:"12px 16px 24px" }}>
-          {items.map((item, i) => (
-            <div key={i} onClick={() => onOpen(item)}
-              style={{ padding:"13px 14px", borderRadius:2, border:`1px solid ${NS.rule}`, marginBottom:7, cursor:"pointer", transition:"all 0.14s" }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = accent; e.currentTarget.style.background = `${accent}08`; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = NS.rule; e.currentTarget.style.background = "transparent"; }}
-            >
-              <div style={{ display:"flex", justifyContent:"space-between", gap:10 }}>
-                <p style={{ fontSize:13.5, fontWeight:600, color:NS.ink, lineHeight:1.4, marginBottom:3 }}>{item.title}</p>
-                <span style={{ color:accent, fontSize:15, flexShrink:0 }}>↗</span>
-              </div>
-              <p style={{ fontSize:12, color:NS.muted, lineHeight:1.5 }}>{item.desc}</p>
-              <div style={{ marginTop:8, display:"flex", gap:5, flexWrap:"wrap" }}>
-                {item.primaryType && <span style={{ fontSize:10, padding:"1px 6px", borderRadius:2, background:`${accent}12`, color:accent, fontWeight:700, letterSpacing:"0.06em" }}>{item.primaryType}</span>}
-                {item.geo.slice(0,3).map(g => <span key={g} style={{ fontSize:10, padding:"1px 6px", borderRadius:2, background:NS.paperDeep, color:NS.muted }}>{g}</span>)}
-              </div>
+        {/* Masonry-style 2-col grid */}
+        <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
+          <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
+            <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
+              {col1.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===0} onOpen={onOpen} />)}
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── SECTION 01 — Sectors ─────────────────────────────────────────
-// 4×2 card grid. Each card is solid accent background on hover,
-// shows a spotlight case study title as a preview snippet.
-function SectorSection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-  return (
-    <section id="sectors" ref={ref} style={{
-      maxWidth:1160, margin:"0 auto", padding:"64px clamp(20px,4vw,56px)",
-      opacity:vis?1:0, transform:vis?"none":"translateY(16px)", transition:"opacity 0.45s ease, transform 0.45s ease",
-    }}>
-      <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:32, flexWrap:"wrap", gap:12 }}>
-        <div>
-          <p style={EYEBROW(NS.blue)}>01 — Sector Expertise</p>
-          <h2 style={H2}>Industries we know deeply</h2>
-        </div>
-        <p style={{ fontSize:14, color:NS.muted, maxWidth:320, textAlign:"right", lineHeight:1.65 }}>Eight high-impact sectors. Primary and secondary depth in each.</p>
-      </div>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
-        {SECTORS.map((s, i) => <SectorCard key={s.id} sector={s} delay={i*30}
-          onClick={() => onOpen(s.label, s.accent, RESEARCH_DATA.filter(d=>d.industry===s.id))} />)}
-      </div>
-    </section>
-  );
-}
-
-function SectorCard({ sector, delay, onClick }) {
-  const [hov, setHov] = useState(false);
-  const spotlight = RESEARCH_DATA.find(d => d.title === sector.spotlight);
-
-  return (
-    <div onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        background: hov ? sector.accent : NS.surface,
-        border:`1.5px solid ${hov ? sector.accent : NS.rule}`,
-        borderRadius:3, padding:"22px 20px 18px", cursor:"pointer",
-        transition:"all 0.2s ease",
-        transform: hov ? "translateY(-3px)" : "none",
-        boxShadow: hov ? `0 12px 32px ${sector.accent}28` : "none",
-        display:"flex", flexDirection:"column", minHeight:200,
-        animationDelay:`${delay}ms`,
-      }}
-    >
-      {/* Accent top rule → switches to white on hover */}
-      <div style={{ width:28, height:2.5, background: hov ? "rgba(255,255,255,0.5)" : sector.accent, borderRadius:1, marginBottom:16, transition:"background 0.2s" }} />
-
-      <h3 style={{ fontSize:15, fontWeight:700, letterSpacing:"-0.01em", color: hov ? "#fff" : NS.ink, marginBottom:6, transition:"color 0.2s" }}>{sector.label}</h3>
-      <p style={{ fontSize:12, color: hov ? "rgba(255,255,255,0.75)" : NS.muted, lineHeight:1.55, transition:"color 0.2s", marginBottom:"auto", paddingBottom:14 }}>{sector.blurb}</p>
-
-      {/* Spotlight snippet — a teaser of one real case */}
-      {spotlight && (
-        <div style={{ borderTop:`1px solid ${hov ? "rgba(255,255,255,0.18)" : NS.rule}`, paddingTop:11, marginTop:4, transition:"border-color 0.2s" }}>
-          <p style={{ fontSize:9, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", color: hov ? "rgba(255,255,255,0.5)" : NS.muted, marginBottom:4 }}>Sample work</p>
-          <p style={{ fontSize:11, color: hov ? "rgba(255,255,255,0.88)" : NS.inkSoft, lineHeight:1.45, fontWeight:500 }}>
-            {spotlight.title.length > 60 ? spotlight.title.slice(0,58)+"…" : spotlight.title}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── SECTION 02 — Methodology ─────────────────────────────────────
-// Full-bleed darker background, 5 tiles in one row (or wraps to 3/2)
-function MethodologySection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-  return (
-    <section id="methodology" ref={ref} style={{
-      background:NS.paperDeep,
-      opacity:vis?1:0, transform:vis?"none":"translateY(16px)", transition:"opacity 0.45s ease, transform 0.45s ease",
-    }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"64px clamp(20px,4vw,56px)" }}>
-        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:32, flexWrap:"wrap", gap:12 }}>
-          <div>
-            <p style={EYEBROW(ACCENT.teal)}>02 — Research Methodology</p>
-            <h2 style={H2}>Purpose-built frameworks</h2>
+            <div style={{ display:"flex",flexDirection:"column",gap:10,marginTop:28 }}>
+              {col2.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===1} onOpen={onOpen} />)}
+            </div>
           </div>
-          <p style={{ fontSize:14, color:NS.muted, maxWidth:320, textAlign:"right", lineHeight:1.65 }}>Five distinct study types, each with a rigorous methodology and a deep sample library.</p>
-        </div>
-        {/* Single row grid — wraps naturally to 3/2 on narrow screens */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10 }}>
-          {STUDY_TYPES.map((st, i) => <MethodTile key={st.id} st={st} delay={i*40}
-            onClick={() => onOpen(st.label, st.accent, RESEARCH_DATA.filter(d=>d.studyType===st.id))} />)}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
-function MethodTile({ st, delay, onClick }) {
+function CaseTile({ item, accent, tall, onOpen }) {
   const [hov, setHov] = useState(false);
   return (
-    <div onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+    <div onClick={()=>onOpen(item)}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
       style={{
-        background: hov ? st.accent : NS.surface,
-        border:`1.5px solid ${hov ? st.accent : "transparent"}`,
-        borderRadius:3, padding:"20px 16px 16px", cursor:"pointer",
-        transition:"all 0.2s ease",
+        background: hov ? accent : NS.surface,
+        border:`1.5px solid ${hov ? accent : NS.rule}`,
+        borderRadius:3, padding: tall ? "22px 18px" : "16px 18px",
+        cursor:"pointer", transition:"all 0.18s ease",
         transform: hov ? "translateY(-2px)" : "none",
-        boxShadow: hov ? `0 8px 24px ${st.accent}22` : "0 1px 3px rgba(0,0,0,0.06)",
-        animationDelay:`${delay}ms`,
+        boxShadow: hov ? `0 8px 24px ${accent}22` : "none",
       }}
     >
-      {/* Narrow accent bar */}
-      <div style={{ width:"100%", height:2, background: hov ? "rgba(255,255,255,0.3)" : st.accent, borderRadius:1, marginBottom:14, transition:"background 0.2s" }} />
-      <h3 style={{ fontSize:13, fontWeight:700, letterSpacing:"-0.005em", color: hov ? "#fff" : NS.ink, marginBottom:7, lineHeight:1.3, transition:"color 0.2s" }}>{st.label}</h3>
-      <p style={{ fontSize:11.5, lineHeight:1.6, color: hov ? "rgba(255,255,255,0.78)" : NS.muted, transition:"color 0.2s" }}>{st.desc}</p>
-      <div style={{ marginTop:12, fontSize:11, fontWeight:700, color: hov ? "rgba(255,255,255,0.6)" : st.accent, letterSpacing:"0.04em", transition:"color 0.2s" }}>Explore →</div>
-    </div>
-  );
-}
-
-// ─── SECTION 03 — Geography ───────────────────────────────────────
-// Dark map panel, modelled after the reference image
-function GeoSection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-  const [hov, setHov] = useState(null);
-
-  const dots = GEO_DOTS.map(g => ({
-    ...g,
-    items: RESEARCH_DATA.filter(d => d.geo.includes(g.id)),
-  })).filter(g => g.items.length > 0);
-
-  return (
-    <section id="geography" ref={ref} style={{
-      opacity:vis?1:0, transform:vis?"none":"translateY(16px)", transition:"opacity 0.45s ease, transform 0.45s ease",
-    }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"64px clamp(20px,4vw,56px)" }}>
-        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:28, flexWrap:"wrap", gap:12 }}>
-          <div>
-            <p style={EYEBROW(ACCENT.teal)}>03 — Global Reach</p>
-            <h2 style={H2}>Research across every major region</h2>
-          </div>
-          <p style={{ fontSize:14, color:NS.muted, maxWidth:300, textAlign:"right", lineHeight:1.65 }}>Click any region to explore work from that geography.</p>
-        </div>
-
-        {/* Dark map container */}
-        <div style={{ background:"#0D1B27", borderRadius:4, overflow:"hidden", position:"relative" }}>
-          <WorldMap dots={dots} hov={hov} setHov={setHov}
-            onDotClick={g => onOpen(g.label, NS.blue, g.items)} />
-        </div>
-
-        {/* Region pills below map */}
-        <div style={{ display:"flex", flexWrap:"wrap", gap:7, marginTop:14 }}>
-          {dots.map(g => (
-            <button key={g.id}
-              onClick={() => onOpen(g.label, NS.blue, g.items)}
-              onMouseEnter={e => e.currentTarget.style.borderColor = NS.blue}
-              onMouseLeave={e => e.currentTarget.style.borderColor = NS.rule}
-              style={{ fontSize:12, fontWeight:500, color:NS.inkSoft, background:NS.surface, border:`1px solid ${NS.rule}`, borderRadius:2, padding:"5px 11px", cursor:"pointer", transition:"border-color 0.15s", fontFamily:"'DM Sans', sans-serif" }}>
-              {g.label}
-            </button>
-          ))}
-        </div>
+      <div style={{ display:"flex",justifyContent:"space-between",gap:8,marginBottom:tall?8:5 }}>
+        <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s" }}>{item.title}</p>
+        <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
-    </section>
-  );
-}
-
-// Dark-themed global SVG map with glowing dots — inspired by reference
-function WorldMap({ dots, hov, setHov, onDotClick }) {
-  const [tip, setTip] = useState(null);
-
-  const LAND = [
-    // North America
-    "M 68 65 L 95 58 L 130 60 L 165 55 L 195 62 L 220 70 L 248 68 L 268 75 L 278 88 L 275 105 L 258 118 L 248 138 L 238 158 L 220 175 L 198 185 L 178 178 L 160 165 L 142 152 L 128 140 L 110 130 L 95 115 L 80 100 L 68 80 Z",
-    // Greenland
-    "M 248 32 L 285 22 L 315 28 L 325 45 L 315 62 L 290 68 L 268 60 L 252 48 Z",
-    // Central America
-    "M 195 185 L 210 188 L 220 200 L 208 210 L 195 205 Z",
-    // South America
-    "M 188 200 L 218 198 L 250 208 L 268 230 L 272 262 L 260 300 L 245 332 L 225 348 L 205 338 L 190 310 L 180 278 L 178 245 L 182 218 Z",
-    // Iceland
-    "M 342 55 L 362 50 L 372 58 L 365 68 L 348 70 L 338 62 Z",
-    // UK
-    "M 388 85 L 398 80 L 408 88 L 404 100 L 394 104 L 385 96 Z",
-    // Scandinavia
-    "M 415 60 L 448 50 L 465 55 L 470 70 L 460 88 L 440 98 L 420 92 L 408 78 Z",
-    // Europe
-    "M 395 95 L 430 90 L 468 92 L 498 98 L 515 108 L 518 122 L 505 138 L 480 148 L 455 152 L 428 145 L 408 132 L 398 115 Z",
-    // Iberia
-    "M 390 118 L 410 112 L 415 128 L 405 140 L 390 138 L 383 125 Z",
-    // Russia/Eurasia
-    "M 465 48 L 560 38 L 660 40 L 720 48 L 748 62 L 755 80 L 740 98 L 700 110 L 650 118 L 600 120 L 548 118 L 510 110 L 490 98 L 470 82 Z",
-    // Central Asia
-    "M 520 108 L 580 105 L 610 112 L 608 128 L 578 135 L 540 132 L 518 122 Z",
-    // Turkey
-    "M 480 130 L 520 125 L 535 132 L 532 145 L 510 150 L 488 148 L 478 138 Z",
-    // Middle East/Arabia
-    "M 520 145 L 558 140 L 582 148 L 590 168 L 585 192 L 568 210 L 545 218 L 525 208 L 512 188 L 510 165 Z",
-    // Africa
-    "M 398 148 L 438 142 L 472 148 L 498 158 L 510 172 L 512 195 L 508 225 L 498 258 L 480 295 L 455 322 L 428 330 L 405 320 L 385 295 L 375 262 L 372 228 L 378 198 L 388 172 Z",
-    // Madagascar
-    "M 498 270 L 508 265 L 515 278 L 510 292 L 500 288 Z",
-    // Indian subcontinent
-    "M 578 135 L 618 132 L 638 142 L 642 162 L 632 188 L 612 202 L 590 200 L 575 182 L 572 158 Z",
-    // SE Asia mainland
-    "M 638 128 L 672 120 L 695 128 L 698 148 L 685 162 L 665 168 L 645 160 L 635 145 Z",
-    // SE Asia islands
-    "M 648 162 L 678 158 L 695 168 L 698 185 L 685 198 L 662 202 L 648 190 Z",
-    // Indonesia
-    "M 650 195 L 690 190 L 718 195 L 722 208 L 705 218 L 672 220 L 648 212 Z",
-    // China/East Asia
-    "M 642 88 L 698 82 L 735 88 L 748 105 L 742 125 L 718 138 L 688 145 L 658 140 L 638 128 L 635 108 Z",
-    // Japan
-    "M 732 98 L 748 88 L 758 95 L 755 110 L 742 118 L 730 112 Z",
-    // Australia
-    "M 642 258 L 695 248 L 738 255 L 758 272 L 762 300 L 752 328 L 722 342 L 688 345 L 658 332 L 638 308 L 630 280 Z",
-    // New Zealand
-    "M 758 312 L 770 305 L 778 318 L 772 335 L 760 330 Z",
-  ];
-
-  return (
-    <svg viewBox="0 0 800 390" style={{ width:"100%", height:"auto", display:"block" }}
-      onMouseLeave={() => { setHov(null); setTip(null); }}>
-      {/* Background */}
-      <rect width="800" height="390" fill="#0D1B27" />
-
-      {/* Grid lines — subtle, like reference */}
-      {[65,130,195,260,325].map(y => <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="0.8" />)}
-      {[100,200,300,400,500,600,700].map(x => <line key={x} x1={x} y1="0" x2={x} y2="390" stroke="rgba(255,255,255,0.05)" strokeWidth="0.8" />)}
-
-      {/* Land masses */}
-      {LAND.map((d, i) => (
-        <path key={i} d={d} fill="#1C3045" stroke="rgba(255,255,255,0.08)" strokeWidth="0.7" />
-      ))}
-
-      {/* Dots */}
-      {dots.map(g => {
-        const isHov = hov === g.id;
-        return (
-          <g key={g.id} style={{ cursor:"pointer" }}
-            onMouseEnter={e => { setHov(g.id); setTip({ id:g.id, x:g.cx, y:g.cy }); }}
-            onMouseLeave={() => { setHov(null); setTip(null); }}
-            onClick={() => onDotClick(g)}>
-            {/* Glow */}
-            <circle cx={g.cx} cy={g.cy} r="18" fill={isHov ? "rgba(26,138,181,0.18)" : "rgba(0,95,134,0.10)"} />
-            {/* Outer ring */}
-            <circle cx={g.cx} cy={g.cy} r={isHov ? 9 : 7} fill="none" stroke={isHov ? "#1A8AB5" : "#005F86"} strokeWidth="1.5" />
-            {/* Inner fill */}
-            <circle cx={g.cx} cy={g.cy} r={isHov ? 4.5 : 3.5} fill={isHov ? "#1A8AB5" : "#005F86"} />
-            {/* Pulse on hover */}
-            {isHov && (
-              <circle cx={g.cx} cy={g.cy} r="9" fill="none" stroke="#1A8AB5" strokeWidth="1">
-                <animate attributeName="r" from="9" to="22" dur="1.2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" from="0.6" to="0" dur="1.2s" repeatCount="indefinite" />
-              </circle>
-            )}
-          </g>
-        );
-      })}
-
-      {/* SVG tooltip */}
-      {tip && (() => {
-        const g = dots.find(d => d.id === tip.id);
-        if (!g) return null;
-        const tx = Math.min(tip.x + 14, 665);
-        const ty = Math.max(tip.y - 42, 8);
-        return (
-          <g style={{ pointerEvents:"none" }}>
-            <rect x={tx} y={ty} width={150} height={36} rx="2" fill="#1A3A52" />
-            <text x={tx+9} y={ty+14} fontSize="10" fontWeight="700" fill="#fff" fontFamily="'DM Sans', sans-serif">{g.label}</text>
-            <text x={tx+9} y={ty+27} fontSize="9" fill="rgba(255,255,255,0.55)" fontFamily="'DM Sans', sans-serif">Click to explore work</text>
-          </g>
-        );
-      })()}
-    </svg>
-  );
-}
-
-// ─── SECTION 04 — Expertise ───────────────────────────────────────
-function ExpertiseSection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-
-  const cards = [
-    { label:"B2B Research", tag:"Decision-maker intelligence", accent:NS.blue,
-      desc:"Executive interviews, expert panels, win/loss studies, buyer journey research and industrial surveys — reaching CxOs, procurement leaders and technical decision-makers across 40+ markets.",
-      items: RESEARCH_DATA.filter(d => d.primaryType === "B2B"),
-      featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
-    { label:"B2C & Consumer Research", tag:"Consumer depth", accent:ACCENT.plum,
-      desc:"Consumer surveys, ethnographic studies, focus groups, diary studies and online communities — with deep panel access across retail, FMCG, lifestyle and financial services segments.",
-      items: RESEARCH_DATA.filter(d => d.primaryType === "B2C"),
-      featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
-    { label:"Dual B2B / B2C", tag:"Mixed audience research", accent:ACCENT.forest,
-      desc:"Complex programmes combining stakeholder and end-consumer perspectives — capturing the full market picture from manufacturer to final user across diverse geographies.",
-      items: RESEARCH_DATA.filter(d => d.primaryType === null),
-      featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","Concept Testing: Cider Category Innovation Pipeline"] },
-  ];
-
-  return (
-    <section id="expertise" ref={ref} style={{
-      background:NS.paperDeep,
-      opacity:vis?1:0, transform:vis?"none":"translateY(16px)", transition:"opacity 0.45s ease, transform 0.45s ease",
-    }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"64px clamp(20px,4vw,56px) 96px" }}>
-        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:32, flexWrap:"wrap", gap:12 }}>
-          <div>
-            <p style={EYEBROW(ACCENT.forest)}>04 — Research Expertise</p>
-            <h2 style={H2}>How we engage respondents</h2>
-          </div>
-          <p style={{ fontSize:14, color:NS.muted, maxWidth:300, textAlign:"right", lineHeight:1.65 }}>First-hand intelligence structured across B2B decision-makers, consumers, and dual-audience programmes.</p>
-        </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:14 }}>
-          {cards.map((c, i) => <ExpertiseCard key={c.label} card={c} delay={i*60}
-            onClick={() => onOpen(c.label, c.accent, c.items)} />)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ExpertiseCard({ card, delay, onClick }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <div onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        background:NS.surface, borderRadius:3,
-        border:`1.5px solid ${hov ? card.accent : NS.rule}`,
-        padding:"24px 22px", cursor:"pointer",
-        transition:"all 0.2s ease",
-        transform: hov ? "translateY(-3px)" : "none",
-        boxShadow: hov ? `0 12px 32px ${card.accent}1C` : "none",
-        display:"flex", flexDirection:"column", animationDelay:`${delay}ms`,
-      }}
-    >
-      <div style={{ width: hov ? "100%" : "28px", height:2.5, background:card.accent, borderRadius:1, marginBottom:16, transition:"width 0.3s ease" }} />
-      <p style={{ fontSize:9, fontWeight:700, letterSpacing:"0.14em", textTransform:"uppercase", color:card.accent, marginBottom:7 }}>{card.tag}</p>
-      <h3 style={{ fontSize:18, fontWeight:700, color:NS.ink, letterSpacing:"-0.02em", lineHeight:1.2, marginBottom:10 }}>{card.label}</h3>
-      <p style={{ fontSize:13, color:NS.muted, lineHeight:1.65, marginBottom:18, flex:1 }}>{card.desc}</p>
-      <div style={{ borderTop:`1px solid ${NS.rule}`, paddingTop:14, marginBottom:14 }}>
-        <p style={{ fontSize:9, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", color:NS.muted, marginBottom:9 }}>Featured work</p>
-        {card.featured.map((t,i) => (
-          <div key={i} style={{ display:"flex", gap:7, alignItems:"flex-start", marginBottom:5 }}>
-            <span style={{ color:card.accent, fontSize:11, flexShrink:0, marginTop:1 }}>—</span>
-            <span style={{ fontSize:12, color:NS.inkSoft, lineHeight:1.4 }}>{t}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-        <span style={{ fontSize:11, fontWeight:700, color: hov ? card.accent : NS.muted, transition:"color 0.18s" }}>Explore work →</span>
+      {tall && <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.72)":NS.muted,lineHeight:1.5,marginBottom:10,transition:"color 0.18s" }}>{item.desc}</p>}
+      <div style={{ display:"flex",gap:5,flexWrap:"wrap",marginTop:tall?0:6 }}>
+        {item.primaryType && <span style={{ fontSize:10,padding:"1px 6px",borderRadius:2,background:hov?"rgba(255,255,255,0.18)":`${accent}12`,color:hov?"#fff":accent,fontWeight:700,letterSpacing:"0.06em",transition:"all 0.18s" }}>{item.primaryType}</span>}
+        {item.geo.slice(0,2).map(g=><span key={g} style={{ fontSize:10,padding:"1px 6px",borderRadius:2,background:hov?"rgba(255,255,255,0.14)":NS.paperDeep,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"all 0.18s" }}>{g}</span>)}
       </div>
     </div>
   );
 }
 
-// ─── Shared style helpers ─────────────────────────────────────────
-const H2 = { fontSize:"clamp(26px,3vw,38px)", fontWeight:700, color:NS.ink, letterSpacing:"-0.025em", lineHeight:1.05 };
-const EYEBROW = color => ({ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color, marginBottom:8, display:"block" });
+// ─── HERO — exact match to main showcase style ────────────────────
+function ResearchHero() {
+  return (
+    <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,6vw,72px) clamp(20px,4vw,44px) clamp(24px,4vw,40px)",borderBottom:`1px solid ${NS.rule}` }}>
+      <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:32,flexWrap:"wrap" }}>
+        <div style={{ maxWidth:720 }}>
+          <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:24,display:"flex",alignItems:"center",gap:12 }}>
+            <span style={{ display:"inline-block",width:28,height:1,background:NS.red }} />
+            Research Capabilities
+          </p>
+          <h1 style={{ fontWeight:700,fontSize:"clamp(44px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
+            Deep research,{" "}
+            <em style={{ fontStyle:"normal",color:NS.blue }}>across every sector.</em>
+          </h1>
+        </div>
+        <p style={{ color:NS.inkSoft,fontSize:15,lineHeight:1.65,maxWidth:360,fontWeight:400 }}>
+          Pick a sector or methodology — every tile opens onto real work, filterable by geography and audience.
+        </p>
+      </div>
+    </div>
+  );
+}
 
-// ─── Nav ──────────────────────────────────────────────────────────
+// ─── NAV — exact match to main showcase ──────────────────────────
 function ResearchNav() {
   const [active, setActive] = useState("sectors");
-  const IDS = ["sectors","methodology","geography","expertise"];
+  const IDS    = ["sectors","methodology","geography","expertise"];
   const LABELS = { sectors:"Sectors", methodology:"Methodology", geography:"Geography", expertise:"Expertise" };
 
   useEffect(() => {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { threshold:0.25 });
-    IDS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
+    const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)});},{threshold:0.25});
+    IDS.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});
+    return ()=>obs.disconnect();
   }, []);
 
   return (
-    <div style={{
-      position:"sticky", top:0, zIndex:100,
-      background:"rgba(245,241,234,0.95)", backdropFilter:"blur(14px)",
-      borderBottom:`1px solid ${NS.rule}`,
-      display:"flex", alignItems:"center", height:52,
-      padding:"0 clamp(20px,4vw,56px)",
-    }}>
-      <a href="/" style={{ display:"flex", alignItems:"center", gap:9, textDecoration:"none", marginRight:"auto" }}>
-        <img src={logoSrc} alt="Netscribes" style={{ height:19, objectFit:"contain", opacity:0.85 }} />
-        <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", color:NS.muted }}> / Research</span>
+    <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,display:"flex",alignItems:"center",height:52,padding:"0 clamp(20px,4vw,44px)" }}>
+      <a href="/" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto" }}>
+        <img src={logoSrc} alt="Netscribes" style={{ height:19,objectFit:"contain",opacity:0.85 }} />
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted }}> / Research</span>
       </a>
-      <nav style={{ display:"flex", gap:2 }}>
-        {IDS.map(id => (
-          <a key={id} href={`#${id}`} style={{
-            fontSize:12, fontWeight: active===id ? 700 : 400,
-            color: active===id ? NS.ink : NS.muted,
-            textDecoration:"none", padding:"5px 13px", borderRadius:2,
-            background: active===id ? NS.surface : "transparent",
-            border: active===id ? `1px solid ${NS.rule}` : "1px solid transparent",
-            transition:"all 0.15s", whiteSpace:"nowrap",
-          }}>{LABELS[id]}</a>
+      <nav style={{ display:"flex",gap:2 }}>
+        {IDS.map(id=>(
+          <a key={id} href={`#${id}`} style={{ fontSize:12,fontWeight:active===id?700:400,color:active===id?NS.ink:NS.muted,textDecoration:"none",padding:"5px 13px",borderRadius:2,background:active===id?NS.surface:"transparent",border:active===id?`1px solid ${NS.rule}`:"1px solid transparent",transition:"all 0.15s",whiteSpace:"nowrap" }}>{LABELS[id]}</a>
         ))}
       </nav>
     </div>
   );
 }
 
-// ─── Hero ─────────────────────────────────────────────────────────
-function ResearchHero() {
+// ─── SECTION 01 — Sectors ─────────────────────────────────────────
+// Exact HeroTile pattern from main showcase — 2-col grid, full colour flood on hover
+function SectorSection({ onOpen }) {
+  const [ref,vis] = useFadeIn();
   return (
-    <div style={{ maxWidth:1160, margin:"0 auto", padding:"72px clamp(20px,4vw,56px) 60px" }}>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"clamp(32px,5vw,72px)", alignItems:"end" }}>
-        <div>
-          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:`${NS.blue}0f`, border:`1px solid ${NS.rule}`, borderRadius:2, padding:"4px 11px", marginBottom:20 }}>
-            <span style={{ width:6, height:6, borderRadius:"50%", background:NS.blue, display:"inline-block" }} />
-            <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.16em", textTransform:"uppercase", color:NS.blue }}>Research Capabilities</span>
+    <section id="sectors" ref={ref} style={{ opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+        <p style={EYE(NS.blue)}>01 — Our Industries of Expertise</p>
+        <h2 style={H2}>Sectors we know deeply</h2>
+      </div>
+      {/* Borderless tile grid matching main showcase */}
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(2,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+        {SECTORS.map((s,i)=>(
+          <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
+            onClick={()=>onOpen(s.label, s.accent, RESEARCH_DATA.filter(d=>d.industry===s.id))} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SectorTile({ sector, index, total, onClick }) {
+  const [hov, setHov] = useState(false);
+  const isRight  = index%2===1;
+  const isBottom = index >= total-2;
+  const spotlight = RESEARCH_DATA.find(d=>d.title===sector.spotlight);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{
+        textAlign:"left",
+        background: hov ? sector.accent : NS.surface,
+        border:"none",
+        borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
+        borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
+        padding:"44px 40px 36px",
+        cursor:"pointer", position:"relative", overflow:"hidden",
+        minHeight:280, display:"flex", flexDirection:"column", justifyContent:"space-between", gap:24,
+        transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
+        fontFamily:"'DM Sans',sans-serif",
+      }}
+    >
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12 }}>
+        <span style={{ fontSize:11,fontWeight:500,letterSpacing:"0.12em",color:hov?"rgba(255,255,255,0.65)":NS.muted,transition:"color 0.32s" }}>
+          {String(index+1).padStart(2,"0")} / {String(SECTORS.length).padStart(2,"0")}
+        </span>
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.24em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"5px 10px",border:`1px solid ${hov?"rgba(255,255,255,0.45)":sector.accent+"55"}`,transition:"color 0.32s,border-color 0.32s" }}>{sector.tag}</span>
+      </div>
+
+      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:14 }}>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(32px,4vw,52px)",letterSpacing:"-0.025em",lineHeight:0.98,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{sector.label}</h2>
+        <p style={{ fontSize:14,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,maxWidth:300,transition:"color 0.32s" }}>{sector.blurb}</p>
+      </div>
+
+      {/* Spotlight case */}
+      {spotlight && (
+        <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:14,transition:"border-color 0.32s" }}>
+          <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:5 }}>Sample work</p>
+          <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
+            <p style={{ fontSize:12,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s" }}>{spotlight.title.length>62?spotlight.title.slice(0,60)+"…":spotlight.title}</p>
+            <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:16,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
           </div>
-          <h1 style={{ fontSize:"clamp(36px,5vw,60px)", fontWeight:700, color:NS.ink, letterSpacing:"-0.03em", lineHeight:1.03, marginBottom:18 }}>
-            Intelligence that<br />
-            <span style={{ color:NS.blue }}>shapes strategy.</span>
-          </h1>
-          <p style={{ fontSize:15, color:NS.muted, lineHeight:1.75, maxWidth:440 }}>
-            A full-spectrum research practice spanning sectors, geographies, and methodologies — built for decisions, not decks.
-          </p>
         </div>
-        {/* Compact credential block — no counts */}
-        <div style={{ display:"flex", flexDirection:"column", gap:10, minWidth:200 }}>
-          {[
-            { label:"Sectors covered", value:"8 industries" },
-            { label:"Geographies",     value:"6 regions" },
-            { label:"Study types",     value:"5 methodologies" },
-            { label:"Audience reach",  value:"B2B · B2C" },
-          ].map((s,i) => (
-            <div key={i} style={{ background: i===1 ? NS.blue : NS.surface, border:`1px solid ${i===1 ? NS.blue : NS.rule}`, borderRadius:2, padding:"12px 14px", display:"flex", flexDirection:"column", gap:2 }}>
-              <span style={{ fontSize:10, fontWeight:600, letterSpacing:"0.1em", textTransform:"uppercase", color: i===1 ? "rgba(255,255,255,0.6)" : NS.muted }}>{s.label}</span>
-              <span style={{ fontSize:14, fontWeight:700, color: i===1 ? "#fff" : NS.ink, letterSpacing:"-0.01em" }}>{s.value}</span>
-            </div>
+      )}
+    </button>
+  );
+}
+
+// ─── SECTION 02 — Methodology ─────────────────────────────────────
+// Full bleed section — same tile pattern, 5-col or wraps to 3/2
+function MethodologySection({ onOpen }) {
+  const [ref,vis] = useFadeIn();
+  return (
+    <section id="methodology" ref={ref} style={{ background:NS.paperDeep,opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease",marginTop:0 }}>
+      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+        <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
+        <h2 style={H2}>Purpose-built frameworks</h2>
+      </div>
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+        {STUDY_TYPES.map((st,i)=>(
+          <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
+            onClick={()=>onOpen(st.label, st.accent, RESEARCH_DATA.filter(d=>d.studyType===st.id))} />
+        ))}
+      </div>
+      <div style={{ height:"clamp(36px,5vw,64px)" }} />
+    </section>
+  );
+}
+
+function MethodTile({ st, index, total, onClick }) {
+  const [hov, setHov] = useState(false);
+  const isLast = index===total-1;
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{
+        textAlign:"left",
+        background: hov ? st.accent : NS.surface,
+        border:"none",
+        borderRight: !isLast ? `1px solid ${NS.rule}` : "none",
+        padding:"36px 24px 28px",
+        cursor:"pointer",minHeight:240,display:"flex",flexDirection:"column",justifyContent:"space-between",gap:16,
+        transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",
+        fontFamily:"'DM Sans',sans-serif",
+      }}
+    >
+      <div>
+        <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.7)":st.accent,display:"block",marginBottom:10,transition:"color 0.28s" }}>{st.tag}</span>
+        <h3 style={{ fontSize:15,fontWeight:700,letterSpacing:"-0.01em",color:hov?"#fff":NS.ink,lineHeight:1.25,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
+        <p style={{ fontSize:12,lineHeight:1.6,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
+      </div>
+      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",transition:"border-color 0.28s" }}>
+        <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
+      </div>
+    </button>
+  );
+}
+
+// ─── SECTION 03 — Geography (D3 + TopoJSON real world map) ───────
+// Loads d3 and topojson from CDN, fetches world-atlas countries-110m,
+// renders via Natural Earth projection into a dark SVG panel.
+// Dot positions are derived from the projection itself — no manual cx/cy.
+
+// Lat/lng centroids for each research region — Global excluded from map
+const GEO_CENTROIDS = {
+  "North America":  [-100,  45],
+  "Europe":         [  15,  50],
+  "Middle East":    [  45,  25],
+  "Africa":         [  20,   5],
+  "South Asia":     [  78,  22],
+  "Southeast Asia": [ 108,  13],
+  "Asia":           [ 105,  38],
+};
+
+function GeoSection({ onOpen }) {
+  const [ref, vis] = useFadeIn();
+
+  const allDots = GEO_DOTS.map(g => ({
+    ...g,
+    items: RESEARCH_DATA.filter(d => d.geo.includes(g.id)),
+    coords: GEO_CENTROIDS[g.id] || null,
+  })).filter(g => g.items.length > 0);
+
+  // Only dots with real lat/lng go on the map
+  const mapDots    = allDots.filter(g => g.coords !== null);
+  // Global/Multi-region gets its own treatment below
+  const globalDot  = allDots.find(g => g.id === "Global");
+
+  return (
+    <section id="geography" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+        <p style={EYE(ACCENT.teal)}>03 — Global Reach</p>
+        <h2 style={H2}>Research across every major region</h2>
+      </div>
+      <div style={{ maxWidth:1160, margin:"28px auto 0", padding:"0 clamp(20px,4vw,44px)" }}>
+        <D3WorldMap dots={mapDots} onDotClick={g => onOpen(g.label, NS.blue, g.items)} />
+
+        {/* Region chips + Global banner */}
+        <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7, marginTop:14, paddingBottom:"clamp(36px,5vw,64px)" }}>
+          {mapDots.map(g => (
+            <button key={g.id} onClick={() => onOpen(g.label, NS.blue, g.items)}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = NS.blue; e.currentTarget.style.color = NS.blue; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = NS.rule; e.currentTarget.style.color = NS.inkSoft; }}
+              style={{ fontSize:12, fontWeight:500, color:NS.inkSoft, background:NS.surface, border:`1px solid ${NS.rule}`, borderRadius:2, padding:"5px 11px", cursor:"pointer", transition:"all 0.15s", fontFamily:"'DM Sans',sans-serif" }}>
+              {g.label}
+            </button>
           ))}
+
+          {/* Divider */}
+          {globalDot && <span style={{ width:1, height:20, background:NS.rule, display:"inline-block", margin:"0 4px" }} />}
+
+          {/* Global pill — visually distinct: filled, not outline */}
+          {globalDot && (
+            <GlobalChip dot={globalDot} onOpen={onOpen} />
+          )}
         </div>
       </div>
+    </section>
+  );
+}
+
+function GlobalChip({ dot, onOpen }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button
+      onClick={() => onOpen(dot.label, NS.blue, dot.items)}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display:"inline-flex", alignItems:"center", gap:7,
+        fontSize:12, fontWeight:600,
+        color: hov ? NS.surface : NS.blue,
+        background: hov ? NS.blue : `${NS.blue}0f`,
+        border:`1px solid ${hov ? NS.blue : `${NS.blue}30`}`,
+        borderRadius:2, padding:"5px 13px",
+        cursor:"pointer", transition:"all 0.18s",
+        fontFamily:"'DM Sans',sans-serif",
+      }}
+    >
+      {/* Small globe mark */}
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink:0 }}>
+        <circle cx="6" cy="6" r="5" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1"/>
+        <path d="M6 1 C4 3 4 9 6 11 M6 1 C8 3 8 9 6 11" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1" fill="none"/>
+        <line x1="1" y1="6" x2="11" y2="6" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1"/>
+      </svg>
+      Global / Multi-region
+    </button>
+  );
+}
+
+// Loads D3 + TopoJSON from CDN, draws a real Natural Earth projection
+function D3WorldMap({ dots, onDotClick }) {
+  const svgRef  = useRef(null);
+  const [ready, setReady]   = useState(false);   // libs loaded
+  const [paths, setPaths]   = useState([]);       // country path strings
+  const [dotPos, setDotPos] = useState([]);       // projected {id,x,y,dot} for each region
+  const [hov,   setHov]     = useState(null);
+  const [tip,   setTip]     = useState(null);
+  const W = 960, H = 480;
+
+  // Step 1: inject CDN scripts once
+  useEffect(() => {
+    const load = (src) => new Promise((res, rej) => {
+      if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
+      const s = document.createElement("script");
+      s.src = src; s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+
+    Promise.all([
+      load("https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"),
+      load("https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"),
+    ]).then(() => setReady(true)).catch(console.error);
+  }, []);
+
+  // Step 2: once libs ready, fetch world data and build paths + dot positions
+  useEffect(() => {
+    if (!ready) return;
+    const d3  = window.d3;
+    const topo = window.topojson;
+
+    fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+      .then(r => r.json())
+      .then(world => {
+        // Natural Earth projection fitted to W×H
+        const projection = d3.geoNaturalEarth1()
+          .scale(W / (2 * Math.PI) * 1.25)
+          .translate([W / 2, H / 2]);
+
+        const pathGen = d3.geoPath().projection(projection);
+
+        // All country features → SVG path strings
+        const countries = topo.feature(world, world.objects.countries);
+        const ps = countries.features.map((f, i) => ({
+          id: i,
+          d: pathGen(f),
+        })).filter(p => p.d);
+
+        setPaths(ps);
+
+        // Project each dot's lat/lng → SVG pixel coordinates
+        const dp = dots.map(dot => {
+          const [lng, lat] = dot.coords;
+          const [x, y] = projection([lng, lat]) || [0, 0];
+          return { ...dot, x, y };
+        });
+        setDotPos(dp);
+      })
+      .catch(console.error);
+  }, [ready, dots]);
+
+  return (
+    <div style={{ background:"#0D1B27", borderRadius:3, overflow:"hidden", position:"relative" }}>
+      {!ready && (
+        <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <span style={{ color:"rgba(255,255,255,0.3)", fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
+        </div>
+      )}
+      {ready && (
+        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`}
+          style={{ width:"100%", height:"auto", display:"block" }}
+          onMouseLeave={() => { setHov(null); setTip(null); }}>
+
+          {/* Ocean */}
+          <rect width={W} height={H} fill="#0D1B27" />
+
+          {/* Graticule — subtle lat/lng grid lines */}
+          {paths.length > 0 && (() => {
+            const d3 = window.d3;
+            const topo = window.topojson;
+            const projection = d3.geoNaturalEarth1()
+              .scale(W / (2 * Math.PI) * 1.25)
+              .translate([W / 2, H / 2]);
+            const pathGen = d3.geoPath().projection(projection);
+            const graticule = d3.geoGraticule()();
+            return <path d={pathGen(graticule)} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />;
+          })()}
+
+          {/* Country fills */}
+          {paths.map(p => (
+            <path key={p.id} d={p.d} fill="#1C3045" stroke="rgba(255,255,255,0.09)" strokeWidth="0.4" />
+          ))}
+
+          {/* Region dots */}
+          {dotPos.map(g => {
+            const ih = hov === g.id;
+            return (
+              <g key={g.id} style={{ cursor:"pointer" }}
+                onMouseEnter={() => { setHov(g.id); setTip({ id:g.id, x:g.x, y:g.y }); }}
+                onMouseLeave={() => { setHov(null); setTip(null); }}
+                onClick={() => onDotClick(g)}>
+                {/* Glow halo */}
+                <circle cx={g.x} cy={g.y} r={22} fill={ih ? "rgba(26,138,181,0.18)" : "rgba(0,95,134,0.10)"} style={{ transition:"fill 0.2s" }} />
+                {/* Outer ring */}
+                <circle cx={g.x} cy={g.y} r={ih ? 10 : 7} fill="none" stroke={ih ? "#1A8AB5" : "#005F86"} strokeWidth="1.5" style={{ transition:"r 0.2s,stroke 0.2s" }} />
+                {/* Inner fill */}
+                <circle cx={g.x} cy={g.y} r={ih ? 5 : 3.5} fill={ih ? "#1A8AB5" : "#005F86"} style={{ transition:"r 0.2s,fill 0.2s" }} />
+                {/* Pulse ring on hover */}
+                {ih && (
+                  <circle cx={g.x} cy={g.y} r="10" fill="none" stroke="#1A8AB5" strokeWidth="1.2">
+                    <animate attributeName="r"       from="10" to="26" dur="1.4s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" from="0.6" to="0" dur="1.4s" repeatCount="indefinite" />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Tooltip — SVG native, never clips off edge */}
+          {tip && (() => {
+            const g = dotPos.find(d => d.id === tip.id);
+            if (!g) return null;
+            const TW = 160, TH = 38;
+            const tx = Math.min(g.x + 14, W - TW - 4);
+            const ty = Math.max(g.y - TH - 6, 4);
+            return (
+              <g style={{ pointerEvents:"none" }}>
+                <rect x={tx} y={ty} width={TW} height={TH} rx="2" fill="#1A3A52" />
+                <text x={tx + 9} y={ty + 14} fontSize="10" fontWeight="700" fill="#fff" fontFamily="'DM Sans',sans-serif">{g.label}</text>
+                <text x={tx + 9} y={ty + 28} fontSize="9" fill="rgba(255,255,255,0.5)" fontFamily="'DM Sans',sans-serif">Click to explore work</text>
+              </g>
+            );
+          })()}
+        </svg>
+      )}
     </div>
   );
 }
+
+// ─── SECTION 04 — Expertise ───────────────────────────────────────
+// Same tile pattern — 3 wide tiles, no full-bleed background colour
+function ExpertiseSection({ onOpen }) {
+  const [ref,vis] = useFadeIn();
+  const cards = [
+    { label:"B2B Research",         tag:"Decision-maker intelligence", accent:NS.blue,       desc:"Executive interviews, expert panels, win/loss studies, buyer journey research and industrial surveys — reaching CxOs, procurement leaders and technical decision-makers across 40+ markets.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"), featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
+    { label:"B2C & Consumer Research", tag:"Consumer depth",           accent:ACCENT.plum,   desc:"Consumer surveys, ethnographic studies, focus groups, diary studies and online communities — with deep panel access across retail, FMCG, lifestyle and financial services segments.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"), featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
+    { label:"Dual B2B / B2C",       tag:"Mixed audience research",     accent:ACCENT.forest, desc:"Complex programmes combining stakeholder and end-consumer perspectives — capturing the full market picture from manufacturer to final user across diverse geographies.", items:RESEARCH_DATA.filter(d=>d.primaryType===null), featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","Concept Testing: Cider Category Innovation Pipeline"] },
+  ];
+  return (
+    <section id="expertise" ref={ref} style={{ opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+        <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
+        <h2 style={H2}>How we engage respondents</h2>
+      </div>
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+        {cards.map((c,i)=>(
+          <ExpertiseTile key={c.label} card={c} isLast={i===cards.length-1}
+            onClick={()=>onOpen(c.label, c.accent, c.items)} />
+        ))}
+      </div>
+      <div style={{ height:"clamp(36px,5vw,64px)" }} />
+    </section>
+  );
+}
+
+function ExpertiseTile({ card, isLast, onClick }) {
+  const [hov,setHov] = useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",padding:"44px 36px 36px",cursor:"pointer",minHeight:340,display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif" }}>
+      <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
+      <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":card.accent,marginBottom:10,display:"block",transition:"color 0.32s" }}>{card.tag}</span>
+      <h3 style={{ fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:hov?"#fff":NS.ink,lineHeight:1.15,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
+      <p style={{ fontSize:13,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.65,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
+      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:14,marginTop:"auto",transition:"border-color 0.32s" }}>
+        <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:9 }}>Featured work</p>
+        {card.featured.map((t,i)=>(
+          <div key={i} style={{ display:"flex",gap:7,alignItems:"flex-start",marginBottom:5 }}>
+            <span style={{ color:hov?"rgba(255,255,255,0.5)":card.accent,fontSize:11,flexShrink:0,marginTop:1,transition:"color 0.32s" }}>—</span>
+            <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s" }}>{t}</span>
+          </div>
+        ))}
+      </div>
+    </button>
+  );
+}
+
+// ─── Shared ───────────────────────────────────────────────────────
+const H2  = { fontSize:"clamp(28px,3.2vw,40px)",fontWeight:700,color:NS.ink,letterSpacing:"-0.025em",lineHeight:1.05,marginBottom:0 };
+const EYE = c => ({ fontSize:11,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:c,marginBottom:10,display:"block" });
 
 // ─── Root ─────────────────────────────────────────────────────────
 export default function Research() {
   const [popup,  setPopup]  = useState(null);
   const [viewer, setViewer] = useState(null);
 
-  const openPopup  = (title, accent, items) => setPopup({ title, accent, items });
+  const openPopup  = (title,accent,items) => setPopup({title,accent,items});
   const closePopup = () => setPopup(null);
-  const openViewer = (item) => { setViewer(item); };
-  const closeViewer = () => setViewer(null);
-
-  // Get the accent for the current popup, pass to viewer
-  const popupAccent = popup?.accent;
+  const openViewer = item  => setViewer(item);
+  const closeViewer = ()  => setViewer(null);
 
   return (
     <>
@@ -706,29 +715,27 @@ export default function Research() {
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-thumb { background:${NS.rule}; border-radius:3px; }
-        @keyframes rc-pop { from { opacity:0; transform:scale(0.97) translateY(10px); } to { opacity:1; transform:none; } }
+        @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
       `}</style>
 
-      <div style={{ background:NS.paper, minHeight:"100vh" }}>
+      <div style={{ background:NS.paper,minHeight:"100vh" }}>
         <ResearchNav />
         <ResearchHero />
-        <div style={{ borderTop:`1px solid ${NS.rule}` }} />
-        <SectorSection     onOpen={openPopup} />
+        <SectorSection      onOpen={openPopup} />
         <MethodologySection onOpen={openPopup} />
-        <GeoSection        onOpen={openPopup} />
-        <ExpertiseSection  onOpen={openPopup} />
-        <footer style={{ borderTop:`1px solid ${NS.rule}`, maxWidth:1160, margin:"0 auto", padding:"22px clamp(20px,4vw,56px) 40px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
-          <img src={logoSrc} alt="Netscribes" style={{ height:17, opacity:0.55 }} />
-          <span style={{ fontSize:11, color:NS.muted, letterSpacing:"0.12em", textTransform:"uppercase" }}>Research Capabilities</span>
+        <GeoSection         onOpen={openPopup} />
+        <ExpertiseSection   onOpen={openPopup} />
+        <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
+          <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
+          <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
         </footer>
       </div>
 
-      {popup && !viewer && (
-        <ItemsPopup title={popup.title} accent={popup.accent} items={popup.items}
-          onClose={closePopup} onOpen={openViewer} />
+      {popup&&!viewer&&(
+        <ItemsPopup title={popup.title} accent={popup.accent} items={popup.items} onClose={closePopup} onOpen={openViewer} />
       )}
-      {viewer && (
-        <CaseViewer item={viewer} accent={popupAccent || NS.blue} onClose={closeViewer} />
+      {viewer&&(
+        <CaseViewer item={viewer} accent={popup?.accent||NS.blue} onClose={closeViewer} />
       )}
     </>
   );
