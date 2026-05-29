@@ -1177,7 +1177,7 @@ function ExpertiseSection({ onOpen }) {
       {/* ── Header ── */}
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(ACCENT.forest)}>04 — Primary Research Expertise</p>
-        <h2 style={{ ...H2, whiteSpace:"nowrap" }}>Global Data Collection. Local Market Intelligence.</h2>
+        <h2 style={{ ...H2 }} className="expertise-h2">Global Data Collection. Local Market Intelligence.</h2>
 
         {/* Stat bar — full width, all 4 in one row */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
@@ -1304,6 +1304,9 @@ export default function Research() {
         /* Strip overflow on mobile */
         .sector-strip, .method-strip, .expertise-strip, .geo-strip { overflow-x: auto; }
         .sector-strip button, .method-strip button, .expertise-strip button, .geo-strip button { min-width: 80px; }
+        @media (min-width: 900px) {
+          .expertise-h2 { white-space: nowrap; }
+        }
       `}</style>
 
       <div style={{ background:NS.paper,minHeight:"100vh" }}>
