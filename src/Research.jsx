@@ -387,7 +387,7 @@ function SectorTile({ sector, index, total, onClick }) {
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(16px,2vw,28px)",letterSpacing:"-0.025em",lineHeight:1.05,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(14px,1.6vw,22px)",letterSpacing:"-0.02em",lineHeight:1.1,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
         <p style={{ fontSize:"clamp(12px,1.4vw,14px)",color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,transition:"color 0.32s" }}>{sector.blurb}</p>
       </div>
 
@@ -1192,7 +1192,7 @@ function ExpertiseSection({ onOpen }) {
         {/* Capabilities row */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="caps-grid">
           {PANEL_CAPABILITIES.map((c,i)=>(
-            <div key={i} style={{ padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
+            <div key={i} style={{ background:NS.surface, padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
               <div style={{ width:20, height:2, background:ACCENT.forest, borderRadius:1, marginBottom:12 }} />
               <p style={{ fontSize:12, fontWeight:700, color:NS.ink, marginBottom:6, lineHeight:1.3 }}>{c.title}</p>
               <p style={{ fontSize:12, color:NS.muted, lineHeight:1.6 }}>{c.body}</p>
