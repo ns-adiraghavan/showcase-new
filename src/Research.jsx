@@ -293,22 +293,54 @@ function ResearchNav() {
 }
 
 // ─── SECTION 01 — Sectors ─────────────────────────────────────────
-// Exact HeroTile pattern from main showcase — 2-col grid, full colour flood on hover
+// Full grid → compact strip + inline filtered view (matches main showcase pattern)
 function SectorSection({ onOpen }) {
-  const [ref,vis] = useFadeIn();
+  const [ref, vis] = useFadeIn();
+  const [active, setActive] = useState(null);
+
+  const activeSector = active ? SECTORS.find(s => s.id === active) : null;
+
   return (
-    <section id="sectors" ref={ref} style={{ opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+    <section id="sectors" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(NS.blue)}>01 — Our Industries of Expertise</p>
-        <h2 style={H2}>Sectors we know deeply</h2>
+        <h2 style={H2}>{active ? activeSector.label : "Sectors we know deeply"}</h2>
       </div>
-      {/* Borderless tile grid — 2 col desktop, 1 col mobile */}
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(2,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
-        {SECTORS.map((s,i)=>(
-          <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
-            onClick={()=>onOpen(s.label, s.accent, RESEARCH_DATA.filter(d=>d.industry===s.id))} />
-        ))}
-      </div>
+
+      {/* ── Full hero grid (no selection) ── */}
+      {!active && (
+        <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(2,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+          {SECTORS.map((s,i) => (
+            <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
+              onClick={() => setActive(s.id)} />
+          ))}
+        </div>
+      )}
+
+      {/* ── Compact strip + content (selection made) ── */}
+      {active && (
+        <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
+          {/* Compact strip */}
+          <div style={{ display:"grid", gridTemplateColumns:`repeat(${SECTORS.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface }} className="sector-strip">
+            {SECTORS.map((s, i) => (
+              <StripTab key={s.id} label={s.label} tag={s.tag} num={String(i+1).padStart(2,"0")}
+                active={s.id===active} color={s.accent}
+                borderRight={i < SECTORS.length-1}
+                onClick={() => setActive(s.id)} />
+            ))}
+          </div>
+          {/* Inline filtered view */}
+          <InlineFilteredView
+            accent={activeSector.accent}
+            baseItems={RESEARCH_DATA.filter(d => d.industry === active)}
+            pill2Label="Framework"
+            pill2Options={STUDY_TYPES.map(s => ({ id:s.id, label:s.label }))}
+            pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
+            onOpen={onOpen}
+            dimLabel="Region"
+          />
+        </div>
+      )}
     </section>
   );
 }
@@ -361,69 +393,78 @@ function SectorTile({ sector, index, total, onClick }) {
   );
 }
 
+// ─── Compact strip tab (used by all sections when a selection is active) ──
+function StripTab({ label, tag, num, active, color, borderRight, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        textAlign:"left", background: active ? color : (hov ? NS.paperDeep : NS.surface),
+        border:"none", borderRight: borderRight ? `1px solid ${NS.rule}` : "none",
+        padding:"14px 16px", cursor:"pointer",
+        display:"flex", flexDirection:"column", gap:4,
+        transition:"background 0.2s", fontFamily:"'DM Sans',sans-serif",
+      }}>
+      <span style={{ fontSize:9, fontWeight:500, letterSpacing:"0.1em", color: active?"rgba(255,255,255,0.65)":NS.muted }}>{num}</span>
+      <span style={{ fontSize:13, fontWeight:700, letterSpacing:"-0.01em", lineHeight:1.1, color: active?"#fff":(hov?NS.ink:NS.inkSoft), whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:"100%" }}>{label}</span>
+      {active && <span style={{ fontSize:8, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:"rgba(255,255,255,0.65)" }}>{tag}</span>}
+    </button>
+  );
+}
 // ─── SECTION 02 — Methodology ─────────────────────────────────────
-// Tile grid → inline filtered view on click (like main showcase pattern)
 function MethodologySection({ onOpen }) {
   const [ref, vis] = useFadeIn();
-  const [active, setActive] = useState(null); // studyType id when drilling in
-
+  const [active, setActive] = useState(null);
   const activeST = active ? STUDY_TYPES.find(s => s.id === active) : null;
 
   return (
     <section id="methodology" ref={ref} style={{ background:NS.paperDeep, opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-
-        {/* Header row — back button when drilling in */}
-        <div style={{ display:"flex", alignItems:"center", gap:16, marginBottom:8, flexWrap:"wrap" }}>
-          {active && (
-            <button onClick={()=>setActive(null)} style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:12,fontWeight:700,color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 12px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"color 0.15s" }}
-              onMouseEnter={e=>e.currentTarget.style.color=NS.ink}
-              onMouseLeave={e=>e.currentTarget.style.color=NS.muted}>
-              ← All Frameworks
-            </button>
-          )}
-          <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
-        </div>
-
-        {active
-          ? <h2 style={H2}>{activeST.label}</h2>
-          : <h2 style={H2}>Purpose-built frameworks</h2>
-        }
+        <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
+        <h2 style={H2}>{active ? activeST.label : "Purpose-built frameworks"}</h2>
       </div>
 
-      {/* ── Tile grid view ── */}
       {!active && (
         <>
-          <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="method-grid">
-            {STUDY_TYPES.map((st,i)=>(
-              <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
-                onClick={()=>setActive(st.id)} />
+          <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(5,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="method-grid">
+            {STUDY_TYPES.map((st,i) => (
+              <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length} onClick={() => setActive(st.id)} />
             ))}
           </div>
           <div style={{ height:"clamp(36px,5vw,64px)" }} />
         </>
       )}
 
-      {/* ── Inline filtered view ── */}
       {active && activeST && (
-        <InlineFilteredView
-          filterKey="method"
-          accent={activeST.accent}
-          baseItems={RESEARCH_DATA.filter(d => d.studyType === active)}
-          pill2Label="Audience"
-          pill2Options={[
-            { id:"B2B",  label:"B2B" },
-            { id:"B2C",  label:"B2C" },
-            { id:"Dual", label:"Dual / Secondary" },
-          ]}
-          pill2Filter={(items, val) => {
-            if (val === "B2B")  return items.filter(d => d.primaryType === "B2B");
-            if (val === "B2C")  return items.filter(d => d.primaryType === "B2C");
-            if (val === "Dual") return items.filter(d => d.primaryType === null);
-            return items;
-          }}
-          onOpen={onOpen}
-        />
+        <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
+          <div style={{ display:"grid", gridTemplateColumns:`repeat(${STUDY_TYPES.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface }} className="method-strip">
+            {STUDY_TYPES.map((st,i) => (
+              <StripTab key={st.id} label={st.label} tag={st.tag} num={String(i+1).padStart(2,"0")}
+                active={st.id===active} color={st.accent} borderRight={i < STUDY_TYPES.length-1}
+                onClick={() => setActive(st.id)} />
+            ))}
+          </div>
+          <InlineFilteredView
+            accent={activeST.accent}
+            baseItems={RESEARCH_DATA.filter(d => d.studyType === active)}
+            pill2Label="Audience"
+            pill2Options={[
+              { id:"B2B", label:"B2B" },
+              { id:"B2C", label:"B2C" },
+              { id:"Dual", label:"Dual / Secondary" },
+            ]}
+            pill2Filter={(items, val) => {
+              if (val==="B2B")  return items.filter(d=>d.primaryType==="B2B");
+              if (val==="B2C")  return items.filter(d=>d.primaryType==="B2C");
+              if (val==="Dual") return items.filter(d=>d.primaryType===null);
+              return items;
+            }}
+            onOpen={onOpen}
+            dimLabel="Region"
+          />
+        </div>
       )}
     </section>
   );
@@ -454,7 +495,7 @@ function MethodTile({ st, index, total, onClick }) {
 // Shows industry cards for a given base set, with filter pills for
 // region and a second dimension (audience or framework type).
 // Clicking an industry card opens the masonry popup.
-function InlineFilteredView({ accent, baseItems, pill2Label, pill2Options, pill2Filter, onOpen }) {
+function InlineFilteredView({ accent, baseItems, pill2Label, pill2Options, pill2Filter, onOpen, dimLabel, dimOptions, dimFilter }) {
   const [geo,  setGeo]  = useState(null);
   const [pill2, setPill2] = useState(null);
 
@@ -473,24 +514,26 @@ function InlineFilteredView({ accent, baseItems, pill2Label, pill2Options, pill2
   return (
     <div style={{ maxWidth:1160, margin:"0 auto", padding:"28px clamp(16px,4vw,44px) clamp(36px,5vw,64px)", animation:"rc-pop 0.22s ease both" }}>
 
-      {/* Filter pills row */}
-      <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:28, alignItems:"center" }}>
-        {/* Geography pills */}
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>Region</span>
-        <PillBtn label="All" active={!geo} color={accent} onClick={()=>setGeo(null)} />
-        {GEO_OPTIONS.map(g => (
-          <PillBtn key={g} label={g} active={geo===g} color={accent} onClick={()=>setGeo(geo===g?null:g)} />
-        ))}
-
-        {/* Divider */}
-        <span style={{ width:1,height:18,background:NS.rule,display:"inline-block",margin:"0 6px" }} />
-
-        {/* Second dimension pills */}
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>{pill2Label}</span>
-        <PillBtn label="All" active={!pill2} color={accent} onClick={()=>setPill2(null)} />
-        {pill2Options.map(o => (
-          <PillBtn key={o.id} label={o.label} active={pill2===o.id} color={accent} onClick={()=>setPill2(pill2===o.id?null:o.id)} />
-        ))}
+      {/* Filter pills — 50/50 split */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:0, marginBottom:28, border:`1px solid ${NS.rule}`, borderTop:"none" }}>
+        <div style={{ padding:"14px 18px", borderRight:`1px solid ${NS.rule}` }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Region</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            <PillBtn label="All" active={!geo} color={accent} onClick={()=>setGeo(null)} />
+            {GEO_OPTIONS.map(g => (
+              <PillBtn key={g} label={g} active={geo===g} color={accent} onClick={()=>setGeo(geo===g?null:g)} />
+            ))}
+          </div>
+        </div>
+        <div style={{ padding:"14px 18px" }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>{pill2Label}</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            <PillBtn label="All" active={!pill2} color={accent} onClick={()=>setPill2(null)} />
+            {pill2Options.map(o => (
+              <PillBtn key={o.id} label={o.label} active={pill2===o.id} color={accent} onClick={()=>setPill2(pill2===o.id?null:o.id)} />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Industry cards grid */}
@@ -566,6 +609,7 @@ const GEO_CENTROIDS = {
 
 function GeoSection({ onOpen }) {
   const [ref, vis] = useFadeIn();
+  const [active, setActive] = useState(null);
 
   const allDots = GEO_DOTS.map(g => ({
     ...g,
@@ -573,40 +617,76 @@ function GeoSection({ onOpen }) {
     coords: GEO_CENTROIDS[g.id] || null,
   })).filter(g => g.items.length > 0);
 
-  // Only dots with real lat/lng go on the map
-  const mapDots    = allDots.filter(g => g.coords !== null);
-  // Global/Multi-region gets its own treatment below
-  const globalDot  = allDots.find(g => g.id === "Global");
+  const mapDots   = allDots.filter(g => g.coords !== null);
+  const globalDot = allDots.find(g => g.id === "Global");
+  const activeDot = active ? allDots.find(g => g.id === active) : null;
+
+  const handleDotClick = (g) => setActive(g.id);
 
   return (
     <section id="geography" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(ACCENT.teal)}>03 — Global Reach</p>
-        <h2 style={H2}>Research across every major region</h2>
+        <h2 style={H2}>{active ? (activeDot?.label || "Region") : "Research across every major region"}</h2>
       </div>
-      <div style={{ maxWidth:1160, margin:"28px auto 0", padding:"0 clamp(20px,4vw,44px)" }}>
-        <D3WorldMap dots={mapDots} onDotClick={g => onOpen(g.label, g.accent, g.items)} />
 
-        {/* Region chips + Global banner */}
-        <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7, marginTop:14, paddingBottom:"clamp(36px,5vw,64px)" }}>
-          {mapDots.map(g => (
-            <button key={g.id} onClick={() => onOpen(g.label, g.accent, g.items)}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = g.accent; e.currentTarget.style.color = g.accent; e.currentTarget.style.background = `${g.accent}0d`; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = NS.rule; e.currentTarget.style.color = NS.inkSoft; e.currentTarget.style.background = NS.surface; }}
-              style={{ fontSize:12, fontWeight:500, color:NS.inkSoft, background:NS.surface, border:`1px solid ${NS.rule}`, borderRadius:2, padding:"5px 11px", cursor:"pointer", transition:"all 0.15s", fontFamily:"'DM Sans',sans-serif" }}>
-              {g.label}
-            </button>
-          ))}
+      {/* Map always visible */}
+      <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
+        <D3WorldMap dots={mapDots} activeDot={active} onDotClick={handleDotClick} />
+      </div>
 
-          {/* Divider */}
-          {globalDot && <span style={{ width:1, height:20, background:NS.rule, display:"inline-block", margin:"0 4px" }} />}
-
-          {/* Global pill — visually distinct: filled, not outline */}
-          {globalDot && (
-            <GlobalChip dot={globalDot} onOpen={onOpen} />
-          )}
+      {/* No selection: show chip row */}
+      {!active && (
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"12px clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
+          <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7 }}>
+            {mapDots.map(g => (
+              <button key={g.id} onClick={() => setActive(g.id)}
+                onMouseEnter={e => { e.currentTarget.style.borderColor=g.accent; e.currentTarget.style.color=g.accent; e.currentTarget.style.background=`${g.accent}0d`; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor=NS.rule; e.currentTarget.style.color=NS.inkSoft; e.currentTarget.style.background=NS.surface; }}
+                style={{ fontSize:12,fontWeight:500,color:NS.inkSoft,background:NS.surface,border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
+                {g.label}
+              </button>
+            ))}
+            {globalDot && <span style={{ width:1,height:20,background:NS.rule,display:"inline-block",margin:"0 4px" }} />}
+            {globalDot && <GlobalChip dot={globalDot} onOpen={(label,accent,items)=>setActive("Global")} />}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Selection: compact strip + inline view */}
+      {active && activeDot && (
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"12px clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
+          {/* Strip with all regions */}
+          <div style={{ display:"grid", gridTemplateColumns:`repeat(${allDots.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface, marginBottom:0 }} className="geo-strip">
+            {allDots.map((g,i) => (
+              <StripTab key={g.id} label={g.label} tag="" num={String(i+1).padStart(2,"0")}
+                active={g.id===active} color={g.accent} borderRight={i < allDots.length-1}
+                onClick={() => setActive(g.id)} />
+            ))}
+          </div>
+          {/* Industry cards for this region */}
+          <InlineFilteredView
+            accent={activeDot.accent}
+            baseItems={activeDot.items}
+            pill2Label="Framework"
+            pill2Options={STUDY_TYPES.map(s=>({ id:s.id, label:s.label }))}
+            pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
+            onOpen={onOpen}
+            dimLabel="Audience"
+            dimOptions={[
+              { id:"B2B", label:"B2B" },
+              { id:"B2C", label:"B2C" },
+              { id:"Dual", label:"Dual / Secondary" },
+            ]}
+            dimFilter={(items, val) => {
+              if (val==="B2B")  return items.filter(d=>d.primaryType==="B2B");
+              if (val==="B2C")  return items.filter(d=>d.primaryType==="B2C");
+              if (val==="Dual") return items.filter(d=>d.primaryType===null);
+              return items;
+            }}
+          />
+        </div>
+      )}
     </section>
   );
 }
@@ -641,7 +721,7 @@ function GlobalChip({ dot, onOpen }) {
 }
 
 // Loads D3 + TopoJSON from CDN, draws a real Natural Earth projection
-function D3WorldMap({ dots, onDotClick }) {
+function D3WorldMap({ dots, activeDot, onDotClick }) {
   const svgRef  = useRef(null);
   const [ready, setReady]   = useState(false);   // libs loaded
   const [paths, setPaths]   = useState([]);       // country path strings
@@ -702,7 +782,7 @@ function D3WorldMap({ dots, onDotClick }) {
   }, [ready, dots]);
 
   return (
-    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}` }}>
+    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}`, backgroundImage:"url(/world-dots.jpg)", backgroundSize:"cover", backgroundPosition:"center" }}>
       {!ready && (
         <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center", background:NS.paper }}>
           <span style={{ color:NS.muted, fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
@@ -713,8 +793,8 @@ function D3WorldMap({ dots, onDotClick }) {
           style={{ width:"100%", height:"auto", display:"block" }}
           onMouseLeave={() => { setHov(null); setTip(null); }}>
 
-          {/* Ocean — paper background */}
-          <rect width={W} height={H} fill={NS.paper} />
+          {/* Ocean — transparent so dotted image shows through */}
+          <rect width={W} height={H} fill="rgba(245,241,234,0.08)" />
 
           {/* Graticule — subtle lat/lng grid lines */}
           {paths.length > 0 && (() => {
@@ -728,9 +808,9 @@ function D3WorldMap({ dots, onDotClick }) {
             return <path d={pathGen(graticule)} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="0.5" />;
           })()}
 
-          {/* Country fills — warm paper land */}
+          {/* Country fills — semi-transparent over dotted image */}
           {paths.map(p => (
-            <path key={p.id} d={p.d} fill={NS.paperDeep} stroke="rgba(0,0,0,0.08)" strokeWidth="0.4" />
+            <path key={p.id} d={p.d} fill="rgba(237,231,219,0.55)" stroke="rgba(0,0,0,0.12)" strokeWidth="0.5" />
           ))}
 
           {/* Region dots — accent colours, continuous pulse on all, faster on hover */}
@@ -798,20 +878,8 @@ function ExpertiseSection({ onOpen }) {
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
       <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <div style={{ display:"flex",alignItems:"center",gap:16,marginBottom:8,flexWrap:"wrap" }}>
-          {active && (
-            <button onClick={()=>setActive(null)} style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:12,fontWeight:700,color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 12px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"color 0.15s" }}
-              onMouseEnter={e=>e.currentTarget.style.color=NS.ink}
-              onMouseLeave={e=>e.currentTarget.style.color=NS.muted}>
-              ← All Engagement Types
-            </button>
-          )}
-          <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
-        </div>
-        {active
-          ? <h2 style={H2}>{activeCard.label}</h2>
-          : <h2 style={H2}>How we engage respondents</h2>
-        }
+        <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
+        <h2 style={H2}>{active ? activeCard.label : "How we engage respondents"}</h2>
       </div>
 
       {/* ── Tile grid ── */}
@@ -827,17 +895,25 @@ function ExpertiseSection({ onOpen }) {
         </>
       )}
 
-      {/* ── Inline filtered view ── */}
       {active && activeCard && (
-        <InlineFilteredView
-          filterKey="expertise"
-          accent={activeCard.accent}
-          baseItems={baseItems}
-          pill2Label="Framework"
-          pill2Options={STUDY_TYPES.map(s=>({ id:s.id, label:s.label }))}
-          pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
-          onOpen={onOpen}
-        />
+        <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
+          <div style={{ display:"grid", gridTemplateColumns:`repeat(${EXPERTISE_CARDS.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface }} className="expertise-strip">
+            {EXPERTISE_CARDS.map((c,i) => (
+              <StripTab key={c.id} label={c.label} tag={c.tag} num={String(i+1).padStart(2,"0")}
+                active={c.id===active} color={c.accent} borderRight={i < EXPERTISE_CARDS.length-1}
+                onClick={() => setActive(c.id)} />
+            ))}
+          </div>
+          <InlineFilteredView
+            accent={activeCard.accent}
+            baseItems={baseItems}
+            pill2Label="Framework"
+            pill2Options={STUDY_TYPES.map(s=>({ id:s.id, label:s.label }))}
+            pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
+            onOpen={onOpen}
+            dimLabel="Region"
+          />
+        </div>
       )}
     </section>
   );
@@ -909,6 +985,9 @@ export default function Research() {
           .method-grid    { grid-template-columns: 1fr !important; }
           .method-grid    button { border-right: none !important; }
         }
+        /* Strip overflow on mobile */
+        .sector-strip, .method-strip, .expertise-strip, .geo-strip { overflow-x: auto; }
+        .sector-strip button, .method-strip button, .expertise-strip button, .geo-strip button { min-width: 80px; }
       `}</style>
 
       <div style={{ background:NS.paper,minHeight:"100vh" }}>
