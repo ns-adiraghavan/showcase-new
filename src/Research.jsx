@@ -380,7 +380,7 @@ function SectorTile({ sector, index, total, onClick }) {
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(18px,2.4vw,36px)",letterSpacing:"-0.025em",lineHeight:0.98,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"break-word" }}>{sector.label}</h2>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(16px,2vw,28px)",letterSpacing:"-0.025em",lineHeight:1.05,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"break-word" }}>{sector.label}</h2>
         <p style={{ fontSize:"clamp(12px,1.4vw,14px)",color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,transition:"color 0.32s" }}>{sector.blurb}</p>
       </div>
 
@@ -427,10 +427,15 @@ function MethodologySection({ onOpen }) {
         <p style={EYE(ACCENT.teal)}>02 — Strategic research & intelligence solutions</p>
         <h2 style={H2}>Data-backed solutions that power business growth</h2>
       </div>
-      <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(5,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="method-grid">
+      <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(3,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}`}} className="method-grid">
         {STUDY_TYPES.map((st,i) => (
           <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
-            onClick={() => onOpen(st.label, st.accent, RESEARCH_DATA.filter(d=>d.studyType===st.id))} />
+            onClick={() => {
+              const items = RESEARCH_DATA
+                .filter(d=>d.studyType===st.id)
+                .sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
+              onOpen(st.label, st.accent, items);
+            }} />
         ))}
       </div>
       <div style={{ height:"clamp(36px,5vw,64px)" }} />
@@ -440,17 +445,18 @@ function MethodologySection({ onOpen }) {
 
 function MethodTile({ st, index, total, onClick }) {
   const [hov, setHov] = useState(false);
-  const isLast = index===total-1;
+  const COLS = 3;
+  const isRightEdge = (index + 1) % COLS === 0 || index === total - 1;
   return (
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(20px,3vw,36px) clamp(16px,2vw,24px) clamp(18px,2.5vw,28px)",cursor:"pointer",minHeight:"clamp(180px,22vw,240px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isRightEdge?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(24px,3vw,40px) clamp(20px,2.5vw,32px) clamp(22px,2.5vw,32px)",cursor:"pointer",minHeight:"clamp(220px,24vw,280px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div>
         <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
         <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.7)":st.accent,display:"block",marginBottom:10,transition:"color 0.28s" }}>{st.tag}</span>
-        <h3 style={{ fontSize:15,fontWeight:700,letterSpacing:"-0.01em",color:hov?"#fff":NS.ink,lineHeight:1.25,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
-        <p style={{ fontSize:12,lineHeight:1.6,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
+        <h3 style={{ fontSize:"clamp(15px,1.6vw,18px)",fontWeight:700,letterSpacing:"-0.01em",color:hov?"#fff":NS.ink,lineHeight:1.25,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
+        <p style={{ fontSize:"clamp(12px,1.2vw,13px)",lineHeight:1.6,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",transition:"border-color 0.28s" }}>
         <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
@@ -824,7 +830,7 @@ function D3WorldMap({ dots, activeDot, onDotClick }) {
   }, [ready, dots]);
 
   return (
-    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}`, backgroundImage:"url(/world-dots.jpg)", backgroundSize:"cover", backgroundPosition:"center" }}>
+    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}` }}>
       {!ready && (
         <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center", background:NS.paper }}>
           <span style={{ color:NS.muted, fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
@@ -835,24 +841,34 @@ function D3WorldMap({ dots, activeDot, onDotClick }) {
           style={{ width:"100%", height:"auto", display:"block" }}
           onMouseLeave={() => { setHov(null); setTip(null); }}>
 
-          {/* Ocean — transparent so dotted image shows through */}
-          <rect width={W} height={H} fill="rgba(245,241,234,0.08)" />
+          <defs>
+            {/* Dot grid pattern — small teal dots over ocean */}
+            <pattern id="dotgrid" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="1" fill={`${NS.blue}28`} />
+            </pattern>
+            {/* Clip path so dots only show in ocean (outside countries) — we invert by drawing rect then masking */}
+          </defs>
 
-          {/* Graticule — subtle lat/lng grid lines */}
+          {/* Ocean base — paper colour */}
+          <rect width={W} height={H} fill={NS.paper} />
+
+          {/* Dot grid over entire canvas first — countries will paint on top */}
+          <rect width={W} height={H} fill="url(#dotgrid)" />
+
+          {/* Graticule */}
           {paths.length > 0 && (() => {
             const d3 = window.d3;
-            const topo = window.topojson;
             const projection = d3.geoNaturalEarth1()
               .scale(W / (2 * Math.PI) * 1.25)
               .translate([W / 2, H / 2]);
             const pathGen = d3.geoPath().projection(projection);
             const graticule = d3.geoGraticule()();
-            return <path d={pathGen(graticule)} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="0.5" />;
+            return <path d={pathGen(graticule)} fill="none" stroke={`${NS.blue}14`} strokeWidth="0.5" />;
           })()}
 
-          {/* Country fills — semi-transparent over dotted image */}
+          {/* Country fills — solid paper over the dots, giving ocean-dots / land-solid aesthetic */}
           {paths.map(p => (
-            <path key={p.id} d={p.d} fill="rgba(237,231,219,0.55)" stroke="rgba(0,0,0,0.12)" strokeWidth="0.5" />
+            <path key={p.id} d={p.d} fill={NS.paperDeep} stroke={`${NS.blue}30`} strokeWidth="0.5" />
           ))}
 
           {/* Region dots — fixed: pulse is a SEPARATE expanding circle beneath static rings */}
@@ -991,6 +1007,73 @@ function HBar({ label, pct, accent, delay=0 }) {
   );
 }
 
+function MiniDonut({ segments, size=120 }) {
+  const cx = size / 2, cy = size / 2, r = size * 0.38, stroke = size * 0.14;
+  let cum = 0;
+  const slices = segments.map(s => {
+    const start = cum;
+    cum += s.pct / 100;
+    return { ...s, start, end: cum };
+  });
+  function arc(start, end) {
+    const a1 = start * 2 * Math.PI - Math.PI / 2;
+    const a2 = end   * 2 * Math.PI - Math.PI / 2;
+    const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+    const lg = end - start > 0.5 ? 1 : 0;
+    return `M ${x1} ${y1} A ${r} ${r} 0 ${lg} 1 ${x2} ${y2}`;
+  }
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display:"block" }}>
+      {slices.map((s,i) => (
+        <path key={i} d={arc(s.start, s.end)}
+          fill="none" stroke={s.color} strokeWidth={stroke}
+          strokeLinecap="butt" />
+      ))}
+    </svg>
+  );
+}
+
+const REGION_COLORS = {
+  Americas: NS.blue,
+  Europe:   ACCENT.teal,
+  APAC:     ACCENT.amber,
+  MEA:      ACCENT.plum,
+};
+
+const B2B_REGIONS = [
+  { label:"APAC",     pct:40, color:ACCENT.amber },
+  { label:"Americas", pct:25, color:NS.blue      },
+  { label:"Europe",   pct:20, color:ACCENT.teal  },
+  { label:"MEA",      pct:15, color:ACCENT.plum  },
+];
+const B2C_REGIONS = B2B_REGIONS; // same split
+
+function RegionDonut({ segments }) {
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:18 }}>
+      <MiniDonut segments={segments} size={100} />
+      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+        {segments.map(s=>(
+          <div key={s.label} style={{ display:"flex", alignItems:"center", gap:7 }}>
+            <div style={{ width:8, height:8, borderRadius:"50%", background:s.color, flexShrink:0 }} />
+            <span style={{ fontSize:12, color:NS.inkSoft }}>{s.label}</span>
+            <span style={{ fontSize:11, fontWeight:700, color:s.color, fontFamily:"'JetBrains Mono',monospace", marginLeft:"auto", paddingLeft:8 }}>{s.pct}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Assign alternating accent colours to bars for visual variance
+const B2B_SECTOR_COLORS = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber, ACCENT.plum, ACCENT.rust, ACCENT.forest, NS.blue];
+const B2B_ROLE_COLORS   = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber];
+const B2B_SIZE_COLORS   = [NS.blue, ACCENT.teal, ACCENT.amber, ACCENT.plum];
+const B2C_AGE_COLORS    = [ACCENT.plum, ACCENT.steel, NS.blue, ACCENT.teal, ACCENT.amber, ACCENT.rust, ACCENT.forest];
+const B2C_JOB_COLORS    = [ACCENT.plum, ACCENT.teal, NS.blue, ACCENT.steel, ACCENT.amber, ACCENT.rust, ACCENT.forest, ACCENT.plum];
+const B2C_INC_COLORS    = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber, ACCENT.plum, ACCENT.rust, ACCENT.forest, NS.blue, ACCENT.teal];
+
 function PanelProfileSection() {
   const [ref, vis] = useFadeIn();
   const [tab, setTab] = useState("b2b");
@@ -1012,47 +1095,51 @@ function PanelProfileSection() {
       </div>
 
       {tab === "b2b" && (
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"0 40px" }} className="panel-grid">
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"32px 48px" }} className="panel-grid">
+          {/* Row 1 */}
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Dedicated Sector-wise Panel</p>
-            {B2B_PROFILE.sectors.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40} />)}
+            {B2B_PROFILE.sectors.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SECTOR_COLORS[i]||NS.blue} delay={i*40} />)}
           </div>
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Roles</p>
-            {B2B_PROFILE.roles.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40+80} />)}
-            <div style={{ marginTop:28 }}>
-              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:10 }}>Regions</p>
-              <p style={{ fontSize:13, color:NS.inkSoft, lineHeight:1.65 }}>{B2B_PROFILE.regions}</p>
-            </div>
+            {B2B_PROFILE.roles.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_ROLE_COLORS[i]||NS.blue} delay={i*40+80} />)}
           </div>
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Company Size</p>
-            {B2B_PROFILE.companySize.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40+160} />)}
+            {B2B_PROFILE.companySize.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SIZE_COLORS[i]||NS.blue} delay={i*40+160} />)}
+          </div>
+          {/* Row 2 — Regions spanning full width */}
+          <div style={{ gridColumn:"1 / -1", borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:20 }}>Regions</p>
+            <RegionDonut segments={B2B_REGIONS} />
           </div>
         </div>
       )}
 
       {tab === "b2c" && (
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"0 40px" }} className="panel-grid">
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"32px 48px" }} className="panel-grid">
+          {/* Row 1 */}
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Age Brackets</p>
-            {B2C_PROFILE.age.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35} />)}
-            <div style={{ marginTop:24 }}>
-              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:14 }}>Gender</p>
-              {B2C_PROFILE.gender.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*40+280} />)}
-            </div>
-            <div style={{ marginTop:24 }}>
-              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:10 }}>Regions</p>
-              <p style={{ fontSize:13, color:NS.inkSoft, lineHeight:1.65 }}>{B2C_PROFILE.regions}</p>
-            </div>
+            {B2C_PROFILE.age.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2C_AGE_COLORS[i]||ACCENT.plum} delay={i*35} />)}
           </div>
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Status</p>
-            {B2C_PROFILE.jobStatus.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35+100} />)}
+            {B2C_PROFILE.jobStatus.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2C_JOB_COLORS[i]||ACCENT.plum} delay={i*35+100} />)}
           </div>
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Household Income</p>
-            {B2C_PROFILE.income.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35+200} />)}
+            {B2C_PROFILE.income.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2C_INC_COLORS[i]||ACCENT.plum} delay={i*35+200} />)}
+          </div>
+          {/* Row 2 — Gender + Regions side by side */}
+          <div style={{ borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Gender</p>
+            {B2C_PROFILE.gender.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={i===0?NS.blue:ACCENT.plum} delay={i*40} />)}
+          </div>
+          <div style={{ gridColumn:"2 / 4", borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:20 }}>Regions</p>
+            <RegionDonut segments={B2C_REGIONS} />
           </div>
         </div>
       )}
@@ -1090,9 +1177,9 @@ function ExpertiseSection({ onOpen }) {
           {/* Stat pills inline with header */}
           <div style={{ display:"flex", gap:0, flexShrink:0 }}>
             {PANEL_STATS.map((s,i)=>(
-              <div key={i} style={{ padding:"0 24px", borderLeft:`1px solid ${NS.rule}`, textAlign:"center" }}>
-                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(18px,2.2vw,26px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
-                <div style={{ fontSize:11, color:NS.muted, marginTop:5, lineHeight:1.4, maxWidth:110 }}>{s.label}</div>
+              <div key={i} style={{ padding:"0 28px", borderLeft:`1px solid ${NS.rule}`, textAlign:"center" }}>
+                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(22px,2.8vw,34px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
+                <div style={{ fontSize:12, color:NS.muted, marginTop:6, lineHeight:1.4, maxWidth:120 }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -1122,7 +1209,10 @@ function ExpertiseSection({ onOpen }) {
       <div style={{ maxWidth:1160,margin:"0 auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
         {EXPERTISE_CARDS.map((c,i)=>(
           <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
-            onClick={()=>onOpen(c.label, c.accent, c.items)} />
+            onClick={()=>{
+              const items = [...c.items].sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
+              onOpen(c.label, c.accent, items);
+            }} />
         ))}
       </div>
       <div style={{ height:"clamp(36px,5vw,64px)" }} />
