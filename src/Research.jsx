@@ -118,14 +118,14 @@ const STUDY_TYPES = [
 ];
 
 const GEO_DOTS = [
-  { id:"North America",  label:"North America",          cx:175, cy:148 },
-  { id:"Europe",         label:"Europe",                 cx:455, cy:120 },
-  { id:"Middle East",    label:"Middle East",            cx:537, cy:188 },
-  { id:"Africa",         label:"Africa",                 cx:462, cy:255 },
-  { id:"South Asia",     label:"South Asia",             cx:600, cy:200 },
-  { id:"Southeast Asia", label:"Southeast Asia",         cx:660, cy:242 },
-  { id:"Asia",           label:"East & Central Asia",    cx:672, cy:152 },
-  { id:"Global",         label:"Global / Multi-region",  cx:320, cy:305 },
+  { id:"North America",  label:"North America",         cx:175, cy:148, accent:NS.blue       },
+  { id:"Europe",         label:"Europe",                cx:455, cy:120, accent:ACCENT.steel   },
+  { id:"Middle East",    label:"Middle East",           cx:537, cy:188, accent:ACCENT.amber   },
+  { id:"Africa",         label:"Africa",                cx:462, cy:255, accent:ACCENT.rust    },
+  { id:"South Asia",     label:"South Asia",            cx:600, cy:200, accent:ACCENT.plum    },
+  { id:"Southeast Asia", label:"Southeast Asia",        cx:660, cy:242, accent:ACCENT.teal    },
+  { id:"Asia",           label:"East & Central Asia",   cx:672, cy:152, accent:ACCENT.forest  },
+  { id:"Global",         label:"Global / Multi-region", cx:320, cy:305, accent:NS.blue        },
 ];
 
 // ─── Hooks ────────────────────────────────────────────────────────
@@ -195,9 +195,9 @@ function ItemsPopup({ title, accent, items, onClose, onOpen }) {
           <h3 style={{ fontSize:20,fontWeight:700,color:NS.ink,letterSpacing:"-0.02em" }}>{title}</h3>
           <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
         </div>
-        {/* Masonry-style 2-col grid */}
+        {/* Masonry-style 2-col grid — 1-col on narrow screens */}
         <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
-          <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
+          <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
             <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
               {col1.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===0} onOpen={onOpen} />)}
             </div>
@@ -242,19 +242,19 @@ function CaseTile({ item, accent, tall, onOpen }) {
 // ─── HERO — exact match to main showcase style ────────────────────
 function ResearchHero() {
   return (
-    <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,6vw,72px) clamp(20px,4vw,44px) clamp(24px,4vw,40px)",borderBottom:`1px solid ${NS.rule}` }}>
-      <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:32,flexWrap:"wrap" }}>
-        <div style={{ maxWidth:720 }}>
-          <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:24,display:"flex",alignItems:"center",gap:12 }}>
-            <span style={{ display:"inline-block",width:28,height:1,background:NS.red }} />
+    <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) clamp(24px,4vw,40px)",borderBottom:`1px solid ${NS.rule}` }}>
+      <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:24,flexWrap:"wrap" }}>
+        <div style={{ maxWidth:720,minWidth:0 }}>
+          <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:20,display:"flex",alignItems:"center",gap:10 }}>
+            <span style={{ display:"inline-block",width:22,height:1,background:NS.red,flexShrink:0 }} />
             Research Capabilities
           </p>
-          <h1 style={{ fontWeight:700,fontSize:"clamp(44px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
+          <h1 style={{ fontWeight:700,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
             Deep research,{" "}
             <em style={{ fontStyle:"normal",color:NS.blue }}>across every sector.</em>
           </h1>
         </div>
-        <p style={{ color:NS.inkSoft,fontSize:15,lineHeight:1.65,maxWidth:360,fontWeight:400 }}>
+        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.65,maxWidth:360,fontWeight:400,minWidth:0 }}>
           Pick a sector or methodology — every tile opens onto real work, filterable by geography and audience.
         </p>
       </div>
@@ -275,14 +275,14 @@ function ResearchNav() {
   }, []);
 
   return (
-    <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,display:"flex",alignItems:"center",height:52,padding:"0 clamp(20px,4vw,44px)" }}>
-      <a href="/" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto" }}>
-        <img src={logoSrc} alt="Netscribes" style={{ height:19,objectFit:"contain",opacity:0.85 }} />
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted }}> / Research</span>
+    <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,display:"flex",alignItems:"center",height:52,padding:"0 clamp(16px,4vw,44px)" }}>
+      <a href="/" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto",minWidth:0,overflow:"hidden" }}>
+        <img src={logoSrc} alt="Netscribes" style={{ height:19,objectFit:"contain",opacity:0.85,flexShrink:0 }} />
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted,whiteSpace:"nowrap" }}> / Research</span>
       </a>
-      <nav style={{ display:"flex",gap:2 }}>
+      <nav style={{ display:"flex",gap:1,flexShrink:0 }}>
         {IDS.map(id=>(
-          <a key={id} href={`#${id}`} style={{ fontSize:12,fontWeight:active===id?700:400,color:active===id?NS.ink:NS.muted,textDecoration:"none",padding:"5px 13px",borderRadius:2,background:active===id?NS.surface:"transparent",border:active===id?`1px solid ${NS.rule}`:"1px solid transparent",transition:"all 0.15s",whiteSpace:"nowrap" }}>{LABELS[id]}</a>
+          <a key={id} href={`#${id}`} style={{ fontSize:11,fontWeight:active===id?700:400,color:active===id?NS.ink:NS.muted,textDecoration:"none",padding:"5px 9px",borderRadius:2,background:active===id?NS.surface:"transparent",border:active===id?`1px solid ${NS.rule}`:"1px solid transparent",transition:"all 0.15s",whiteSpace:"nowrap" }}>{LABELS[id]}</a>
         ))}
       </nav>
     </div>
@@ -299,8 +299,8 @@ function SectorSection({ onOpen }) {
         <p style={EYE(NS.blue)}>01 — Our Industries of Expertise</p>
         <h2 style={H2}>Sectors we know deeply</h2>
       </div>
-      {/* Borderless tile grid matching main showcase */}
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(2,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+      {/* Borderless tile grid — 2 col desktop, 1 col mobile */}
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(2,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
         {SECTORS.map((s,i)=>(
           <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
             onClick={()=>onOpen(s.label, s.accent, RESEARCH_DATA.filter(d=>d.industry===s.id))} />
@@ -325,32 +325,32 @@ function SectorTile({ sector, index, total, onClick }) {
         border:"none",
         borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
         borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
-        padding:"44px 40px 36px",
+        padding:"clamp(24px,4vw,44px) clamp(20px,3vw,40px) clamp(20px,3vw,36px)",
         cursor:"pointer", position:"relative", overflow:"hidden",
-        minHeight:280, display:"flex", flexDirection:"column", justifyContent:"space-between", gap:24,
+        minHeight:"clamp(200px,30vw,280px)", display:"flex", flexDirection:"column", justifyContent:"space-between", gap:16,
         transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
-        fontFamily:"'DM Sans',sans-serif",
+        fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12 }}>
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap" }}>
         <span style={{ fontSize:11,fontWeight:500,letterSpacing:"0.12em",color:hov?"rgba(255,255,255,0.65)":NS.muted,transition:"color 0.32s" }}>
           {String(index+1).padStart(2,"0")} / {String(SECTORS.length).padStart(2,"0")}
         </span>
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.24em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"5px 10px",border:`1px solid ${hov?"rgba(255,255,255,0.45)":sector.accent+"55"}`,transition:"color 0.32s,border-color 0.32s" }}>{sector.tag}</span>
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"4px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.45)":sector.accent+"55"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap" }}>{sector.tag}</span>
       </div>
 
-      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:14 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(32px,4vw,52px)",letterSpacing:"-0.025em",lineHeight:0.98,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{sector.label}</h2>
-        <p style={{ fontSize:14,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,maxWidth:300,transition:"color 0.32s" }}>{sector.blurb}</p>
+      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(24px,3.5vw,52px)",letterSpacing:"-0.025em",lineHeight:0.98,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"break-word" }}>{sector.label}</h2>
+        <p style={{ fontSize:"clamp(12px,1.4vw,14px)",color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,transition:"color 0.32s" }}>{sector.blurb}</p>
       </div>
 
       {/* Spotlight case */}
       {spotlight && (
-        <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:14,transition:"border-color 0.32s" }}>
-          <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:5 }}>Sample work</p>
+        <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
+          <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Sample work</p>
           <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
-            <p style={{ fontSize:12,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s" }}>{spotlight.title.length>62?spotlight.title.slice(0,60)+"…":spotlight.title}</p>
-            <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:16,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
+            <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0 }}>{spotlight.title.length>62?spotlight.title.slice(0,60)+"…":spotlight.title}</p>
+            <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:15,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
           </div>
         </div>
       )}
@@ -368,7 +368,7 @@ function MethodologySection({ onOpen }) {
         <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
         <h2 style={H2}>Purpose-built frameworks</h2>
       </div>
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="method-grid">
         {STUDY_TYPES.map((st,i)=>(
           <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
             onClick={()=>onOpen(st.label, st.accent, RESEARCH_DATA.filter(d=>d.studyType===st.id))} />
@@ -391,10 +391,11 @@ function MethodTile({ st, index, total, onClick }) {
         background: hov ? st.accent : NS.surface,
         border:"none",
         borderRight: !isLast ? `1px solid ${NS.rule}` : "none",
-        padding:"36px 24px 28px",
-        cursor:"pointer",minHeight:240,display:"flex",flexDirection:"column",justifyContent:"space-between",gap:16,
+        borderBottom: `1px solid ${NS.rule}`,
+        padding:"clamp(20px,3vw,36px) clamp(16px,2vw,24px) clamp(18px,2.5vw,28px)",
+        cursor:"pointer",minHeight:"clamp(180px,22vw,240px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,
         transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",
-        fontFamily:"'DM Sans',sans-serif",
+        fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
       <div>
@@ -447,14 +448,14 @@ function GeoSection({ onOpen }) {
         <h2 style={H2}>Research across every major region</h2>
       </div>
       <div style={{ maxWidth:1160, margin:"28px auto 0", padding:"0 clamp(20px,4vw,44px)" }}>
-        <D3WorldMap dots={mapDots} onDotClick={g => onOpen(g.label, NS.blue, g.items)} />
+        <D3WorldMap dots={mapDots} onDotClick={g => onOpen(g.label, g.accent, g.items)} />
 
         {/* Region chips + Global banner */}
         <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7, marginTop:14, paddingBottom:"clamp(36px,5vw,64px)" }}>
           {mapDots.map(g => (
-            <button key={g.id} onClick={() => onOpen(g.label, NS.blue, g.items)}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = NS.blue; e.currentTarget.style.color = NS.blue; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = NS.rule; e.currentTarget.style.color = NS.inkSoft; }}
+            <button key={g.id} onClick={() => onOpen(g.label, g.accent, g.items)}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = g.accent; e.currentTarget.style.color = g.accent; e.currentTarget.style.background = `${g.accent}0d`; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = NS.rule; e.currentTarget.style.color = NS.inkSoft; e.currentTarget.style.background = NS.surface; }}
               style={{ fontSize:12, fontWeight:500, color:NS.inkSoft, background:NS.surface, border:`1px solid ${NS.rule}`, borderRadius:2, padding:"5px 11px", cursor:"pointer", transition:"all 0.15s", fontFamily:"'DM Sans',sans-serif" }}>
               {g.label}
             </button>
@@ -475,27 +476,27 @@ function GeoSection({ onOpen }) {
 
 function GlobalChip({ dot, onOpen }) {
   const [hov, setHov] = useState(false);
+  const col = dot.accent || NS.blue;
   return (
     <button
-      onClick={() => onOpen(dot.label, NS.blue, dot.items)}
+      onClick={() => onOpen(dot.label, col, dot.items)}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
         display:"inline-flex", alignItems:"center", gap:7,
         fontSize:12, fontWeight:600,
-        color: hov ? NS.surface : NS.blue,
-        background: hov ? NS.blue : `${NS.blue}0f`,
-        border:`1px solid ${hov ? NS.blue : `${NS.blue}30`}`,
+        color: hov ? NS.surface : col,
+        background: hov ? col : `${col}0f`,
+        border:`1px solid ${hov ? col : `${col}30`}`,
         borderRadius:2, padding:"5px 13px",
         cursor:"pointer", transition:"all 0.18s",
         fontFamily:"'DM Sans',sans-serif",
       }}
     >
-      {/* Small globe mark */}
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink:0 }}>
-        <circle cx="6" cy="6" r="5" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1"/>
-        <path d="M6 1 C4 3 4 9 6 11 M6 1 C8 3 8 9 6 11" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1" fill="none"/>
-        <line x1="1" y1="6" x2="11" y2="6" stroke={hov ? NS.surface : NS.blue} strokeWidth="1.1"/>
+        <circle cx="6" cy="6" r="5" stroke={hov ? NS.surface : col} strokeWidth="1.1"/>
+        <path d="M6 1 C4 3 4 9 6 11 M6 1 C8 3 8 9 6 11" stroke={hov ? NS.surface : col} strokeWidth="1.1" fill="none"/>
+        <line x1="1" y1="6" x2="11" y2="6" stroke={hov ? NS.surface : col} strokeWidth="1.1"/>
       </svg>
       Global / Multi-region
     </button>
@@ -564,7 +565,7 @@ function D3WorldMap({ dots, onDotClick }) {
   }, [ready, dots]);
 
   return (
-    <div style={{ background:"#0D1B27", borderRadius:3, overflow:"hidden", position:"relative" }}>
+    <div style={{ background:"#1A1612", borderRadius:3, overflow:"hidden", position:"relative" }}>
       {!ready && (
         <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center" }}>
           <span style={{ color:"rgba(255,255,255,0.3)", fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
@@ -575,8 +576,8 @@ function D3WorldMap({ dots, onDotClick }) {
           style={{ width:"100%", height:"auto", display:"block" }}
           onMouseLeave={() => { setHov(null); setTip(null); }}>
 
-          {/* Ocean */}
-          <rect width={W} height={H} fill="#0D1B27" />
+          {/* Ocean — warm dark */}
+          <rect width={W} height={H} fill="#1A1612" />
 
           {/* Graticule — subtle lat/lng grid lines */}
           {paths.length > 0 && (() => {
@@ -590,30 +591,32 @@ function D3WorldMap({ dots, onDotClick }) {
             return <path d={pathGen(graticule)} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />;
           })()}
 
-          {/* Country fills */}
+          {/* Country fills — warm dark land */}
           {paths.map(p => (
-            <path key={p.id} d={p.d} fill="#1C3045" stroke="rgba(255,255,255,0.09)" strokeWidth="0.4" />
+            <path key={p.id} d={p.d} fill="#2A2420" stroke="rgba(255,255,255,0.07)" strokeWidth="0.4" />
           ))}
 
           {/* Region dots */}
           {dotPos.map(g => {
-            const ih = hov === g.id;
+            const ih  = hov === g.id;
+            const col = g.accent || NS.blue;
+            const colSoft = col + "2E";
             return (
               <g key={g.id} style={{ cursor:"pointer" }}
                 onMouseEnter={() => { setHov(g.id); setTip({ id:g.id, x:g.x, y:g.y }); }}
                 onMouseLeave={() => { setHov(null); setTip(null); }}
                 onClick={() => onDotClick(g)}>
                 {/* Glow halo */}
-                <circle cx={g.x} cy={g.y} r={22} fill={ih ? "rgba(26,138,181,0.18)" : "rgba(0,95,134,0.10)"} style={{ transition:"fill 0.2s" }} />
+                <circle cx={g.x} cy={g.y} r={22} fill={ih ? `${col}2E` : `${col}14`} style={{ transition:"fill 0.2s" }} />
                 {/* Outer ring */}
-                <circle cx={g.x} cy={g.y} r={ih ? 10 : 7} fill="none" stroke={ih ? "#1A8AB5" : "#005F86"} strokeWidth="1.5" style={{ transition:"r 0.2s,stroke 0.2s" }} />
+                <circle cx={g.x} cy={g.y} r={ih ? 10 : 7} fill="none" stroke={col} strokeWidth={ih ? 2 : 1.5} style={{ transition:"r 0.2s" }} />
                 {/* Inner fill */}
-                <circle cx={g.x} cy={g.y} r={ih ? 5 : 3.5} fill={ih ? "#1A8AB5" : "#005F86"} style={{ transition:"r 0.2s,fill 0.2s" }} />
+                <circle cx={g.x} cy={g.y} r={ih ? 5 : 3.5} fill={col} style={{ transition:"r 0.2s" }} />
                 {/* Pulse ring on hover */}
                 {ih && (
-                  <circle cx={g.x} cy={g.y} r="10" fill="none" stroke="#1A8AB5" strokeWidth="1.2">
+                  <circle cx={g.x} cy={g.y} r="10" fill="none" stroke={col} strokeWidth="1.2">
                     <animate attributeName="r"       from="10" to="26" dur="1.4s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="0.6" to="0" dur="1.4s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" from="0.6" to="0"  dur="1.4s" repeatCount="indefinite" />
                   </circle>
                 )}
               </g>
@@ -624,14 +627,15 @@ function D3WorldMap({ dots, onDotClick }) {
           {tip && (() => {
             const g = dotPos.find(d => d.id === tip.id);
             if (!g) return null;
+            const col = g.accent || NS.blue;
             const TW = 160, TH = 38;
             const tx = Math.min(g.x + 14, W - TW - 4);
             const ty = Math.max(g.y - TH - 6, 4);
             return (
               <g style={{ pointerEvents:"none" }}>
-                <rect x={tx} y={ty} width={TW} height={TH} rx="2" fill="#1A3A52" />
+                <rect x={tx} y={ty} width={TW} height={TH} rx="2" fill={col} />
                 <text x={tx + 9} y={ty + 14} fontSize="10" fontWeight="700" fill="#fff" fontFamily="'DM Sans',sans-serif">{g.label}</text>
-                <text x={tx + 9} y={ty + 28} fontSize="9" fill="rgba(255,255,255,0.5)" fontFamily="'DM Sans',sans-serif">Click to explore work</text>
+                <text x={tx + 9} y={ty + 28} fontSize="9" fill="rgba(255,255,255,0.65)" fontFamily="'DM Sans',sans-serif">Click to explore work</text>
               </g>
             );
           })()}
@@ -656,7 +660,7 @@ function ExpertiseSection({ onOpen }) {
         <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
         <h2 style={H2}>How we engage respondents</h2>
       </div>
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(20px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}>
+      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
         {cards.map((c,i)=>(
           <ExpertiseTile key={c.label} card={c} isLast={i===cards.length-1}
             onClick={()=>onOpen(c.label, c.accent, c.items)} />
@@ -673,7 +677,7 @@ function ExpertiseTile({ card, isLast, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",padding:"44px 36px 36px",cursor:"pointer",minHeight:340,display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif" }}>
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(24px,4vw,44px) clamp(18px,3vw,36px) clamp(20px,3vw,36px)",cursor:"pointer",minHeight:"clamp(260px,30vw,340px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
       <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":card.accent,marginBottom:10,display:"block",transition:"color 0.32s" }}>{card.tag}</span>
       <h3 style={{ fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:hov?"#fff":NS.ink,lineHeight:1.15,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
@@ -716,6 +720,23 @@ export default function Research() {
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-thumb { background:${NS.rule}; border-radius:3px; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
+
+        /* ── Mobile breakpoints ── */
+        @media (max-width: 700px) {
+          .sectors-grid   { grid-template-columns: 1fr !important; }
+          .method-grid    { grid-template-columns: 1fr 1fr !important; }
+          .expertise-grid { grid-template-columns: 1fr !important; }
+          .popup-grid     { grid-template-columns: 1fr !important; }
+          /* Reset offset on single-col masonry */
+          .popup-grid > div:last-child { margin-top: 0 !important; }
+          /* Sector right border gone when 1-col */
+          .sectors-grid   button { border-right: none !important; }
+          .expertise-grid button { border-right: none !important; }
+        }
+        @media (max-width: 480px) {
+          .method-grid    { grid-template-columns: 1fr !important; }
+          .method-grid    button { border-right: none !important; }
+        }
       `}</style>
 
       <div style={{ background:NS.paper,minHeight:"100vh" }}>
