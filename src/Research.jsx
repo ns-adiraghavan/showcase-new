@@ -98,15 +98,18 @@ const RESEARCH_DATA = [
   { title:"AI Ethics and Transparency Impact Assessment", desc:"Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry:"tech", studyType:"AI Readiness", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1ggtWzS3z5NkYro1QefJMT5oW9upYzPYV") },
 ];
 
+// Industry order: Tech → Telecom → Retail → F&B → Auto → BFSI → Mfg → Healthcare
+const SECTOR_ORDER = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
+
 const SECTORS = [
-  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  tag:"Mobility",   blurb:"EV transition, OEM strategy, ADAS and mobility.", spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
-  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, tag:"Finance",    blurb:"Fintech, embedded finance, payments and insurance.", spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
-  { id:"tech",    label:"Technology & Software", accent:NS.blue,       tag:"Technology", blurb:"SaaS, AI adoption, cloud strategy and B2B GTM.", spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
-  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   tag:"Telecom",    blurb:"5G, spectrum strategy and enterprise connectivity.", spotlight:"AI Adoption in Telecom Sector" },
-  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   tag:"Health",     blurb:"Pharma CI, digital health and payer dynamics.", spotlight:"Product Concept Testing for CT and MRI Products" },
-  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  tag:"Industrial", blurb:"Industry 4.0, automation ROI and supply chains.", spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
-  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        tag:"Retail",     blurb:"Shopper insights, brand equity and channel strategy.", spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
-  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   tag:"F&B",        blurb:"Consumer preference, concept testing and beverage trends.", spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
+  { id:"tech",    label:"Technology & Software", accent:NS.blue,       tag:"Technology", blurb:"SaaS, AI adoption, cloud strategy and B2B GTM.",              spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
+  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   tag:"Telecom",    blurb:"5G, spectrum strategy and enterprise connectivity.",          spotlight:"AI Adoption in Telecom Sector" },
+  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        tag:"Retail",     blurb:"Shopper insights, brand equity and channel strategy.",        spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
+  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   tag:"F&B",        blurb:"Consumer preference, concept testing and beverage trends.",   spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
+  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  tag:"Mobility",   blurb:"EV transition, OEM strategy, ADAS and mobility.",             spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
+  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, tag:"Finance",    blurb:"Fintech, embedded finance, payments and insurance.",           spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
+  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  tag:"Industrial", blurb:"Industry 4.0, automation ROI and supply chains.",             spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
+  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   tag:"Health",     blurb:"Pharma CI, digital health and payer dynamics.",               spotlight:"Product Concept Testing for CT and MRI Products" },
 ];
 
 const STUDY_TYPES = [
@@ -276,7 +279,7 @@ function ResearchNav() {
 
   return (
     <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,display:"flex",alignItems:"center",height:52,padding:"0 clamp(16px,4vw,44px)" }}>
-      <a href="/" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto",minWidth:0,overflow:"hidden" }}>
+      <a href="/research" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto",minWidth:0,overflow:"hidden" }}>
         <img src={logoSrc} alt="Netscribes" style={{ height:19,objectFit:"contain",opacity:0.85,flexShrink:0 }} />
         <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted,whiteSpace:"nowrap" }}> / Research</span>
       </a>
@@ -359,22 +362,69 @@ function SectorTile({ sector, index, total, onClick }) {
 }
 
 // ─── SECTION 02 — Methodology ─────────────────────────────────────
-// Full bleed section — same tile pattern, 5-col or wraps to 3/2
+// Tile grid → inline filtered view on click (like main showcase pattern)
 function MethodologySection({ onOpen }) {
-  const [ref,vis] = useFadeIn();
+  const [ref, vis] = useFadeIn();
+  const [active, setActive] = useState(null); // studyType id when drilling in
+
+  const activeST = active ? STUDY_TYPES.find(s => s.id === active) : null;
+
   return (
-    <section id="methodology" ref={ref} style={{ background:NS.paperDeep,opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease",marginTop:0 }}>
-      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
-        <h2 style={H2}>Purpose-built frameworks</h2>
+    <section id="methodology" ref={ref} style={{ background:NS.paperDeep, opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
+
+        {/* Header row — back button when drilling in */}
+        <div style={{ display:"flex", alignItems:"center", gap:16, marginBottom:8, flexWrap:"wrap" }}>
+          {active && (
+            <button onClick={()=>setActive(null)} style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:12,fontWeight:700,color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 12px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"color 0.15s" }}
+              onMouseEnter={e=>e.currentTarget.style.color=NS.ink}
+              onMouseLeave={e=>e.currentTarget.style.color=NS.muted}>
+              ← All Frameworks
+            </button>
+          )}
+          <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
+        </div>
+
+        {active
+          ? <h2 style={H2}>{activeST.label}</h2>
+          : <h2 style={H2}>Purpose-built frameworks</h2>
+        }
       </div>
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="method-grid">
-        {STUDY_TYPES.map((st,i)=>(
-          <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
-            onClick={()=>onOpen(st.label, st.accent, RESEARCH_DATA.filter(d=>d.studyType===st.id))} />
-        ))}
-      </div>
-      <div style={{ height:"clamp(36px,5vw,64px)" }} />
+
+      {/* ── Tile grid view ── */}
+      {!active && (
+        <>
+          <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="method-grid">
+            {STUDY_TYPES.map((st,i)=>(
+              <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
+                onClick={()=>setActive(st.id)} />
+            ))}
+          </div>
+          <div style={{ height:"clamp(36px,5vw,64px)" }} />
+        </>
+      )}
+
+      {/* ── Inline filtered view ── */}
+      {active && activeST && (
+        <InlineFilteredView
+          filterKey="method"
+          accent={activeST.accent}
+          baseItems={RESEARCH_DATA.filter(d => d.studyType === active)}
+          pill2Label="Audience"
+          pill2Options={[
+            { id:"B2B",  label:"B2B" },
+            { id:"B2C",  label:"B2C" },
+            { id:"Dual", label:"Dual / Secondary" },
+          ]}
+          pill2Filter={(items, val) => {
+            if (val === "B2B")  return items.filter(d => d.primaryType === "B2B");
+            if (val === "B2C")  return items.filter(d => d.primaryType === "B2C");
+            if (val === "Dual") return items.filter(d => d.primaryType === null);
+            return items;
+          }}
+          onOpen={onOpen}
+        />
+      )}
     </section>
   );
 }
@@ -386,18 +436,7 @@ function MethodTile({ st, index, total, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{
-        textAlign:"left",
-        background: hov ? st.accent : NS.surface,
-        border:"none",
-        borderRight: !isLast ? `1px solid ${NS.rule}` : "none",
-        borderBottom: `1px solid ${NS.rule}`,
-        padding:"clamp(20px,3vw,36px) clamp(16px,2vw,24px) clamp(18px,2.5vw,28px)",
-        cursor:"pointer",minHeight:"clamp(180px,22vw,240px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,
-        transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",
-        fontFamily:"'DM Sans',sans-serif", width:"100%",
-      }}
-    >
+      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(20px,3vw,36px) clamp(16px,2vw,24px) clamp(18px,2.5vw,28px)",cursor:"pointer",minHeight:"clamp(180px,22vw,240px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div>
         <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
         <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.7)":st.accent,display:"block",marginBottom:10,transition:"color 0.28s" }}>{st.tag}</span>
@@ -406,6 +445,104 @@ function MethodTile({ st, index, total, onClick }) {
       </div>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",transition:"border-color 0.28s" }}>
         <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
+      </div>
+    </button>
+  );
+}
+
+// ─── Shared inline filtered view (used by Methodology + Expertise) ──
+// Shows industry cards for a given base set, with filter pills for
+// region and a second dimension (audience or framework type).
+// Clicking an industry card opens the masonry popup.
+function InlineFilteredView({ accent, baseItems, pill2Label, pill2Options, pill2Filter, onOpen }) {
+  const [geo,  setGeo]  = useState(null);
+  const [pill2, setPill2] = useState(null);
+
+  // Apply filters
+  let filtered = baseItems;
+  if (geo)    filtered = filtered.filter(d => d.geo.includes(geo));
+  if (pill2)  filtered = pill2Filter(filtered, pill2);
+
+  // Build industry cards — only sectors that have matching cases, in SECTOR_ORDER
+  const industryCards = SECTORS.filter(s =>
+    filtered.some(d => d.industry === s.id)
+  );
+
+  const GEO_OPTIONS = [...new Set(baseItems.flatMap(d => d.geo))].filter(g => g !== "Global").sort();
+
+  return (
+    <div style={{ maxWidth:1160, margin:"0 auto", padding:"28px clamp(16px,4vw,44px) clamp(36px,5vw,64px)", animation:"rc-pop 0.22s ease both" }}>
+
+      {/* Filter pills row */}
+      <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:28, alignItems:"center" }}>
+        {/* Geography pills */}
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>Region</span>
+        <PillBtn label="All" active={!geo} color={accent} onClick={()=>setGeo(null)} />
+        {GEO_OPTIONS.map(g => (
+          <PillBtn key={g} label={g} active={geo===g} color={accent} onClick={()=>setGeo(geo===g?null:g)} />
+        ))}
+
+        {/* Divider */}
+        <span style={{ width:1,height:18,background:NS.rule,display:"inline-block",margin:"0 6px" }} />
+
+        {/* Second dimension pills */}
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>{pill2Label}</span>
+        <PillBtn label="All" active={!pill2} color={accent} onClick={()=>setPill2(null)} />
+        {pill2Options.map(o => (
+          <PillBtn key={o.id} label={o.label} active={pill2===o.id} color={accent} onClick={()=>setPill2(pill2===o.id?null:o.id)} />
+        ))}
+      </div>
+
+      {/* Industry cards grid */}
+      {industryCards.length === 0 ? (
+        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No work samples match these filters.</div>
+      ) : (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:12 }} className="industry-cards-grid">
+          {industryCards.map(sector => {
+            const sectorItems = filtered.filter(d => d.industry === sector.id);
+            return (
+              <IndustryCard
+                key={sector.id}
+                sector={sector}
+                items={sectorItems}
+                onOpen={() => onOpen(sector.label, sector.accent, sectorItems)}
+              />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PillBtn({ label, active, color, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ fontSize:11,fontWeight:active?700:500,color:active?"#fff":(hov?color:NS.muted),background:active?color:(hov?`${color}10`:"transparent"),border:`1px solid ${active?color:(hov?color:NS.rule)}`,borderRadius:2,padding:"4px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>
+      {label}
+    </button>
+  );
+}
+
+function IndustryCard({ sector, items, onOpen }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button onClick={onOpen}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ textAlign:"left",background:hov?sector.accent:NS.surface,border:`1.5px solid ${hov?sector.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${sector.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
+      {/* Accent colour header band */}
+      <div style={{ background:sector.accent, padding:"22px 20px 18px", transition:"background 0.22s", position:"relative" }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:"rgba(255,255,255,0.65)",display:"block",marginBottom:6 }}>{sector.tag}</span>
+        <h3 style={{ fontSize:16,fontWeight:700,color:"#fff",letterSpacing:"-0.01em",lineHeight:1.2 }}>{sector.label}</h3>
+        <span style={{ position:"absolute",top:16,right:16,fontSize:18,color:"rgba(255,255,255,0.7)" }}>↗</span>
+      </div>
+      {/* Body */}
+      <div style={{ padding:"14px 20px 18px",flex:1 }}>
+        <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.55,transition:"color 0.22s" }}>{sector.blurb}</p>
       </div>
     </button>
   );
@@ -565,10 +702,10 @@ function D3WorldMap({ dots, onDotClick }) {
   }, [ready, dots]);
 
   return (
-    <div style={{ background:"#1A1612", borderRadius:3, overflow:"hidden", position:"relative" }}>
+    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}` }}>
       {!ready && (
-        <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <span style={{ color:"rgba(255,255,255,0.3)", fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
+        <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center", background:NS.paper }}>
+          <span style={{ color:NS.muted, fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
         </div>
       )}
       {ready && (
@@ -576,8 +713,8 @@ function D3WorldMap({ dots, onDotClick }) {
           style={{ width:"100%", height:"auto", display:"block" }}
           onMouseLeave={() => { setHov(null); setTip(null); }}>
 
-          {/* Ocean — warm dark */}
-          <rect width={W} height={H} fill="#1A1612" />
+          {/* Ocean — paper background */}
+          <rect width={W} height={H} fill={NS.paper} />
 
           {/* Graticule — subtle lat/lng grid lines */}
           {paths.length > 0 && (() => {
@@ -588,37 +725,32 @@ function D3WorldMap({ dots, onDotClick }) {
               .translate([W / 2, H / 2]);
             const pathGen = d3.geoPath().projection(projection);
             const graticule = d3.geoGraticule()();
-            return <path d={pathGen(graticule)} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />;
+            return <path d={pathGen(graticule)} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="0.5" />;
           })()}
 
-          {/* Country fills — warm dark land */}
+          {/* Country fills — warm paper land */}
           {paths.map(p => (
-            <path key={p.id} d={p.d} fill="#2A2420" stroke="rgba(255,255,255,0.07)" strokeWidth="0.4" />
+            <path key={p.id} d={p.d} fill={NS.paperDeep} stroke="rgba(0,0,0,0.08)" strokeWidth="0.4" />
           ))}
 
-          {/* Region dots */}
+          {/* Region dots — accent colours, continuous pulse on all, faster on hover */}
           {dotPos.map(g => {
             const ih  = hov === g.id;
             const col = g.accent || NS.blue;
-            const colSoft = col + "2E";
             return (
               <g key={g.id} style={{ cursor:"pointer" }}
                 onMouseEnter={() => { setHov(g.id); setTip({ id:g.id, x:g.x, y:g.y }); }}
                 onMouseLeave={() => { setHov(null); setTip(null); }}
                 onClick={() => onDotClick(g)}>
-                {/* Glow halo */}
-                <circle cx={g.x} cy={g.y} r={22} fill={ih ? `${col}2E` : `${col}14`} style={{ transition:"fill 0.2s" }} />
+                {/* Continuous pulse ring — always animating, faster on hover */}
+                <circle cx={g.x} cy={g.y} r={ih?10:7} fill="none" stroke={col} strokeWidth="1">
+                  <animate attributeName="r"       values={ih?"10;28":"7;20"} dur={ih?"1.1s":"2.8s"} repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.55;0"            dur={ih?"1.1s":"2.8s"} repeatCount="indefinite" />
+                </circle>
                 {/* Outer ring */}
-                <circle cx={g.x} cy={g.y} r={ih ? 10 : 7} fill="none" stroke={col} strokeWidth={ih ? 2 : 1.5} style={{ transition:"r 0.2s" }} />
+                <circle cx={g.x} cy={g.y} r={ih?10:7} fill="none" stroke={col} strokeWidth={ih?2:1.5} />
                 {/* Inner fill */}
-                <circle cx={g.x} cy={g.y} r={ih ? 5 : 3.5} fill={col} style={{ transition:"r 0.2s" }} />
-                {/* Pulse ring on hover */}
-                {ih && (
-                  <circle cx={g.x} cy={g.y} r="10" fill="none" stroke={col} strokeWidth="1.2">
-                    <animate attributeName="r"       from="10" to="26" dur="1.4s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="0.6" to="0"  dur="1.4s" repeatCount="indefinite" />
-                  </circle>
-                )}
+                <circle cx={g.x} cy={g.y} r={ih?5:3.5} fill={col} />
               </g>
             );
           })}
@@ -646,27 +778,67 @@ function D3WorldMap({ dots, onDotClick }) {
 }
 
 // ─── SECTION 04 — Expertise ───────────────────────────────────────
-// Same tile pattern — 3 wide tiles, no full-bleed background colour
 function ExpertiseSection({ onOpen }) {
-  const [ref,vis] = useFadeIn();
-  const cards = [
-    { label:"B2B Research",         tag:"Decision-maker intelligence", accent:NS.blue,       desc:"Executive interviews, expert panels, win/loss studies, buyer journey research and industrial surveys — reaching CxOs, procurement leaders and technical decision-makers across 40+ markets.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"), featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
-    { label:"B2C & Consumer Research", tag:"Consumer depth",           accent:ACCENT.plum,   desc:"Consumer surveys, ethnographic studies, focus groups, diary studies and online communities — with deep panel access across retail, FMCG, lifestyle and financial services segments.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"), featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
-    { label:"Dual B2B / B2C",       tag:"Mixed audience research",     accent:ACCENT.forest, desc:"Complex programmes combining stakeholder and end-consumer perspectives — capturing the full market picture from manufacturer to final user across diverse geographies.", items:RESEARCH_DATA.filter(d=>d.primaryType===null), featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","Concept Testing: Cider Category Innovation Pipeline"] },
+  const [ref, vis] = useFadeIn();
+  const [active, setActive] = useState(null); // "B2B" | "B2C" | "Dual"
+
+  const EXPERTISE_CARDS = [
+    { id:"B2B",  label:"B2B Research",         tag:"Decision-maker intelligence", accent:NS.blue,       desc:"Executive interviews, expert panels, win/loss studies, buyer journey research and industrial surveys — reaching CxOs, procurement leaders and technical decision-makers across 40+ markets.", featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
+    { id:"B2C",  label:"B2C & Consumer Research", tag:"Consumer depth",           accent:ACCENT.plum,   desc:"Consumer surveys, ethnographic studies, focus groups, diary studies and online communities — with deep panel access across retail, FMCG, lifestyle and financial services segments.", featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
+    { id:"Dual", label:"Dual B2B / B2C",       tag:"Mixed audience research",     accent:ACCENT.forest, desc:"Complex programmes combining stakeholder and end-consumer perspectives — capturing the full market picture from manufacturer to final user across diverse geographies.", featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","Concept Testing: Cider Category Innovation Pipeline"] },
   ];
+
+  const activeCard = active ? EXPERTISE_CARDS.find(c => c.id === active) : null;
+
+  const baseItems = active === "B2B"  ? RESEARCH_DATA.filter(d=>d.primaryType==="B2B")
+                  : active === "B2C"  ? RESEARCH_DATA.filter(d=>d.primaryType==="B2C")
+                  : active === "Dual" ? RESEARCH_DATA.filter(d=>d.primaryType===null)
+                  : [];
+
   return (
-    <section id="expertise" ref={ref} style={{ opacity:vis?1:0,transform:vis?"none":"translateY(14px)",transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(20px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
-        <h2 style={H2}>How we engage respondents</h2>
+    <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
+        <div style={{ display:"flex",alignItems:"center",gap:16,marginBottom:8,flexWrap:"wrap" }}>
+          {active && (
+            <button onClick={()=>setActive(null)} style={{ display:"inline-flex",alignItems:"center",gap:6,fontSize:12,fontWeight:700,color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 12px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"color 0.15s" }}
+              onMouseEnter={e=>e.currentTarget.style.color=NS.ink}
+              onMouseLeave={e=>e.currentTarget.style.color=NS.muted}>
+              ← All Engagement Types
+            </button>
+          )}
+          <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
+        </div>
+        {active
+          ? <h2 style={H2}>{activeCard.label}</h2>
+          : <h2 style={H2}>How we engage respondents</h2>
+        }
       </div>
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
-        {cards.map((c,i)=>(
-          <ExpertiseTile key={c.label} card={c} isLast={i===cards.length-1}
-            onClick={()=>onOpen(c.label, c.accent, c.items)} />
-        ))}
-      </div>
-      <div style={{ height:"clamp(36px,5vw,64px)" }} />
+
+      {/* ── Tile grid ── */}
+      {!active && (
+        <>
+          <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
+            {EXPERTISE_CARDS.map((c,i)=>(
+              <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
+                onClick={()=>setActive(c.id)} />
+            ))}
+          </div>
+          <div style={{ height:"clamp(36px,5vw,64px)" }} />
+        </>
+      )}
+
+      {/* ── Inline filtered view ── */}
+      {active && activeCard && (
+        <InlineFilteredView
+          filterKey="expertise"
+          accent={activeCard.accent}
+          baseItems={baseItems}
+          pill2Label="Framework"
+          pill2Options={STUDY_TYPES.map(s=>({ id:s.id, label:s.label }))}
+          pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
+          onOpen={onOpen}
+        />
+      )}
     </section>
   );
 }
