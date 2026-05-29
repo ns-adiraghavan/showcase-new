@@ -180,25 +180,39 @@ function CaseViewer({ item, accent, onClose }) {
   );
 }
 
-// ─── Items Popup — uneven masonry tile layout ─────────────────────
+// ─── Items Popup — masonry tiles with optional sector pills ──────
 function ItemsPopup({ title, accent, items, onClose, onOpen }) {
   useLock(true);
   useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
 
-  // Distribute items into 2 columns, alternating tall/short to create uneven feel
-  const col1 = items.filter((_,i)=>i%2===0);
-  const col2 = items.filter((_,i)=>i%2===1);
+  const [sectorFilter, setSectorFilter] = useState(null);
+  const presentSectors = SECTORS.filter(s => items.some(d => d.industry === s.id));
+  const hasMultipleSectors = presentSectors.length >= 2;
+
+  const filtered = sectorFilter ? items.filter(d => d.industry === sectorFilter) : items;
+  const col1 = filtered.filter((_,i)=>i%2===0);
+  const col2 = filtered.filter((_,i)=>i%2===1);
 
   return (
     <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:3000,background:"rgba(15,27,39,0.65)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
       <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:780,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
-        {/* Accent header bar */}
         <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
         <div style={{ padding:"20px 24px 14px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between" }}>
           <h3 style={{ fontSize:20,fontWeight:700,color:NS.ink,letterSpacing:"-0.02em" }}>{title}</h3>
           <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
         </div>
-        {/* Masonry-style 2-col grid — 1-col on narrow screens */}
+        {/* Sector pills — only if cases span multiple sectors */}
+        {hasMultipleSectors && (
+          <div style={{ padding:"10px 18px 10px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",flexWrap:"wrap",gap:5,alignItems:"center" }}>
+            <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>Sector</span>
+            <PillBtn label="All" active={!sectorFilter} color={accent} onClick={()=>setSectorFilter(null)} />
+            {presentSectors.map(s=>(
+              <PillBtn key={s.id} label={s.label} active={sectorFilter===s.id} color={s.accent}
+                onClick={()=>setSectorFilter(sectorFilter===s.id?null:s.id)} />
+            ))}
+          </div>
+        )}
+        {/* Masonry grid */}
         <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
           <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
             <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
@@ -309,7 +323,7 @@ function SectorSection({ onOpen }) {
 
       {/* ── Full hero grid (no selection) ── */}
       {!active && (
-        <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(2,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+        <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(4,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
           {SECTORS.map((s,i) => (
             <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
               onClick={() => setActive(s.id)} />
@@ -326,18 +340,14 @@ function SectorSection({ onOpen }) {
               <StripTab key={s.id} label={s.label} tag={s.tag} num={String(i+1).padStart(2,"0")}
                 active={s.id===active} color={s.accent}
                 borderRight={i < SECTORS.length-1}
-                onClick={() => setActive(s.id)} />
+                onClick={() => setActive(s.id===active ? null : s.id)} />
             ))}
           </div>
-          {/* Inline filtered view */}
-          <InlineFilteredView
-            accent={activeSector.accent}
-            baseItems={RESEARCH_DATA.filter(d => d.industry === active)}
-            pill2Label="Framework"
-            pill2Options={STUDY_TYPES.map(s => ({ id:s.id, label:s.label }))}
-            pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
+          {/* Framework tiles + B2B/B2C filter for this sector */}
+          <SectorFrameworkView
+            sector={activeSector}
+            items={RESEARCH_DATA.filter(d => d.industry === active)}
             onOpen={onOpen}
-            dimLabel="Region"
           />
         </div>
       )}
@@ -347,8 +357,9 @@ function SectorSection({ onOpen }) {
 
 function SectorTile({ sector, index, total, onClick }) {
   const [hov, setHov] = useState(false);
-  const isRight  = index%2===1;
-  const isBottom = index >= total-2;
+  const COLS = 4;
+  const isRight  = (index % COLS) === COLS-1 || index === total-1;
+  const isBottom = index >= total-COLS;
   const spotlight = RESEARCH_DATA.find(d=>d.title===sector.spotlight);
   return (
     <button onClick={onClick}
@@ -591,6 +602,118 @@ function IndustryCard({ sector, items, onOpen }) {
   );
 }
 
+
+// ─── SectorFrameworkView: shown inside Sector after selecting a sector ──
+// Shows framework tiles; clicking a tile opens the masonry popup for
+// sector × framework cases. B2B/B2C pills filter before showing popup.
+function SectorFrameworkView({ sector, items, onOpen }) {
+  const [audience, setAudience] = useState(null);
+  const [geo, setGeo] = useState(null);
+
+  const GEO_OPTIONS = [...new Set(items.flatMap(d=>d.geo))].filter(g=>g!=="Global").sort();
+
+  // Apply audience + geo filter
+  let filtered = items;
+  if (audience === "B2B")  filtered = filtered.filter(d=>d.primaryType==="B2B");
+  if (audience === "B2C")  filtered = filtered.filter(d=>d.primaryType==="B2C");
+  if (audience === "Dual") filtered = filtered.filter(d=>d.primaryType===null);
+  if (geo) filtered = filtered.filter(d=>d.geo.includes(geo));
+
+  // Only show framework tiles that have matching cases
+  const activeFrameworks = STUDY_TYPES.filter(st => filtered.some(d=>d.studyType===st.id));
+
+  return (
+    <div style={{ animation:"rc-pop 0.22s ease both" }}>
+      {/* Filter pills — 50/50 */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", border:`1px solid ${NS.rule}`, borderTop:"none" }}>
+        <div style={{ padding:"14px 18px", borderRight:`1px solid ${NS.rule}` }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Audience</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            {[{id:null,label:"All"},{id:"B2B",label:"B2B"},{id:"B2C",label:"B2C"},{id:"Dual",label:"Dual"}].map(o=>(
+              <PillBtn key={String(o.id)} label={o.label} active={audience===o.id} color={sector.accent} onClick={()=>setAudience(audience===o.id&&o.id?null:o.id)} />
+            ))}
+          </div>
+        </div>
+        <div style={{ padding:"14px 18px" }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Region</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            <PillBtn label="All" active={!geo} color={sector.accent} onClick={()=>setGeo(null)} />
+            {GEO_OPTIONS.map(g=>(
+              <PillBtn key={g} label={g} active={geo===g} color={sector.accent} onClick={()=>setGeo(geo===g?null:g)} />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Framework tiles */}
+      {activeFrameworks.length === 0 ? (
+        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No work samples match these filters.</div>
+      ) : (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:12, padding:"20px 0 clamp(36px,5vw,64px)" }}>
+          {activeFrameworks.map(st => {
+            const stItems = filtered.filter(d=>d.studyType===st.id);
+            return (
+              <FrameworkCard key={st.id} st={st} items={stItems}
+                onClick={() => onOpen(st.label, sector.accent, stItems)} />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FrameworkCard({ st, items, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:`1.5px solid ${hov?st.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${st.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
+      <div style={{ background:st.accent, padding:"20px 18px 16px", position:"relative" }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:"rgba(255,255,255,0.65)",display:"block",marginBottom:5 }}>{st.tag}</span>
+        <h3 style={{ fontSize:15,fontWeight:700,color:"#fff",letterSpacing:"-0.01em",lineHeight:1.2 }}>{st.label}</h3>
+        <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:"rgba(255,255,255,0.7)" }}>↗</span>
+      </div>
+      <div style={{ padding:"12px 18px 16px",flex:1 }}>
+        <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.55,transition:"color 0.22s" }}>{st.desc}</p>
+      </div>
+    </button>
+  );
+}
+
+// ─── SectorPillFilter: sector pills inside the geo popup ─────────
+// Shows sector pills at top of popup; clicking filters the case list.
+function SectorPillFilter({ items, accent, onOpen, onClose }) {
+  const [activeSector, setActiveSector] = useState(null);
+  const presentSectors = SECTORS.filter(s => items.some(d=>d.industry===s.id));
+  const filteredItems = activeSector ? items.filter(d=>d.industry===activeSector) : items;
+  const col1 = filteredItems.filter((_,i)=>i%2===0);
+  const col2 = filteredItems.filter((_,i)=>i%2===1);
+
+  return (
+    <>
+      <div style={{ padding:"10px 16px 8px", borderBottom:`1px solid ${NS.rule}`, display:"flex", flexWrap:"wrap", gap:5, alignItems:"center" }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>Sector</span>
+        <PillBtn label="All" active={!activeSector} color={accent} onClick={()=>setActiveSector(null)} />
+        {presentSectors.map(s=>(
+          <PillBtn key={s.id} label={s.label} active={activeSector===s.id} color={s.accent}
+            onClick={()=>setActiveSector(activeSector===s.id?null:s.id)} />
+        ))}
+      </div>
+      <div style={{ flex:1, overflowY:"auto", padding:"12px 16px 24px" }}>
+        <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
+          <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
+            {col1.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===0} onOpen={onOpen} />)}
+          </div>
+          <div style={{ display:"flex",flexDirection:"column",gap:10,marginTop:28 }}>
+            {col2.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===1} onOpen={onOpen} />)}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // ─── SECTION 03 — Geography (D3 + TopoJSON real world map) ───────
 // Loads d3 and topojson from CDN, fetches world-atlas countries-110m,
 // renders via Natural Earth projection into a dark SVG panel.
@@ -609,7 +732,6 @@ const GEO_CENTROIDS = {
 
 function GeoSection({ onOpen }) {
   const [ref, vis] = useFadeIn();
-  const [active, setActive] = useState(null);
 
   const allDots = GEO_DOTS.map(g => ({
     ...g,
@@ -619,74 +741,37 @@ function GeoSection({ onOpen }) {
 
   const mapDots   = allDots.filter(g => g.coords !== null);
   const globalDot = allDots.find(g => g.id === "Global");
-  const activeDot = active ? allDots.find(g => g.id === active) : null;
 
-  const handleDotClick = (g) => setActive(g.id);
+  // Clicking a dot or chip opens the masonry popup with sector-ordered pills
+  const handleOpen = (g) => {
+    // Sort items by SECTOR_ORDER for the popup
+    const ordered = [...g.items].sort((a,b) =>
+      SECTOR_ORDER.indexOf(a.industry) - SECTOR_ORDER.indexOf(b.industry)
+    );
+    onOpen(g.label, g.accent, ordered);
+  };
 
   return (
     <section id="geography" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(ACCENT.teal)}>03 — Global Reach</p>
-        <h2 style={H2}>{active ? (activeDot?.label || "Region") : "Research across every major region"}</h2>
+        <h2 style={H2}>Research across every major region</h2>
       </div>
-
-      {/* Map always visible */}
       <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
-        <D3WorldMap dots={mapDots} activeDot={active} onDotClick={handleDotClick} />
+        <D3WorldMap dots={mapDots} activeDot={null} onDotClick={handleOpen} />
+        <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7, marginTop:12, paddingBottom:"clamp(36px,5vw,64px)" }}>
+          {mapDots.map(g => (
+            <button key={g.id} onClick={() => handleOpen(g)}
+              onMouseEnter={e => { e.currentTarget.style.borderColor=g.accent; e.currentTarget.style.color=g.accent; e.currentTarget.style.background=`${g.accent}0d`; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor=NS.rule; e.currentTarget.style.color=NS.inkSoft; e.currentTarget.style.background=NS.surface; }}
+              style={{ fontSize:12,fontWeight:500,color:NS.inkSoft,background:NS.surface,border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
+              {g.label}
+            </button>
+          ))}
+          {globalDot && <span style={{ width:1,height:20,background:NS.rule,display:"inline-block",margin:"0 4px" }} />}
+          {globalDot && <GlobalChip dot={globalDot} onOpen={(_l,_a,items) => handleOpen({ ...globalDot, items })} />}
+        </div>
       </div>
-
-      {/* No selection: show chip row */}
-      {!active && (
-        <div style={{ maxWidth:1160, margin:"0 auto", padding:"12px clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
-          <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7 }}>
-            {mapDots.map(g => (
-              <button key={g.id} onClick={() => setActive(g.id)}
-                onMouseEnter={e => { e.currentTarget.style.borderColor=g.accent; e.currentTarget.style.color=g.accent; e.currentTarget.style.background=`${g.accent}0d`; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor=NS.rule; e.currentTarget.style.color=NS.inkSoft; e.currentTarget.style.background=NS.surface; }}
-                style={{ fontSize:12,fontWeight:500,color:NS.inkSoft,background:NS.surface,border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-                {g.label}
-              </button>
-            ))}
-            {globalDot && <span style={{ width:1,height:20,background:NS.rule,display:"inline-block",margin:"0 4px" }} />}
-            {globalDot && <GlobalChip dot={globalDot} onOpen={(label,accent,items)=>setActive("Global")} />}
-          </div>
-        </div>
-      )}
-
-      {/* Selection: compact strip + inline view */}
-      {active && activeDot && (
-        <div style={{ maxWidth:1160, margin:"0 auto", padding:"12px clamp(16px,4vw,44px) clamp(36px,5vw,64px)" }}>
-          {/* Strip with all regions */}
-          <div style={{ display:"grid", gridTemplateColumns:`repeat(${allDots.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface, marginBottom:0 }} className="geo-strip">
-            {allDots.map((g,i) => (
-              <StripTab key={g.id} label={g.label} tag="" num={String(i+1).padStart(2,"0")}
-                active={g.id===active} color={g.accent} borderRight={i < allDots.length-1}
-                onClick={() => setActive(g.id)} />
-            ))}
-          </div>
-          {/* Industry cards for this region */}
-          <InlineFilteredView
-            accent={activeDot.accent}
-            baseItems={activeDot.items}
-            pill2Label="Framework"
-            pill2Options={STUDY_TYPES.map(s=>({ id:s.id, label:s.label }))}
-            pill2Filter={(items, val) => items.filter(d => d.studyType === val)}
-            onOpen={onOpen}
-            dimLabel="Audience"
-            dimOptions={[
-              { id:"B2B", label:"B2B" },
-              { id:"B2C", label:"B2C" },
-              { id:"Dual", label:"Dual / Secondary" },
-            ]}
-            dimFilter={(items, val) => {
-              if (val==="B2B")  return items.filter(d=>d.primaryType==="B2B");
-              if (val==="B2C")  return items.filter(d=>d.primaryType==="B2C");
-              if (val==="Dual") return items.filter(d=>d.primaryType===null);
-              return items;
-            }}
-          />
-        </div>
-      )}
     </section>
   );
 }
@@ -813,7 +898,7 @@ function D3WorldMap({ dots, activeDot, onDotClick }) {
             <path key={p.id} d={p.d} fill="rgba(237,231,219,0.55)" stroke="rgba(0,0,0,0.12)" strokeWidth="0.5" />
           ))}
 
-          {/* Region dots — accent colours, continuous pulse on all, faster on hover */}
+          {/* Region dots — fixed: pulse is a SEPARATE expanding circle beneath static rings */}
           {dotPos.map(g => {
             const ih  = hov === g.id;
             const col = g.accent || NS.blue;
@@ -822,15 +907,15 @@ function D3WorldMap({ dots, activeDot, onDotClick }) {
                 onMouseEnter={() => { setHov(g.id); setTip({ id:g.id, x:g.x, y:g.y }); }}
                 onMouseLeave={() => { setHov(null); setTip(null); }}
                 onClick={() => onDotClick(g)}>
-                {/* Continuous pulse ring — always animating, faster on hover */}
-                <circle cx={g.x} cy={g.y} r={ih?10:7} fill="none" stroke={col} strokeWidth="1">
-                  <animate attributeName="r"       values={ih?"10;28":"7;20"} dur={ih?"1.1s":"2.8s"} repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.55;0"            dur={ih?"1.1s":"2.8s"} repeatCount="indefinite" />
+                {/* Expanding pulse ring — starts at dot size, expands outward */}
+                <circle cx={g.x} cy={g.y} r="7" fill="none" stroke={col} strokeWidth="1.2" opacity="0">
+                  <animate attributeName="r"       from="7"  to={ih?"28":"22"} dur={ih?"1.0s":"2.6s"} repeatCount="indefinite" />
+                  <animate attributeName="opacity" from="0.6" to="0"           dur={ih?"1.0s":"2.6s"} repeatCount="indefinite" />
                 </circle>
-                {/* Outer ring */}
-                <circle cx={g.x} cy={g.y} r={ih?10:7} fill="none" stroke={col} strokeWidth={ih?2:1.5} />
-                {/* Inner fill */}
-                <circle cx={g.x} cy={g.y} r={ih?5:3.5} fill={col} />
+                {/* Static outer ring */}
+                <circle cx={g.x} cy={g.y} r={ih?9:6} fill="none" stroke={col} strokeWidth={ih?2:1.5} />
+                {/* Static inner fill */}
+                <circle cx={g.x} cy={g.y} r={ih?4.5:3} fill={col} />
               </g>
             );
           })}
