@@ -18,6 +18,7 @@ const THUMBNAILS = {
     "Industry Analysis": "/thumbnails/GTM/Industry Analysis.jpg",
     "Competitive Benchmarking & Account Intelligence": "/thumbnails/GTM/Competitive Intelligence & Benchmarking.jpg",
     "Consumer Research": "/thumbnails/GTM/Consumer Research.jpg",
+    "Sales Enablement": "/thumbnails/GTM/Sales Enablement.jpg",
     "AI Readiness Assessment": "/thumbnails/GTM/AI Readiness Assessment.jpg",
   },
   design: {
@@ -487,10 +488,6 @@ const CURATED = {
       { title: "Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc: "Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry: "bfsi", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
       // ── Technology & Software ──
       { title: "Pricing Analysis for a Cloud-Based SCM Provider", desc: "Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry: "tech", ...driveFile("19XFI2m0RxC4wJxviP17jRpj_LHdCHu8X") },
-      { title: "Account Intelligence Sample Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
-      { title: "Account Intelligence Sample Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
-      { title: "Account Intelligence Sample Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
-      { title: "Account Intelligence Sample Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
       // ── Retail & Ecommerce ──
       { title: "Brand & Product Performance Tracking Study for Cleaning Wipes", desc: "Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry: "retail", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
       { title: "Competitive Landscape Analysis for Juice Market", desc: "Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry: "retail", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
@@ -523,6 +520,13 @@ const CURATED = {
       { title: "Consumer Journey Insights for a Health Supplements Retailer", desc: "Consumer journey research mapping touchpoints, decision triggers, and loyalty barriers for a health supplements retailer.", industry: "health", ...driveFile("1yH6nKKw9NJkGke1w3buqYRRpTajs1GBK") },
       // ── Manufacturing ──
       { title: "Customer Satisfaction for Petrochemical Products", desc: "B2B customer satisfaction research for a petrochemical products portfolio — supplier NPS, product performance ratings, and renewal intent.", industry: "mfg", ...driveFile("1vbaayaNvuL45j9SJTwKt77hh5PjBdD2I") },
+    ],
+    "Sales Enablement": [
+      // ── Technology & Software ──
+      { title: "Account Intelligence Sample Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
+      { title: "Account Intelligence Sample Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
+      { title: "Account Intelligence Sample Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
+      { title: "Account Intelligence Sample Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
     ],
     "AI Readiness Assessment": [
       // ── Telecommunication ──
