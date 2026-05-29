@@ -216,9 +216,13 @@ function ItemsPopup({ title, accent, items, onClose, onOpen }) {
 
 function CaseTile({ item, accent, tall, onOpen }) {
   const [hov, setHov] = useState(false);
-  const sectorLabel = SECTORS.find(s=>s.id===item.industry)?.label || item.industry;
+  const sector    = SECTORS.find(s=>s.id===item.industry);
+  const sectorLabel = sector?.label || item.industry;
+  const sectorAccent = sector?.accent || accent;
   const tagBg   = hov ? "rgba(255,255,255,0.18)" : `${accent}12`;
   const tagCol  = hov ? "#fff" : accent;
+  const indBg   = hov ? "rgba(255,255,255,0.14)" : `${sectorAccent}12`;
+  const indCol  = hov ? "rgba(255,255,255,0.85)" : sectorAccent;
   const muteBg  = hov ? "rgba(255,255,255,0.14)" : NS.paperDeep;
   const muteCol = hov ? "rgba(255,255,255,0.75)" : NS.muted;
   return (
@@ -242,8 +246,8 @@ function CaseTile({ item, accent, tall, onOpen }) {
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
         {/* Study type — accent coloured */}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:tagBg,color:tagCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>
-        {/* Industry */}
-        <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,fontWeight:600,transition:"all 0.18s" }}>{sectorLabel}</span>
+        {/* Industry — sector accent coloured */}
+        <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:indBg,color:indCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{sectorLabel}</span>
         {/* Audience */}
         {item.primaryType && <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,fontWeight:600,transition:"all 0.18s" }}>{item.primaryType}</span>}
         {/* All geo regions */}
@@ -263,7 +267,7 @@ function ResearchHero() {
             <span style={{ display:"inline-block",width:22,height:1,background:NS.red,flexShrink:0 }} />
             Research Capabilities
           </p>
-          <h1 style={{ fontWeight:700,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
+          <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
             Intelligence that{" "}
             <em style={{ fontStyle:"normal",color:NS.blue }}>drives decisions.</em>
           </h1>
@@ -383,7 +387,7 @@ function SectorTile({ sector, index, total, onClick }) {
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(16px,2vw,28px)",letterSpacing:"-0.025em",lineHeight:1.05,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"break-word" }}>{sector.label}</h2>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(16px,2vw,28px)",letterSpacing:"-0.025em",lineHeight:1.05,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
         <p style={{ fontSize:"clamp(12px,1.4vw,14px)",color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,transition:"color 0.32s" }}>{sector.blurb}</p>
       </div>
 
@@ -457,7 +461,6 @@ function MethodTile({ st, index, total, onClick }) {
       style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isRightEdge?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(24px,3vw,40px) clamp(20px,2.5vw,32px) clamp(22px,2.5vw,32px)",cursor:"pointer",minHeight:"clamp(220px,24vw,280px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div>
         <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.7)":st.accent,display:"block",marginBottom:10,transition:"color 0.28s" }}>{st.tag}</span>
         <h3 style={{ fontSize:"clamp(15px,1.6vw,18px)",fontWeight:700,letterSpacing:"-0.01em",color:hov?"#fff":NS.ink,lineHeight:1.25,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
         <p style={{ fontSize:"clamp(12px,1.2vw,13px)",lineHeight:1.6,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
@@ -1174,7 +1177,7 @@ function ExpertiseSection({ onOpen }) {
       {/* ── Header ── */}
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(ACCENT.forest)}>04 — Primary Research Expertise</p>
-        <h2 style={{ ...H2, maxWidth:640 }}>Global Data Collection. Local Market Intelligence.</h2>
+        <h2 style={{ ...H2, whiteSpace:"nowrap" }}>Global Data Collection. Local Market Intelligence.</h2>
 
         {/* Stat bar — full width, all 4 in one row */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
@@ -1230,7 +1233,6 @@ function ExpertiseTile({ card, isLast, onClick }) {
       onMouseLeave={()=>setHov(false)}
       style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(20px,3vw,36px) clamp(16px,2.5vw,28px) clamp(18px,3vw,30px)",cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
-      <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":card.accent,marginBottom:10,display:"block",transition:"color 0.32s" }}>{card.tag}</span>
       <h3 style={{ fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:hov?"#fff":NS.ink,lineHeight:1.15,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
       <p style={{ fontSize:13,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.65,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:14,marginTop:"auto",transition:"border-color 0.32s" }}>
