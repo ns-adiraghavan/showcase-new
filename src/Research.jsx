@@ -42,9 +42,9 @@ const RESEARCH_DATA = [
   { title:"IoT Application Trends in Seaports and Airports", desc:"Landscape study of IoT deployment patterns and emerging use cases across seaport and airport infrastructure globally.", industry:"tech", studyType:"Industry Analysis", geo:["Global"], primaryType:"B2B", ...driveFile("1xEEmufT_csgUIIqD16Qzl_KTyQ2wCEZ7") },
   { title:"Video Codec Technology Landscape Study", desc:"Technology landscape analysis of video codec standards, competitive positioning, and adoption trends across media and streaming verticals.", industry:"tech", studyType:"Industry Analysis", geo:["Global"], primaryType:"B2B", ...driveFile("1IEC8o3xWa4SXILBaATS5hl0jXjOPyEbJ") },
   { title:"Captive Market Assessment and ICT Opportunity Analysis in India", desc:"Market assessment of India's captive centre ecosystem and ICT investment opportunities across key verticals.", industry:"tech", studyType:"Industry Analysis", geo:["South Asia"], primaryType:"B2B", ...driveFile("1EWWod3hotQIQx66_PuNvjSP3qZrQWTVO") },
-  { title:"Market Assessment – Natural & Organic Hair Care Category Growth", desc:"Category-level market assessment identifying growth opportunity pockets within the natural and organic hair care segment.", industry:"retail", studyType:"Industry Analysis", geo:["Southeast Asia"], primaryType:"B2B", ...driveFile("1tFNxKAhP8dNrR6gCK5GYu7WCp-4AdgZp") },
+  { title:"Market Assessment – Natural & Organic Hair Care Category Growth", desc:"Category-level market assessment identifying growth opportunity pockets within the natural and organic hair care segment.", industry:"retail", studyType:"Industry Analysis", geo:["Southeast Asia"], primaryType:"Both", ...driveFile("1tFNxKAhP8dNrR6gCK5GYu7WCp-4AdgZp") },
   { title:"Market Assessment of Key Business Practices in Healthcare", desc:"Analysis of market structure and prevailing business practices across key healthcare subsectors.", industry:"health", studyType:"Industry Analysis", geo:["North America","Europe","South Asia"], primaryType:"B2B", ...driveFile("1regWEZQBYVVgIOGRMl33vmYzQFnvk2pE") },
-  { title:"Growth Opportunities in the Cleanroom Disposable PPE Market", desc:"Market sizing and opportunity analysis for cleanroom-grade disposable PPE across pharmaceutical, semiconductor, and biotech verticals.", industry:"health", studyType:"Industry Analysis", geo:["Europe"], primaryType:"B2B", ...driveFile("101AzajvFhcFnRL2Ha2noDp7UJnUDQl3y") },
+  { title:"Growth Opportunities in the Cleanroom Disposable PPE Market", desc:"Market sizing and opportunity analysis for cleanroom-grade disposable PPE across pharmaceutical, semiconductor, and biotech verticals.", industry:"health", studyType:"Industry Analysis", geo:["Europe"], primaryType:"Both", ...driveFile("101AzajvFhcFnRL2Ha2noDp7UJnUDQl3y") },
   { title:"Market Assessment Study on the Global Biosurfactant Industry", desc:"Comprehensive market assessment of the global biosurfactant industry — growth drivers, competitive landscape, and application segment analysis.", industry:"mfg", studyType:"Industry Analysis", geo:["Global"], primaryType:"B2B", ...driveFile("1CcM44Ui5DzNOuCrbiiKwH2X2_CeToHZf") },
   { title:"Market Assessment Study on the Indian Plastic Circular Economy", desc:"Industry analysis examining circular economy maturity, regulatory tailwinds, and opportunity landscape within India's plastics sector.", industry:"mfg", studyType:"Industry Analysis", geo:["South Asia"], primaryType:"B2B", ...driveFile("1k3pQg3-SHt_TRvSSq2WWiNix7anXbQ3s") },
   { title:"GTM Strategy for a Personal Finance Management App", desc:"Go-to-market strategy defining target segments, channel mix, and launch sequencing for a personal finance management application.", industry:"bfsi", studyType:"GTM", geo:["Europe"], primaryType:null, ...driveFile("1RaM068TLcSBPsf5pXviB7qotsd-M75BZ") },
@@ -57,21 +57,22 @@ const RESEARCH_DATA = [
   { title:"GTM Strategy for a Telecom Network Provider", desc:"End-to-end go-to-market strategy for a telecom network provider — segment prioritisation, value proposition design, and channel activation.", industry:"telecom", studyType:"GTM", geo:["South Asia"], primaryType:"B2B", ...driveFile("1gfWwabDqZAcfH5uXSkVjP4JQkoxUMk6n") },
   { title:"Market Assessment for Automotive Semi-active Suspension Technologies", desc:"GTM market assessment sizing the semi-active suspension technology opportunity — OEM adoption trends, key suppliers, and regional demand signals.", industry:"auto", studyType:"GTM", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1ntsutMQ_mA5KTicJ5-h7ez2sOzTyYi1c") },
   { title:"Product Concept Testing for CT and MRI Products", desc:"GTM concept validation study for diagnostic imaging products — clinician feedback, feature prioritisation, and market readiness assessment.", industry:"health", studyType:"GTM", geo:["North America","Europe"], primaryType:"B2B", ...driveFile("1zT8HVukcH-ltFkI9BxFbwjxKuUXb78P4") },
-  { title:"GTM & Market Potential for Flavoured Milk and Convergence Drinks", desc:"GTM study sizing market potential and identifying positioning opportunities for flavoured milk and convergence drink categories.", industry:"fnb", studyType:"GTM", geo:["Europe","North America"], primaryType:"B2B", ...driveFile("1dTowHuT15m6NhJOxniB5yHxastVd4MRL") },
+  { title:"GTM & Market Potential for Flavoured Milk and Convergence Drinks", desc:"GTM study sizing market potential and identifying positioning opportunities for flavoured milk and convergence drink categories.", industry:"fnb", studyType:"GTM", geo:["Europe","North America"], primaryType:"Both", ...driveFile("1dTowHuT15m6NhJOxniB5yHxastVd4MRL") },
   { title:"Concept Testing: Cider Category Innovation Pipeline", desc:"GTM concept testing identifying three winning flavour territories to fuel a cider brand's innovation pipeline.", industry:"fnb", studyType:"GTM", geo:["Europe","Asia","North America","Africa"], primaryType:"B2C", ...driveFile("1suEViXrD19MVg8qJXmWo-XbYuhkEM-hJ") },
-  { title:"Concept Testing: Product Innovation for a QSR Chain", desc:"GTM concept validation delivering product innovation recommendations for a quick service restaurant chain.", industry:"fnb", studyType:"GTM", geo:["Europe"], primaryType:"B2B", ...driveFile("1IM-SYWOE58legIiTah0m9CUby18X7B8f") },
+  { title:"Concept Testing: Product Innovation for a QSR Chain", desc:"GTM concept validation delivering product innovation recommendations for a quick service restaurant chain.", industry:"fnb", studyType:"GTM", geo:["Europe"], primaryType:"Both", ...driveFile("1IM-SYWOE58legIiTah0m9CUby18X7B8f") },
   { title:"Concept Testing & Opportunity Assessment: Health Food Supplement Dispenser", desc:"GTM study evaluating concept appeal and market opportunity for a health food supplement and dispenser innovation.", industry:"fnb", studyType:"GTM", geo:["North America","Europe"], primaryType:"B2B", ...driveFile("1oHPqdb2m6C-9WkuvvIgaRUEbqYz4Yri7") },
   { title:"Go-to-Market Strategy for a Company Using AI to Revolutionise Drug Development", desc:"GTM strategy for an AI-powered drug development platform — target market identification, partnership model, and competitive differentiation.", industry:"health", studyType:"GTM", geo:["Middle East"], primaryType:"B2B", ...driveFile("1yxjFqhdT3dqx7ov-DN0GsRX3D1o0uNXp") },
   { title:"Go-to-Market Study for iPSC Stem Cell Therapies", desc:"GTM concept validation and market readiness study for induced pluripotent stem cell therapy products.", industry:"health", studyType:"GTM", geo:["Middle East"], primaryType:"B2B", ...driveFile("15mnFz9OQofDnNnDk7HzHEt57lFYvcNfm") },
   { title:"Enterprise Connectivity Service Delivery Process for Indian SMEs", desc:"Competitors' benchmarking study analyzing end-to-end service delivery workflows to pinpoint timeline delays and optimize B2B telecom process efficiency.", industry:"telecom", studyType:"Competitive Benchmarking", geo:["South Asia"], primaryType:"B2B", ...driveFile("1S0d_-frzWrQJJ3pZ2ub8OSiYfkUGlq6I") },
   { title:"Airline Loyalty Programs & Co-branded Credit Cards Benchmarking", desc:"Competitive benchmarking of airline co-branded credit card programmes — rewards architecture, partner economics, and cardholder acquisition strategies.", industry:"bfsi", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:null, ...driveFile("1VQHt0UZy5Q2FLhNmShUtLmIV_Ek3gswW") },
   { title:"Comparative Review of Cashback Credit Cards in the US", desc:"Side-by-side competitive analysis of leading cashback credit card products in the US market — earn rates, redemption mechanics, and fee structures.", industry:"bfsi", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:null, ...driveFile("1CEqhA2kNvql4_x0fDqn6_7eHp5ABic7d") },
-  { title:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc:"Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry:"bfsi", studyType:"Competitive Benchmarking", geo:["North America","Europe","Asia","Middle East","Africa"], primaryType:"B2B", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
+  { title:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company", desc:"Brand equity and competitive positioning benchmarking for a health insurance provider — awareness, NPS, and share-of-wallet analysis.", industry:"bfsi", studyType:"Competitive Benchmarking", geo:["North America","Europe","Asia","Middle East","Africa"], primaryType:"Both", ...driveFile("1bZQrQZUvjyOywOhzRs6X9ET-y5jGTHU3") },
   { title:"Pricing Analysis for a Cloud-Based SCM Provider", desc:"Competitive pricing intelligence study for a cloud-based supply chain management provider — tier structures, discounting patterns, and value metric benchmarks.", industry:"tech", studyType:"Competitive Benchmarking", geo:["Global"], primaryType:"B2B", ...driveFile("19XFI2m0RxC4wJxviP17jRpj_LHdCHu8X") },
-  { title:"Account Intelligence Sample Report – Level 1: Netflix", desc:"Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry:"tech", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:null, ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
-  { title:"Account Intelligence Sample Report – Level 2: Home Depot", desc:"Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry:"tech", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:null, ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
-  { title:"Account Intelligence Sample Report – Level 3: Tesco", desc:"Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry:"tech", studyType:"Competitive Benchmarking", geo:["Europe"], primaryType:null, ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
-  { title:"Account Intelligence Sample Report – Level 4: DuPont", desc:"Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry:"tech", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:null, ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
+  { title:"Account Intelligence Sample Report – Level 1: Netflix", desc:"Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry:"tech", studyType:"Sales Enablement", geo:["North America"], primaryType:null, ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
+  { title:"Account Intelligence Sample Report – Level 2: Home Depot", desc:"Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry:"tech", studyType:"Sales Enablement", geo:["North America"], primaryType:null, ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
+  { title:"Account Intelligence Sample Report – Level 3: Tesco", desc:"Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry:"tech", studyType:"Sales Enablement", geo:["Europe"], primaryType:null, ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
+  { title:"Account Intelligence Sample Report – Level 4: DuPont", desc:"Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry:"tech", studyType:"Sales Enablement", geo:["North America"], primaryType:null, ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
+  { title:"Scalable Data Augmentation through Synthetic Record Generation", desc:"A detailed case study on how Netscribes transformed a 50-record survey into a 500-record, ML-ready synthetic dataset in under two weeks.", industry:"tech", studyType:"Synthetic Data", geo:["Global"], primaryType:"B2B", ...driveFile("1uSBvuSAJ3w0zSVowREbkzCZPRttVuFw2") },
   { title:"Brand & Product Performance Tracking Study for Cleaning Wipes", desc:"Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry:"retail", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:"B2C", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
   { title:"Competitive Landscape Analysis for Juice Market", desc:"Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry:"fnb", studyType:"Competitive Benchmarking", geo:["Middle East","Africa"], primaryType:"B2B", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
   { title:"Middle East Portable Air Compressor and Hand-held Tool Market", desc:"Competitive intelligence on the Middle East market for portable air compressors and handheld power tools — rival capabilities and channel strategies.", industry:"mfg", studyType:"Competitive Benchmarking", geo:["Middle East"], primaryType:"B2B", ...driveFile("1-uxzXR3sRlI3sFlnvTeX2mWHRDRA0nvn") },
@@ -81,7 +82,7 @@ const RESEARCH_DATA = [
   { title:"Home Fitness Brand Performance Assessment", desc:"Consumer research assessing brand health, product satisfaction, and category engagement for a home fitness brand post-pandemic.", industry:"retail", studyType:"Consumer Research", geo:["Europe"], primaryType:"B2C", ...driveFile("146-JQwHnYONXWyug_4TWuwZ6Wj2CHHEt") },
   { title:"Brand Track & Product Evaluation – Improved Product Satisfaction After Redesign", desc:"Brand tracking study documenting measurable improvements in consumer product satisfaction following a packaging and formula redesign.", industry:"retail", studyType:"Consumer Research", geo:["South Asia","Southeast Asia"], primaryType:"B2C", ...driveFile("1JYPFSSrSn7KFEoPhMPV1tJogEhoRqZOu") },
   { title:"Consumer Perception, Product Test & Campaign Feedback for Skincare Products", desc:"Integrated consumer research combining perception testing, in-home product trials, and campaign feedback for a skincare portfolio.", industry:"retail", studyType:"Consumer Research", geo:["South Asia"], primaryType:"B2C", ...driveFile("1SUsoqLcnfnVbAtdK1rNQXXNe0eMAa0LV") },
-  { title:"Brand and Consumer Perception Analysis for AC", desc:"Consumer perception and brand health study for an air conditioner brand — awareness, consideration, and attribute-level satisfaction mapping.", industry:"retail", studyType:"Consumer Research", geo:["North America","Asia","Middle East"], primaryType:"B2B", ...driveFile("1g9ab50htfS1gruMp0ZWHIJh2fTfjXDPM") },
+  { title:"Brand and Consumer Perception Analysis for AC", desc:"Consumer perception and brand health study for an air conditioner brand — awareness, consideration, and attribute-level satisfaction mapping.", industry:"retail", studyType:"Consumer Research", geo:["North America","Asia","Middle East"], primaryType:"Both", ...driveFile("1g9ab50htfS1gruMp0ZWHIJh2fTfjXDPM") },
   { title:"Premium Perception & High-End Customer Satisfaction for a Premium Apparel Brand", desc:"Luxury consumer research study exploring premium brand perception and satisfaction drivers for a high-end apparel label.", industry:"retail", studyType:"Consumer Research", geo:["Middle East"], primaryType:"B2C", ...driveFile("1eAeN76WhH-8c6mI4HThCjn-ebCqKHHuJ") },
   { title:"Online Shopping Patterns for Women's Apparel in the United States", desc:"Consumer behaviour research on women's apparel online shopping — discovery paths, brand switching, and purchase frequency patterns in the US.", industry:"retail", studyType:"Consumer Research", geo:["North America"], primaryType:"B2C", ...driveFile("1JZ0dVtxQriQHIQ6lcKsIO8KHwEhdt_Kh") },
   { title:"Consumer Behavior Analysis for an E-Commerce Company", desc:"Shopper behaviour research for an e-commerce platform — basket composition, session patterns, and churn risk indicators.", industry:"retail", studyType:"Consumer Research", geo:["South Asia"], primaryType:"B2C", ...driveFile("1xruBD853cPSImWzfEowVhkW5pxZGI--l") },
@@ -91,7 +92,7 @@ const RESEARCH_DATA = [
   { title:"Consumer Insights & Trend Mapping: Women's Adult Beverages", desc:"Consumer research study mapping trends, usage occasions, and purchase motivations in the women's adult beverage category.", industry:"fnb", studyType:"Consumer Research", geo:["North America"], primaryType:"B2C", ...driveFile("1dc0qoUHqf4L_dF4gyOne-jgQ1vEHS8wS") },
   { title:"Product Positioning Study for Medjool Dates", desc:"Consumer research study identifying optimal positioning, messaging, and target segments for a premium Medjool dates brand.", industry:"fnb", studyType:"Consumer Research", geo:["South Asia"], primaryType:"B2B", ...driveFile("1mZXYuwWBepz0g30gsGqMRGrbpUM6Rev8") },
   { title:"Brand Perception & Consumer Behaviour Study for Premium Alcohol", desc:"Qualitative and quantitative study on brand perception, purchase occasions, and loyalty drivers in the premium alcohol category.", industry:"fnb", studyType:"Consumer Research", geo:["South Asia"], primaryType:"B2C", ...driveFile("1DirIDYg7Im9lEiYaBVQooA0wCB4vKWf8") },
-  { title:"Customer Perceptions on In-vehicle Health & Wellness Study", desc:"Primary research study on driver and passenger perceptions of in-vehicle health and wellness features — willingness-to-pay and feature prioritisation.", industry:"auto", studyType:"Consumer Research", geo:["Global"], primaryType:"B2B", ...driveFile("1yOAxwrMmQg6wOCrax1GELD9mfs7WUUun") },
+  { title:"Customer Perceptions on In-vehicle Health & Wellness Study", desc:"Primary research study on driver and passenger perceptions of in-vehicle health and wellness features — willingness-to-pay and feature prioritisation.", industry:"auto", studyType:"Consumer Research", geo:["Global"], primaryType:"Both", ...driveFile("1yOAxwrMmQg6wOCrax1GELD9mfs7WUUun") },
   { title:"Consumer Journey Insights for a Health Supplements Retailer", desc:"Consumer journey research mapping touchpoints, decision triggers, and loyalty barriers for a health supplements retailer.", industry:"health", studyType:"Consumer Research", geo:["Middle East"], primaryType:"B2C", ...driveFile("1yH6nKKw9NJkGke1w3buqYRRpTajs1GBK") },
   { title:"Customer Satisfaction for Petrochemical Products", desc:"B2B customer satisfaction research for a petrochemical products portfolio — supplier NPS, product performance ratings, and renewal intent.", industry:"mfg", studyType:"Consumer Research", geo:["Middle East","Asia","Europe","North America"], primaryType:"B2B", ...driveFile("1vbaayaNvuL45j9SJTwKt77hh5PjBdD2I") },
   { title:"AI Adoption in Telecom Sector", desc:"Global benchmarking study evaluating regional AI maturity, high-impact operator use cases, and capability gaps to sharpen GTM positioning.", industry:"telecom", studyType:"AI Readiness", geo:["North America","Europe","Asia","Middle East","Africa"], primaryType:"B2B", ...driveFile("10abj6wddyAktZvwSu3mt-S-kYHDh0fWU") },
@@ -102,22 +103,23 @@ const RESEARCH_DATA = [
 const SECTOR_ORDER = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
 
 const SECTORS = [
-  { id:"tech",    label:"Technology & Software", accent:NS.blue,       tag:"Technology", blurb:"SaaS, AI adoption, cloud strategy and B2B GTM.",              spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
-  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   tag:"Telecom",    blurb:"5G, spectrum strategy and enterprise connectivity.",          spotlight:"AI Adoption in Telecom Sector" },
-  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        tag:"Retail",     blurb:"Shopper insights, brand equity and channel strategy.",        spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
-  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   tag:"F&B",        blurb:"Consumer preference, concept testing and beverage trends.",   spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
-  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  tag:"Mobility",   blurb:"EV transition, OEM strategy, ADAS and mobility.",             spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
-  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, tag:"Finance",    blurb:"Fintech, embedded finance, payments and insurance.",           spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
-  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  tag:"Industrial", blurb:"Industry 4.0, automation ROI and supply chains.",             spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
-  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   tag:"Health",     blurb:"Pharma CI, digital health and payer dynamics.",               spotlight:"Product Concept Testing for CT and MRI Products" },
+  { id:"tech",    label:"Technology & Software", accent:NS.blue,       tag:"Technology", blurb:"GTM roadmaps, cloud & cyber intelligence, IoT trends, and mobility ecosystems",        spotlight:"GTM Strategy for a Cloud-Based Cybersecurity Startup" },
+  { id:"telecom", label:"Telecommunication",     accent:ACCENT.teal,   tag:"Telecom",    blurb:"Market entry, network provider strategy, AI adoption, and benchmarking",               spotlight:"AI Adoption in Telecom Sector" },
+  { id:"retail",  label:"Retail & E-commerce",  accent:NS.red,        tag:"Retail",     blurb:"Shopper insights, brand performance, U&A and concept testing",                         spotlight:"Online Shopping Patterns for Women's Apparel in the United States" },
+  { id:"fnb",     label:"Food & Beverage",       accent:ACCENT.rust,   tag:"F&B",        blurb:"Concept testing, competitive landscape, consumer preferences and product positioning",  spotlight:"Consumer Insights & Trend Mapping: Women's Adult Beverages" },
+  { id:"auto",    label:"Automotive",            accent:ACCENT.steel,  tag:"Mobility",   blurb:"EV transition, OEM strategy, ADAS and mobility.",                                      spotlight:"Market Assessment for Automotive Semi-active Suspension Technologies" },
+  { id:"bfsi",    label:"BFSI",                  accent:ACCENT.forest, tag:"Finance",    blurb:"Fintech, embedded finance, payments and insurance.",                                    spotlight:"Brand Health & Competitive Benchmarking Study for a Health Insurance Company" },
+  { id:"mfg",     label:"Manufacturing",         accent:ACCENT.amber,  tag:"Industrial", blurb:"Opportunity assessment, circular economy, equipment demand, and customer satisfaction intelligence", spotlight:"Market Assessment Study on the Global Biosurfactant Industry" },
+  { id:"health",  label:"Healthcare",            accent:ACCENT.plum,   tag:"Health",     blurb:"Medtech GTM, AI drug development, stem cell therapies, and consumer health insights",  spotlight:"Product Concept Testing for CT and MRI Products" },
 ];
 
 const STUDY_TYPES = [
-  { id:"Industry Analysis",        label:"Industry Analysis",       accent:NS.blue,        tag:"Landscape", desc:"Market sizing, landscape studies, TAM modelling and demand forecasting." },
-  { id:"GTM",                      label:"GTM Strategy",            accent:ACCENT.teal,    tag:"GTM",       desc:"Market entry, beachhead identification, channel selection and launch sequencing." },
-  { id:"Competitive Benchmarking", label:"Competitive Benchmarking",accent:ACCENT.amber,   tag:"Intel",     desc:"Rival profiling, win/loss analysis, account intelligence and pricing research." },
-  { id:"Consumer Research",        label:"Consumer Research",       accent:ACCENT.plum,    tag:"Consumer",  desc:"Attitude & usage studies, segmentation, needs mapping and brand tracking." },
-  { id:"AI Readiness",             label:"AI Readiness Assessment", accent:ACCENT.forest,  tag:"AI",        desc:"Enterprise maturity benchmarking across data, talent, infrastructure and deployment." },
+  { id:"Industry Analysis",        label:"Industry Analysis",       accent:NS.blue,        tag:"Landscape", desc:"In-depth landscape studies, market sizing, TAM modelling, and demand forecasting to guide strategic decisions." },
+  { id:"GTM",                      label:"GTM Strategy",            accent:ACCENT.teal,    tag:"DRIVE",     desc:"End-to-end go-to-market strategy, spanning new market entry, geographic expansion, and product innovation." },
+  { id:"Competitive Benchmarking", label:"Competitive Benchmarking",accent:ACCENT.amber,   tag:"RIVALS",    desc:"Competitor landscape mapping, pricing and product benchmarking, brand positioning, channel strategy, and customer experience analysis." },
+  { id:"Consumer Research",        label:"Consumer Research",       accent:ACCENT.plum,    tag:"Consumer",  desc:"Attitude & usage studies, consumer segmentation, needs mapping, brand tracking, and purchase behaviour analysis." },
+  { id:"Sales Enablement",         label:"Sales Enablement",        accent:ACCENT.steel,   tag:"INTEL",     desc:"Multi-level account intelligence coverage designed to align insight depth with sales objectives and deal maturity." },
+  { id:"AI Readiness",             label:"AI Readiness Assessment", accent:ACCENT.forest,  tag:"MATURITY",  desc:"AI adoption evaluation, competitive benchmarking, use case identification, and best practice analysis to position your organisation ahead of the curve." },
 ];
 
 const GEO_DOTS = [
@@ -259,12 +261,12 @@ function ResearchHero() {
             Research Capabilities
           </p>
           <h1 style={{ fontWeight:700,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
-            Deep research,{" "}
-            <em style={{ fontStyle:"normal",color:NS.blue }}>across every sector.</em>
+            Intelligence that{" "}
+            <em style={{ fontStyle:"normal",color:NS.blue }}>drives decisions.</em>
           </h1>
         </div>
         <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.65,maxWidth:360,fontWeight:400,minWidth:0 }}>
-          Pick a sector or methodology — every tile opens onto real work, filterable by geography and audience.
+          A full-spectrum research practice spanning diverse industries, geographies, and methodologies, delivering insights that power strategy, growth, and innovation.
         </p>
       </div>
     </div>
@@ -309,8 +311,8 @@ function SectorSection({ onOpen }) {
   return (
     <section id="sectors" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Our Industries of Expertise</p>
-        <h2 style={H2}>{active ? activeSector.label : "Sectors we know deeply"}</h2>
+        <p style={EYE(NS.blue)}>01 — Industry coverage</p>
+        <h2 style={H2}>{active ? activeSector.label : "Broad industry reach. Sharp market intelligence."}</h2>
       </div>
 
       {/* ── Full hero grid (no selection) ── */}
@@ -422,8 +424,8 @@ function MethodologySection({ onOpen }) {
   return (
     <section id="methodology" ref={ref} style={{ background:NS.paperDeep, opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.teal)}>02 — Research Methodology</p>
-        <h2 style={H2}>Purpose-built frameworks</h2>
+        <p style={EYE(ACCENT.teal)}>02 — Strategic research & intelligence solutions</p>
+        <h2 style={H2}>Data-backed solutions that power business growth</h2>
       </div>
       <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(5,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="method-grid">
         {STUDY_TYPES.map((st,i) => (
@@ -571,7 +573,7 @@ function SectorFrameworkView({ sector, items, onOpen }) {
   let filtered = items;
   if (audience === "B2B")  filtered = filtered.filter(d=>d.primaryType==="B2B");
   if (audience === "B2C")  filtered = filtered.filter(d=>d.primaryType==="B2C");
-  if (audience === "Dual") filtered = filtered.filter(d=>d.primaryType===null);
+  if (audience === "Dual") filtered = filtered.filter(d=>d.primaryType==="Both");
   if (geo) filtered = filtered.filter(d=>d.geo.includes(geo));
 
   // Only show framework tiles that have matching cases
@@ -897,27 +899,227 @@ function D3WorldMap({ dots, activeDot, onDotClick }) {
   );
 }
 
+// ─── SECTION 04 — Panel Stats ────────────────────────────────────
+const PANEL_STATS = [
+  { value:"20.2M", label:"Total panelists (proprietary)" },
+  { value:"8M",    label:"B2B panelists globally" },
+  { value:"12.2M", label:"B2C panelists globally" },
+  { value:"90+",   label:"Countries covered" },
+];
+
+const PANEL_CAPABILITIES = [
+  { title:"Qualitative Research",   body:"In-Depth Interviews (IDIs), Focus Group Discussions (FGDs), Expert Consultations — moderated in local languages across global markets." },
+  { title:"Quantitative Research",  body:"CATI, CAWI, CAPI, online panel surveys, large-scale quantitative studies — with SPSS analysis and cross-tabulation deliverables." },
+  { title:"Niche B2B Recruitment",  body:"LinkedIn & professional network outreach, industry event sourcing, client databases & referrals — filtered by job title, industry, experience & geography." },
+  { title:"Six-Fold QC Process",    body:"Geo-tag per panelist, time-stamping, Lat/Long monitoring, regular panel cleaning, quarterly quality surveys, double opt-in OTP verification." },
+];
+
+const B2B_PROFILE = {
+  sectors: [
+    { label:"IT",                  pct:26 },
+    { label:"Financial Services",  pct:20 },
+    { label:"Telecommunication",   pct:15 },
+    { label:"Automobile",          pct:13 },
+    { label:"Governmental Orgs",   pct:5  },
+    { label:"FMCG",                pct:5  },
+    { label:"Manufacturing",       pct:5  },
+    { label:"Others",              pct:10 },
+  ],
+  roles: [
+    { label:"C-Level Executives",       pct:27 },
+    { label:"High-Level Executives",    pct:18 },
+    { label:"Mid-Level Executives",     pct:45 },
+    { label:"Business Owners/Partners", pct:10 },
+  ],
+  companySize: [
+    { label:"Large",    pct:26 },
+    { label:"Medium",   pct:36 },
+    { label:"Small",    pct:19 },
+    { label:"Startups", pct:19 },
+  ],
+  regions:"Americas (25%), Europe (20%), APAC (40%), MEA (15%)",
+};
+
+const B2C_PROFILE = {
+  age: [
+    { label:"13–17", pct:1  },
+    { label:"18–24", pct:21 },
+    { label:"25–34", pct:35 },
+    { label:"35–44", pct:22 },
+    { label:"45–54", pct:12 },
+    { label:"55–64", pct:7  },
+    { label:"65+",   pct:2  },
+  ],
+  jobStatus: [
+    { label:"Full-Time",     pct:58 },
+    { label:"Part-Time",     pct:8  },
+    { label:"Self-Employed", pct:11 },
+    { label:"Homemaker",     pct:4  },
+    { label:"Student",       pct:9  },
+    { label:"Retired",       pct:5  },
+    { label:"Unemployed",    pct:4  },
+    { label:"Others",        pct:1  },
+  ],
+  income: [
+    { label:"<$20K",       pct:19 },
+    { label:"$20K–30K",    pct:17 },
+    { label:"$30K–50K",    pct:19 },
+    { label:"$50K–70K",    pct:15 },
+    { label:"$70K–100K",   pct:9  },
+    { label:"$100K–150K",  pct:9  },
+    { label:"$150K–200K",  pct:6  },
+    { label:"$200K+",      pct:3  },
+    { label:"Prefer not",  pct:1  },
+  ],
+  gender:  [{ label:"Male", pct:55 }, { label:"Female", pct:45 }],
+  regions: "Americas (25%), Europe (20%), APAC (40%), MEA (15%)",
+};
+
+function HBar({ label, pct, accent, delay=0 }) {
+  const [go, setGo] = useState(false);
+  useEffect(() => { const t = setTimeout(()=>setGo(true), delay); return ()=>clearTimeout(t); }, [delay]);
+  return (
+    <div style={{ marginBottom:9 }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:4 }}>
+        <span style={{ fontSize:12, color:NS.inkSoft, lineHeight:1.3 }}>{label}</span>
+        <span style={{ fontSize:11, fontWeight:700, color:accent, fontFamily:"'JetBrains Mono',monospace", flexShrink:0, marginLeft:8 }}>{pct}%</span>
+      </div>
+      <div style={{ height:4, background:NS.ruleSoft, borderRadius:2, overflow:"hidden" }}>
+        <div style={{ height:"100%", width:go?`${pct}%`:"0%", background:accent, borderRadius:2, transition:`width 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms` }} />
+      </div>
+    </div>
+  );
+}
+
+function PanelProfileSection() {
+  const [ref, vis] = useFadeIn();
+  const [tab, setTab] = useState("b2b");
+
+  return (
+    <div ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.5s ease, transform 0.5s ease", maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
+
+      {/* Tab strip */}
+      <div style={{ display:"flex", borderBottom:`1px solid ${NS.rule}`, marginBottom:32 }}>
+        {[{id:"b2b",label:"B2B Panel Profile",accent:NS.blue},{id:"b2c",label:"B2C Panel Profile",accent:ACCENT.plum}].map(t=>(
+          <button key={t.id} onClick={()=>setTab(t.id)}
+            style={{ fontFamily:"'DM Sans',sans-serif", fontSize:12, fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase",
+              color: tab===t.id ? t.accent : NS.muted,
+              background:"none", border:"none", borderBottom:`2px solid ${tab===t.id ? t.accent : "transparent"}`,
+              padding:"10px 24px 10px 0", cursor:"pointer", marginBottom:-1, transition:"color 0.2s, border-color 0.2s" }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "b2b" && (
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"0 40px" }} className="panel-grid">
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Dedicated Sector-wise Panel</p>
+            {B2B_PROFILE.sectors.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40} />)}
+          </div>
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Roles</p>
+            {B2B_PROFILE.roles.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40+80} />)}
+            <div style={{ marginTop:28 }}>
+              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:10 }}>Regions</p>
+              <p style={{ fontSize:13, color:NS.inkSoft, lineHeight:1.65 }}>{B2B_PROFILE.regions}</p>
+            </div>
+          </div>
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Company Size</p>
+            {B2B_PROFILE.companySize.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={NS.blue} delay={i*40+160} />)}
+          </div>
+        </div>
+      )}
+
+      {tab === "b2c" && (
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"0 40px" }} className="panel-grid">
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Age Brackets</p>
+            {B2C_PROFILE.age.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35} />)}
+            <div style={{ marginTop:24 }}>
+              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:14 }}>Gender</p>
+              {B2C_PROFILE.gender.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*40+280} />)}
+            </div>
+            <div style={{ marginTop:24 }}>
+              <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:10 }}>Regions</p>
+              <p style={{ fontSize:13, color:NS.inkSoft, lineHeight:1.65 }}>{B2C_PROFILE.regions}</p>
+            </div>
+          </div>
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Status</p>
+            {B2C_PROFILE.jobStatus.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35+100} />)}
+          </div>
+          <div>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Household Income</p>
+            {B2C_PROFILE.income.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={ACCENT.plum} delay={i*35+200} />)}
+          </div>
+        </div>
+      )}
+
+      <div style={{ height:"clamp(36px,4vw,52px)" }} />
+    </div>
+  );
+}
+
 // ─── SECTION 04 — Expertise ───────────────────────────────────────
 function ExpertiseSection({ onOpen }) {
   const [ref, vis] = useFadeIn();
   const EXPERTISE_CARDS = [
     { id:"B2B",  label:"B2B Research",            tag:"Decision-maker intelligence", accent:NS.blue,
-      desc:"Executive interviews, expert panels, win/loss studies and industrial surveys.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"),
+      desc:"In-depth interviews with CXOs, executives, industry experts/key stakeholders, and industrial surveys, reaching decision-makers and technical leads across global markets.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"),
       featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
     { id:"B2C",  label:"B2C & Consumer Research",  tag:"Consumer depth",              accent:ACCENT.plum,
-      desc:"Consumer surveys, ethnographic studies, focus groups and diary studies.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"),
+      desc:"Consumer surveys (CAPI/CATI/CAWI), focus groups, face-to-face interviews, home use tests, central location tests with deep panel access across sector. Covers voice of customers, brand tracking, usage and attitude, product concept testing, and shopper behaviour.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"),
       featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
     { id:"Dual", label:"Dual B2B / B2C",           tag:"Mixed audience research",     accent:ACCENT.forest,
-      desc:"Complex programmes combining stakeholder and end-consumer perspectives.", items:RESEARCH_DATA.filter(d=>d.primaryType===null),
-      featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","Concept Testing: Cider Category Innovation Pipeline"] },
+      desc:"Research programmes combining stakeholder and end-consumer perspectives. Captures the full market picture from category managers, procurement heads, and industry executives through to everyday consumers, shoppers, and end users across diverse geographies.", items:RESEARCH_DATA.filter(d=>d.primaryType==="Both"),
+      featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","GTM & Market Potential for Flavoured Milk and Convergence Drinks","Customer Perceptions on In-vehicle Health & Wellness Study"] },
+    { id:"Synthetic Data", label:"Synthetic Data",  tag:"INTEL",                       accent:ACCENT.steel,
+      desc:"Multi-level account intelligence coverage designed to align insight depth with sales objectives and deal maturity.", items:RESEARCH_DATA.filter(d=>d.studyType==="Synthetic Data"),
+      featured:["Scalable Data Augmentation through Synthetic Record Generation"] },
   ];
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.forest)}>04 — Research Expertise</p>
-        <h2 style={H2}>How we engage respondents</h2>
+
+      {/* ── Header + stats inline ── */}
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
+        <p style={EYE(ACCENT.forest)}>04 — Primary Research Expertise</p>
+        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:24, flexWrap:"wrap" }}>
+          <h2 style={{ ...H2, maxWidth:520 }}>Global Data Collection. Local Market Intelligence.</h2>
+          {/* Stat pills inline with header */}
+          <div style={{ display:"flex", gap:0, flexShrink:0 }}>
+            {PANEL_STATS.map((s,i)=>(
+              <div key={i} style={{ padding:"0 24px", borderLeft:`1px solid ${NS.rule}`, textAlign:"center" }}>
+                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(18px,2.2vw,26px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
+                <div style={{ fontSize:11, color:NS.muted, marginTop:5, lineHeight:1.4, maxWidth:110 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Capabilities row */}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }}>
+          {PANEL_CAPABILITIES.map((c,i)=>(
+            <div key={i} style={{ padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
+              <div style={{ width:20, height:2, background:ACCENT.forest, borderRadius:1, marginBottom:12 }} />
+              <p style={{ fontSize:12, fontWeight:700, color:NS.ink, marginBottom:6, lineHeight:1.3 }}>{c.title}</p>
+              <p style={{ fontSize:12, color:NS.muted, lineHeight:1.6 }}>{c.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div style={{ maxWidth:1160,margin:"32px auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
+
+      {/* ── Panel profiles (B2B / B2C tabbed charts) ── */}
+      <div style={{ maxWidth:1160, margin:"40px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
+        <PanelProfileSection />
+      </div>
+
+      {/* ── Expertise tiles ── */}
+      <div style={{ maxWidth:1160, margin:"0 auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
+        <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
+      </div>
+      <div style={{ maxWidth:1160,margin:"0 auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
         {EXPERTISE_CARDS.map((c,i)=>(
           <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
             onClick={()=>onOpen(c.label, c.accent, c.items)} />
@@ -935,7 +1137,7 @@ function ExpertiseTile({ card, isLast, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(24px,4vw,44px) clamp(18px,3vw,36px) clamp(20px,3vw,36px)",cursor:"pointer",minHeight:"clamp(260px,30vw,340px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(20px,3vw,36px) clamp(16px,2.5vw,28px) clamp(18px,3vw,30px)",cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
       <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":card.accent,marginBottom:10,display:"block",transition:"color 0.32s" }}>{card.tag}</span>
       <h3 style={{ fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:hov?"#fff":NS.ink,lineHeight:1.15,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
