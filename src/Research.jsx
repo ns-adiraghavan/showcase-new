@@ -193,7 +193,10 @@ function ItemsPopup({ title, accent, items, onClose, onOpen }) {
       <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:780,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
         <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
         <div style={{ padding:"20px 24px 14px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between" }}>
-          <h3 style={{ fontSize:20,fontWeight:700,color:NS.ink,letterSpacing:"-0.02em" }}>{title}</h3>
+          <div style={{ display:"flex",alignItems:"center",gap:10 }}>
+            <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
+            <h3 style={{ fontSize:20,fontWeight:700,color:accent,letterSpacing:"-0.02em" }}>{title}</h3>
+          </div>
           <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
         </div>
         <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
@@ -372,11 +375,11 @@ function SectorTile({ sector, index, total, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap" }}>
-        <span style={{ fontSize:11,fontWeight:500,letterSpacing:"0.12em",color:hov?"rgba(255,255,255,0.65)":NS.muted,transition:"color 0.32s" }}>
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
+        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
           {String(index+1).padStart(2,"0")} / {String(SECTORS.length).padStart(2,"0")}
         </span>
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"4px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.45)":sector.accent+"55"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap" }}>{sector.tag}</span>
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
@@ -551,11 +554,10 @@ function IndustryCard({ sector, items, onOpen }) {
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
       style={{ textAlign:"left",background:hov?sector.accent:NS.surface,border:`1.5px solid ${hov?sector.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${sector.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
-      {/* Accent colour header band */}
-      <div style={{ background:sector.accent, padding:"22px 20px 18px", transition:"background 0.22s", position:"relative" }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:"rgba(255,255,255,0.65)",display:"block",marginBottom:6 }}>{sector.tag}</span>
-        <h3 style={{ fontSize:16,fontWeight:700,color:"#fff",letterSpacing:"-0.01em",lineHeight:1.2 }}>{sector.label}</h3>
-        <span style={{ position:"absolute",top:16,right:16,fontSize:18,color:"rgba(255,255,255,0.7)" }}>↗</span>
+      <div style={{ padding:"22px 20px 18px", position:"relative", borderBottom:`1px solid ${hov?"rgba(255,255,255,0.15)":NS.ruleSoft}`, transition:"border-color 0.22s" }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":sector.accent,display:"block",marginBottom:6,transition:"color 0.22s" }}>{sector.tag}</span>
+        <h3 style={{ fontSize:16,fontWeight:700,color:hov?"#fff":NS.ink,letterSpacing:"-0.01em",lineHeight:1.2,transition:"color 0.22s" }}>{sector.label}</h3>
+        <span style={{ position:"absolute",top:16,right:16,fontSize:18,color:hov?"rgba(255,255,255,0.7)":sector.accent,transition:"color 0.22s" }}>↗</span>
       </div>
       {/* Body */}
       <div style={{ padding:"14px 20px 18px",flex:1 }}>
@@ -632,10 +634,10 @@ function FrameworkCard({ st, items, onClick }) {
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
       style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:`1.5px solid ${hov?st.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${st.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
-      <div style={{ background:st.accent, padding:"20px 18px 16px", position:"relative" }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:"rgba(255,255,255,0.65)",display:"block",marginBottom:5 }}>{st.tag}</span>
-        <h3 style={{ fontSize:15,fontWeight:700,color:"#fff",letterSpacing:"-0.01em",lineHeight:1.2 }}>{st.label}</h3>
-        <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:"rgba(255,255,255,0.7)" }}>↗</span>
+      <div style={{ padding:"20px 18px 16px", position:"relative", borderBottom:`1px solid ${hov?"rgba(255,255,255,0.15)":NS.ruleSoft}`, transition:"border-color 0.22s" }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":st.accent,display:"block",marginBottom:5,transition:"color 0.22s" }}>{st.tag}</span>
+        <h3 style={{ fontSize:15,fontWeight:700,color:hov?"#fff":NS.ink,letterSpacing:"-0.01em",lineHeight:1.2,transition:"color 0.22s" }}>{st.label}</h3>
+        <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":st.accent,transition:"color 0.22s" }}>↗</span>
       </div>
       <div style={{ padding:"12px 18px 16px",flex:1 }}>
         <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.55,transition:"color 0.22s" }}>{st.desc}</p>
@@ -1095,8 +1097,8 @@ function PanelProfileSection() {
       </div>
 
       {tab === "b2b" && (
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"32px 48px" }} className="panel-grid">
-          {/* Row 1 */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"32px 48px" }} className="panel-grid">
+          {/* Row 1 — Sectors + Roles */}
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Dedicated Sector-wise Panel</p>
             {B2B_PROFILE.sectors.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SECTOR_COLORS[i]||NS.blue} delay={i*40} />)}
@@ -1105,12 +1107,12 @@ function PanelProfileSection() {
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Roles</p>
             {B2B_PROFILE.roles.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_ROLE_COLORS[i]||NS.blue} delay={i*40+80} />)}
           </div>
-          <div>
+          {/* Row 2 — Company Size + Regions */}
+          <div style={{ borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Company Size</p>
             {B2B_PROFILE.companySize.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SIZE_COLORS[i]||NS.blue} delay={i*40+160} />)}
           </div>
-          {/* Row 2 — Regions spanning full width */}
-          <div style={{ gridColumn:"1 / -1", borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
+          <div style={{ borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:20 }}>Regions</p>
             <RegionDonut segments={B2B_REGIONS} />
           </div>
@@ -1169,24 +1171,23 @@ function ExpertiseSection({ onOpen }) {
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
 
-      {/* ── Header + stats inline ── */}
+      {/* ── Header ── */}
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
         <p style={EYE(ACCENT.forest)}>04 — Primary Research Expertise</p>
-        <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:24, flexWrap:"wrap" }}>
-          <h2 style={{ ...H2, maxWidth:520 }}>Global Data Collection. Local Market Intelligence.</h2>
-          {/* Stat pills inline with header */}
-          <div style={{ display:"flex", gap:0, flexShrink:0 }}>
-            {PANEL_STATS.map((s,i)=>(
-              <div key={i} style={{ padding:"0 28px", borderLeft:`1px solid ${NS.rule}`, textAlign:"center" }}>
-                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(22px,2.8vw,34px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
-                <div style={{ fontSize:12, color:NS.muted, marginTop:6, lineHeight:1.4, maxWidth:120 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
+        <h2 style={{ ...H2, maxWidth:640 }}>Global Data Collection. Local Market Intelligence.</h2>
+
+        {/* Stat bar — full width, all 4 in one row */}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
+          {PANEL_STATS.map((s,i)=>(
+            <div key={i} style={{ padding:"24px 28px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
+              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(24px,2.8vw,36px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
+              <div style={{ fontSize:12, color:NS.muted, marginTop:6, lineHeight:1.3, whiteSpace:"nowrap" }}>{s.label}</div>
+            </div>
+          ))}
         </div>
 
         {/* Capabilities row */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="caps-grid">
           {PANEL_CAPABILITIES.map((c,i)=>(
             <div key={i} style={{ padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
               <div style={{ width:20, height:2, background:ACCENT.forest, borderRadius:1, marginBottom:12 }} />
@@ -1275,17 +1276,28 @@ export default function Research() {
         @media (max-width: 700px) {
           .sectors-grid   { grid-template-columns: 1fr !important; }
           .method-grid    { grid-template-columns: 1fr 1fr !important; }
-          .expertise-grid { grid-template-columns: 1fr !important; }
+          .expertise-grid { grid-template-columns: 1fr 1fr !important; }
           .popup-grid     { grid-template-columns: 1fr !important; }
           /* Reset offset on single-col masonry */
           .popup-grid > div:last-child { margin-top: 0 !important; }
           /* Sector right border gone when 1-col */
           .sectors-grid   button { border-right: none !important; }
-          .expertise-grid button { border-right: none !important; }
+          /* Panel grid 2-col on tablet */
+          .panel-grid     { grid-template-columns: 1fr 1fr !important; }
+          /* Stats full-width stacked */
+          .stats-bar      { grid-template-columns: 1fr 1fr !important; }
+          /* Capabilities 1-col on mobile */
+          .caps-grid      { grid-template-columns: 1fr 1fr !important; }
         }
         @media (max-width: 480px) {
           .method-grid    { grid-template-columns: 1fr !important; }
           .method-grid    button { border-right: none !important; }
+          .expertise-grid { grid-template-columns: 1fr !important; }
+          .panel-grid     { grid-template-columns: 1fr !important; }
+          .stats-bar      { grid-template-columns: 1fr 1fr !important; }
+          .caps-grid      { grid-template-columns: 1fr !important; }
+          /* Industry cards in popup - 1 col */
+          .industry-cards-grid { grid-template-columns: 1fr 1fr !important; }
         }
         /* Strip overflow on mobile */
         .sector-strip, .method-strip, .expertise-strip, .geo-strip { overflow-x: auto; }
