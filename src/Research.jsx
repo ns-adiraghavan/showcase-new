@@ -162,8 +162,8 @@ function CaseViewer({ item, accent, onClose }) {
           <div style={{ display:"flex",alignItems:"flex-start",gap:16,justifyContent:"space-between" }}>
             <div style={{ flex:1 }}>
               <div style={{ display:"flex",gap:6,marginBottom:9,flexWrap:"wrap" }}>
-                {study   && <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.11em",textTransform:"uppercase",color:accent,background:`${accent}14`,padding:"2px 7px",borderRadius:2 }}>{study.label}</span>}
-                {sector  && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{sector.label}</span>}
+                {study   && <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.11em",textTransform:"uppercase",color:study.accent,background:`${study.accent}14`,padding:"2px 7px",borderRadius:2 }}>{study.label}</span>}
+                {sector  && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:sector.accent,background:`${sector.accent}12`,padding:"2px 7px",borderRadius:2 }}>{sector.label}</span>}
                 {item.primaryType && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{item.primaryType}</span>}
                 {item.geo.slice(0,3).map(g=><span key={g} style={{ fontSize:10,fontWeight:500,color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{g}</span>)}
               </div>
@@ -212,8 +212,6 @@ function CaseTile({ item, accent, onOpen }) {
   const sector    = SECTORS.find(s=>s.id===item.industry);
   const sectorLabel = sector?.label || item.industry;
   const sectorAccent = sector?.accent || accent;
-  const tagBg   = hov ? "rgba(255,255,255,0.18)" : `${accent}12`;
-  const tagCol  = hov ? "#fff" : accent;
   const indBg   = hov ? "rgba(255,255,255,0.14)" : `${sectorAccent}12`;
   const indCol  = hov ? "rgba(255,255,255,0.85)" : sectorAccent;
   const muteBg  = hov ? "rgba(255,255,255,0.14)" : NS.paperDeep;
@@ -237,8 +235,8 @@ function CaseTile({ item, accent, onOpen }) {
       </div>
 
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
-        {/* Study type — accent coloured */}
-        <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:tagBg,color:tagCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>
+        {/* Study type — own accent from STUDY_TYPES */}
+        {(() => { const st = STUDY_TYPES.find(s=>s.id===item.studyType); const stCol = st?.accent || accent; const stBg = hov ? "rgba(255,255,255,0.18)" : `${stCol}15`; const stFg = hov ? "#fff" : stCol; return <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:stBg,color:stFg,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>; })()}
         {/* Industry — sector accent coloured */}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:indBg,color:indCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{sectorLabel}</span>
         {/* Audience */}
@@ -380,8 +378,7 @@ function SectorTile({ sector, index, total, onClick }) {
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:CARD.headWeight,fontSize:CARD.headSize,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
-        <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:CARD.bodyLine,transition:"color 0.32s" }}>{sector.blurb}</p>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(17px,2vw,26px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
       </div>
 
       {/* Spotlight case */}
