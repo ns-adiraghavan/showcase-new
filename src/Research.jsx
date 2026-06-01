@@ -543,7 +543,7 @@ function ModeTab({ label, active, borderRight, onClick }) {
 // Industry view — 4-column grid of sector tiles
 function IndustryView({ onCardClick }) {
   return (
-    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="sectors-grid">
       {SECTORS.map((s,i) => {
         const items = RESEARCH_DATA.filter(d=>d.industry===s.id).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
         const spotlight = items.find(d=>d.title===s.spotlight) || items[0];
@@ -650,7 +650,7 @@ function RegionView({ onCardClick }) {
   })).filter(g=>g.items.length>0);
 
   return (
-    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="sectors-grid">
       {regionsWithData.map((g,i) => {
         const total = regionsWithData.length;
         const COLS = 4;
@@ -996,7 +996,7 @@ function ExpertiseSection({ onOpenCase, onPanelChange }) {
           {/* ── Expertise tiles ── */}
           <div id="expertise-tiles" style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
-            <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
+            <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="expertise-grid">
               {EXPERTISE_CARDS.map((c,i)=>(
                 <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
                   onClick={()=>handleCardClick(c)} />
@@ -1033,7 +1033,7 @@ function ExpertiseTile({ card, isLast, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",height:"100%",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
       <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
       <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:CARD.bodyLine,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
