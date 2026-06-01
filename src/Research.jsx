@@ -389,7 +389,7 @@ function SectorTile({ sector, index, total, onClick }) {
         <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
           <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Sample work</p>
           <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
-            <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0 }}>{spotlight.title.length>62?spotlight.title.slice(0,60)+"…":spotlight.title}</p>
+            <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",minHeight:"calc(1.4em * 2)" }}>{spotlight.title}</p>
             <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:15,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
           </div>
         </div>
