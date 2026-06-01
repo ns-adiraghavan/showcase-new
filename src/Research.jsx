@@ -99,7 +99,6 @@ const RESEARCH_DATA = [
   { title:"AI Ethics and Transparency Impact Assessment", desc:"Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry:"tech", studyType:"AI Readiness", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1ggtWzS3z5NkYro1QefJMT5oW9upYzPYV") },
 ];
 
-// Industry order: Tech → Telecom → Retail → F&B → Auto → BFSI → Mfg → Healthcare
 const SECTOR_ORDER = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
 
 const SECTORS = [
@@ -122,15 +121,15 @@ const STUDY_TYPES = [
   { id:"AI Readiness",             label:"AI Readiness Assessment", accent:ACCENT.forest,  tag:"MATURITY",  desc:"AI adoption evaluation, competitive benchmarking, use case identification, and best practice analysis to position your organisation ahead of the curve." },
 ];
 
-const GEO_DOTS = [
-  { id:"North America",  label:"North America",         cx:175, cy:148, accent:NS.blue       },
-  { id:"Europe",         label:"Europe",                cx:455, cy:120, accent:ACCENT.steel   },
-  { id:"Middle East",    label:"Middle East",           cx:537, cy:188, accent:ACCENT.amber   },
-  { id:"Africa",         label:"Africa",                cx:462, cy:255, accent:ACCENT.rust    },
-  { id:"South Asia",     label:"South Asia",            cx:600, cy:200, accent:ACCENT.plum    },
-  { id:"Southeast Asia", label:"Southeast Asia",        cx:660, cy:242, accent:ACCENT.teal    },
-  { id:"Asia",           label:"East & Central Asia",   cx:672, cy:152, accent:ACCENT.forest  },
-  { id:"Global",         label:"Global / Multi-region", cx:320, cy:305, accent:NS.blue        },
+const GEO_REGIONS = [
+  { id:"North America",  label:"North America",         accent:NS.blue       },
+  { id:"Europe",         label:"Europe",                accent:ACCENT.steel   },
+  { id:"Middle East",    label:"Middle East",           accent:ACCENT.amber   },
+  { id:"Africa",         label:"Africa",                accent:ACCENT.rust    },
+  { id:"South Asia",     label:"South Asia",            accent:ACCENT.plum    },
+  { id:"Southeast Asia", label:"Southeast Asia",        accent:ACCENT.teal    },
+  { id:"Asia",           label:"East & Central Asia",   accent:ACCENT.forest  },
+  { id:"Global",         label:"Global / Multi-region", accent:NS.blue        },
 ];
 
 // ─── Hooks ────────────────────────────────────────────────────────
@@ -144,18 +143,19 @@ function useFadeIn(t=0.07) {
   }, []);
   return [ref, v];
 }
+
 function useLock(on) {
   useEffect(() => { document.body.style.overflow = on ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [on]);
 }
 
-// ─── Case Viewer ──────────────────────────────────────────────────
+// ─── Case Viewer (full-screen overlay) ───────────────────────────
 function CaseViewer({ item, accent, onClose }) {
   useLock(true);
   useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
   const sector = SECTORS.find(s=>s.id===item.industry);
   const study  = STUDY_TYPES.find(s=>s.id===item.studyType);
   return (
-    <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:4000,background:"rgba(15,27,39,0.75)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
+    <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:4000,background:"rgba(15,27,39,0.82)",backdropFilter:"blur(10px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
       <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:900,maxHeight:"92vh",display:"flex",flexDirection:"column",boxShadow:"0 40px 100px rgba(0,0,0,0.35)",animation:"rc-pop 0.2s ease both" }}>
         <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
         <div style={{ padding:"20px 24px 16px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0 }}>
@@ -182,31 +182,20 @@ function CaseViewer({ item, accent, onClose }) {
   );
 }
 
-// ─── Items Popup — masonry of case tiles ─────────────────────────
-function ItemsPopup({ title, accent, items, onClose, onOpen }) {
-  useLock(true);
-  useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
+// ─── Pill Button ──────────────────────────────────────────────────
+function PillBtn({ label, active, color, onClick }) {
+  const [hov, setHov] = useState(false);
   return (
-    <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:3000,background:"rgba(15,27,39,0.65)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
-      <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:860,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
-        <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
-        <div style={{ padding:"20px 24px 14px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between" }}>
-          <div style={{ display:"flex",alignItems:"center",gap:10 }}>
-            <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
-            <h3 style={{ fontSize:20,fontWeight:700,color:accent,letterSpacing:"-0.02em" }}>{title}</h3>
-          </div>
-          <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
-        </div>
-        <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
-          <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10 }}>
-            {items.map((item,i)=><CaseTile key={i} item={item} accent={accent} onOpen={onOpen} />)}
-          </div>
-        </div>
-      </div>
-    </div>
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ fontSize:11,fontWeight:active?700:500,color:active?"#fff":(hov?color:NS.muted),background:active?color:(hov?`${color}10`:"transparent"),border:`1px solid ${active?color:(hov?color:NS.rule)}`,borderRadius:2,padding:"4px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>
+      {label}
+    </button>
   );
 }
 
+// ─── Case Tile (inline grid card) ────────────────────────────────
 function CaseTile({ item, accent, onOpen }) {
   const [hov, setHov] = useState(false);
   const sector    = SECTORS.find(s=>s.id===item.industry);
@@ -233,22 +222,83 @@ function CaseTile({ item, accent, onOpen }) {
         <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s" }}>{item.title}</p>
         <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
-
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
-        {/* Study type — own accent from STUDY_TYPES */}
         {(() => { const st = STUDY_TYPES.find(s=>s.id===item.studyType); const stCol = st?.accent || accent; const stBg = hov ? "rgba(255,255,255,0.18)" : `${stCol}15`; const stFg = hov ? "#fff" : stCol; return <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:stBg,color:stFg,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>; })()}
-        {/* Industry — sector accent coloured */}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:indBg,color:indCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{sectorLabel}</span>
-        {/* Audience */}
         {item.primaryType && <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,fontWeight:600,transition:"all 0.18s" }}>{item.primaryType}</span>}
-        {/* All geo regions */}
         {item.geo.map(g=><span key={g} style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,transition:"all 0.18s" }}>{g}</span>)}
       </div>
     </div>
   );
 }
 
-// ─── HERO — exact match to main showcase style ────────────────────
+// ─── Inline Case Panel — replaces page content when a card is clicked ──
+// Header stays visible with back button; cases fill the space below.
+function InlineCasePanel({ title, accent, items, filterDimension, onClose, onOpenCase }) {
+  // filterDimension = "sector" | "studyType" | "geo" — controls what pill filter shows
+  const [activePill, setActivePill] = useState(null);
+
+  // Build pills based on dimension — show things present in items only
+  let pills = [];
+  if (filterDimension === "sector") {
+    pills = SECTORS.filter(s => items.some(d=>d.industry===s.id)).map(s=>({ id:s.id, label:s.label, accent:s.accent }));
+  } else if (filterDimension === "studyType") {
+    pills = STUDY_TYPES.filter(st => items.some(d=>d.studyType===st.id)).map(st=>({ id:st.id, label:st.label, accent:st.accent }));
+  } else if (filterDimension === "geo") {
+    pills = GEO_REGIONS.filter(g => items.some(d=>d.geo.includes(g.id))).map(g=>({ id:g.id, label:g.label, accent:g.accent }));
+  }
+
+  let filtered = items;
+  if (activePill) {
+    if (filterDimension === "sector")    filtered = items.filter(d=>d.industry===activePill);
+    if (filterDimension === "studyType") filtered = items.filter(d=>d.studyType===activePill);
+    if (filterDimension === "geo")       filtered = items.filter(d=>d.geo.includes(activePill));
+  }
+
+  const currentAccent = (activePill && pills.find(p=>p.id===activePill)?.accent) || accent;
+
+  return (
+    <div style={{ animation:"rc-pop 0.22s ease both" }}>
+      {/* Panel header */}
+      <div style={{ display:"flex",alignItems:"center",gap:14,padding:"18px 0 16px",borderBottom:`1px solid ${NS.rule}`,marginBottom:20 }}>
+        <button onClick={onClose}
+          style={{ display:"flex",alignItems:"center",gap:6,fontSize:11,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.15s",flexShrink:0 }}
+          onMouseEnter={e=>{e.currentTarget.style.color=NS.ink;e.currentTarget.style.borderColor=NS.ink;}}
+          onMouseLeave={e=>{e.currentTarget.style.color=NS.muted;e.currentTarget.style.borderColor=NS.rule;}}>
+          ← Back
+        </button>
+        <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
+        <h3 style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0 }}>{title}</h3>
+        <span style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
+      </div>
+
+      {/* Filter pills */}
+      {pills.length > 1 && (
+        <div style={{ display:"flex",flexWrap:"wrap",gap:6,marginBottom:20,alignItems:"center" }}>
+          <PillBtn label="All" active={!activePill} color={accent} onClick={()=>setActivePill(null)} />
+          {pills.map(p=>(
+            <PillBtn key={p.id} label={p.label} active={activePill===p.id} color={p.accent}
+              onClick={()=>setActivePill(activePill===p.id?null:p.id)} />
+          ))}
+        </div>
+      )}
+
+      {/* Cases grid */}
+      {filtered.length === 0 ? (
+        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No studies match this filter.</div>
+      ) : (
+        <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:10 }}>
+          {filtered.map((item,i)=>(
+            <CaseTile key={i} item={item} accent={currentAccent} onOpen={onOpenCase} />
+          ))}
+        </div>
+      )}
+      <div style={{ height:40 }} />
+    </div>
+  );
+}
+
+// ─── HERO ─────────────────────────────────────────────────────────
 function ResearchHero() {
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) clamp(24px,4vw,40px)",borderBottom:`1px solid ${NS.rule}` }}>
@@ -271,14 +321,14 @@ function ResearchHero() {
   );
 }
 
-// ─── NAV — exact match to main showcase ──────────────────────────
+// ─── NAV — updated for 2 sections ─────────────────────────────────
 function ResearchNav() {
-  const [active, setActive] = useState("sectors");
-  const IDS    = ["sectors","methodology","geography","expertise"];
-  const LABELS = { sectors:"Sectors", methodology:"Methodology", geography:"Geography", expertise:"Expertise" };
+  const [active, setActive] = useState("explore");
+  const IDS    = ["explore","expertise"];
+  const LABELS = { explore:"Explore Work", expertise:"Expertise" };
 
   useEffect(() => {
-    const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)});},{threshold:0.25});
+    const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)});},{threshold:0.2});
     IDS.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});
     return ()=>obs.disconnect();
   }, []);
@@ -298,61 +348,136 @@ function ResearchNav() {
   );
 }
 
-// ─── SECTION 01 — Sectors ─────────────────────────────────────────
-// Full grid → compact strip + inline filtered view (matches main showcase pattern)
-function SectorSection({ onOpen }) {
+// ─── SECTION 01 — Explore Work ────────────────────────────────────
+// Three-way toggle: Industry / Study Type / Region
+// Clicking a card expands inline below (page hides)
+function ExploreSection({ onOpenCase }) {
   const [ref, vis] = useFadeIn();
-  const [active, setActive] = useState(null);
+  // mode: "industry" | "studyType" | "region"
+  const [mode, setMode] = useState("industry");
+  // openPanel: null | { title, accent, items, filterDimension }
+  const [openPanel, setOpenPanel] = useState(null);
 
-  const activeSector = active ? SECTORS.find(s => s.id === active) : null;
+  const handleCardClick = (title, accent, items, filterDimension) => {
+    setOpenPanel({ title, accent, items, filterDimension });
+    // Scroll to top of section
+    setTimeout(() => {
+      document.getElementById("explore")?.scrollIntoView({ behavior:"smooth", block:"start" });
+    }, 60);
+  };
+
+  const handleClose = () => setOpenPanel(null);
+
+  const MODES = [
+    { id:"industry",  label:"Industry" },
+    { id:"studyType", label:"Study Type" },
+    { id:"region",    label:"Region" },
+  ];
 
   return (
-    <section id="sectors" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
+    <section id="explore" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease", minHeight:"60vh" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Industry coverage</p>
-        <h2 style={H2}>{active ? activeSector.label : "Broad industry reach. Sharp market intelligence."}</h2>
+        <p style={EYE(NS.blue)}>01 — Work samples</p>
+
+        {!openPanel && (
+          <>
+            <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
+              <h2 style={H2}>Explore our research work.</h2>
+              {/* Toggle */}
+              <div style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
+                {MODES.map((m,i)=>(
+                  <ModeTab key={m.id} label={m.label} active={mode===m.id}
+                    borderRight={i<MODES.length-1}
+                    onClick={()=>{ setMode(m.id); setOpenPanel(null); }} />
+                ))}
+              </div>
+            </div>
+
+            {mode === "industry" && (
+              <IndustryView onCardClick={(title, accent, items) =>
+                handleCardClick(title, accent, items, "studyType")
+              } />
+            )}
+            {mode === "studyType" && (
+              <StudyTypeView onCardClick={(title, accent, items) =>
+                handleCardClick(title, accent, items, "sector")
+              } />
+            )}
+            {mode === "region" && (
+              <RegionView onCardClick={(title, accent, items) =>
+                handleCardClick(title, accent, items, "sector")
+              } />
+            )}
+          </>
+        )}
+
+        {openPanel && (
+          <>
+            <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
+              <h2 style={H2}>Explore our research work.</h2>
+              {/* Toggle visible but non-interactive while panel open — clicking a mode closes panel too */}
+              <div style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
+                {MODES.map((m,i)=>(
+                  <ModeTab key={m.id} label={m.label} active={mode===m.id}
+                    borderRight={i<MODES.length-1}
+                    onClick={()=>{ setMode(m.id); setOpenPanel(null); }} />
+                ))}
+              </div>
+            </div>
+            <InlineCasePanel
+              title={openPanel.title}
+              accent={openPanel.accent}
+              items={openPanel.items}
+              filterDimension={openPanel.filterDimension}
+              onClose={handleClose}
+              onOpenCase={onOpenCase}
+            />
+          </>
+        )}
       </div>
-
-      {/* ── Full hero grid (no selection) ── */}
-      {!active && (
-        <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(4,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
-          {SECTORS.map((s,i) => (
-            <SectorTile key={s.id} sector={s} index={i} total={SECTORS.length}
-              onClick={() => setActive(s.id)} />
-          ))}
-        </div>
-      )}
-
-      {/* ── Compact strip + content (selection made) ── */}
-      {active && (
-        <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
-          {/* Compact strip */}
-          <div style={{ display:"grid", gridTemplateColumns:`repeat(${SECTORS.length},1fr)`, border:`1px solid ${NS.rule}`, background:NS.surface }} className="sector-strip">
-            {SECTORS.map((s, i) => (
-              <StripTab key={s.id} label={s.label} tag={s.tag} num={String(i+1).padStart(2,"0")}
-                active={s.id===active} color={s.accent}
-                borderRight={i < SECTORS.length-1}
-                onClick={() => setActive(s.id===active ? null : s.id)} />
-            ))}
-          </div>
-          {/* Framework tiles + B2B/B2C filter for this sector */}
-          <SectorFrameworkView
-            sector={activeSector}
-            items={RESEARCH_DATA.filter(d => d.industry === active)}
-            onOpen={onOpen}
-          />
-        </div>
-      )}
+      {!openPanel && <div style={{ height:"clamp(36px,5vw,64px)" }} />}
     </section>
   );
 }
 
-function SectorTile({ sector, index, total, onClick }) {
+function ModeTab({ label, active, borderRight, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{ fontFamily:"'DM Sans',sans-serif",fontSize:12,fontWeight:active?700:500,color:active?NS.surface:(hov?NS.ink:NS.muted),background:active?NS.blue:(hov?NS.paperDeep:NS.surface),border:"none",borderRight:borderRight?`1px solid ${NS.rule}`:"none",padding:"9px 20px",cursor:"pointer",transition:"all 0.18s",whiteSpace:"nowrap" }}>
+      {label}
+    </button>
+  );
+}
+
+// Industry view — 4-column grid of sector tiles
+function IndustryView({ onCardClick }) {
+  return (
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+      {SECTORS.map((s,i) => {
+        const items = RESEARCH_DATA.filter(d=>d.industry===s.id).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
+        const spotlight = items.find(d=>d.title===s.spotlight) || items[0];
+        const total = SECTORS.length;
+        const COLS = 4;
+        const isRight  = (i % COLS) === COLS-1 || i === total-1;
+        const isBottom = i >= total-COLS;
+        return (
+          <SectorTile key={s.id} sector={s} index={i} total={total}
+            spotlight={spotlight}
+            onClick={()=>onCardClick(s.label, s.accent, items)} />
+        );
+      })}
+    </div>
+  );
+}
+
+function SectorTile({ sector, index, total, spotlight, onClick }) {
   const [hov, setHov] = useState(false);
   const COLS = 4;
   const isRight  = (index % COLS) === COLS-1 || index === total-1;
   const isBottom = index >= total-COLS;
-  const spotlight = RESEARCH_DATA.find(d=>d.title===sector.spotlight);
   return (
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
@@ -370,21 +495,14 @@ function SectorTile({ sector, index, total, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      {/* Top row: index + tag */}
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
         <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"00")} / {String(SECTORS.length).padStart(2,"00")}
+          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
         </span>
-        <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
-
-      {/* Headline — top-anchored so all tiles align */}
-      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
-
-      {/* Spacer pushes spotlight to bottom */}
+      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{sector.label}</h2>
       <div style={{ flex:1 }} />
-
-      {/* Spotlight case — always at bottom */}
       {spotlight && (
         <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
           <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Sample work</p>
@@ -398,55 +516,28 @@ function SectorTile({ sector, index, total, onClick }) {
   );
 }
 
-// ─── Compact strip tab (used by all sections when a selection is active) ──
-function StripTab({ label, tag, num, active, color, borderRight, onClick }) {
-  const [hov, setHov] = useState(false);
+// Study Type view — 3-column grid
+function StudyTypeView({ onCardClick }) {
   return (
-    <button onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        textAlign:"left", background: active ? color : (hov ? NS.paperDeep : NS.surface),
-        border:"none", borderRight: borderRight ? `1px solid ${NS.rule}` : "none",
-        padding:"14px 16px", cursor:"pointer",
-        display:"flex", flexDirection:"column", gap:4,
-        transition:"background 0.2s", fontFamily:"'DM Sans',sans-serif",
-      }}>
-      <span style={{ fontSize:9, fontWeight:500, letterSpacing:"0.1em", color: active?"rgba(255,255,255,0.65)":NS.muted }}>{num}</span>
-      <span style={{ fontSize:13, fontWeight:700, letterSpacing:"-0.01em", lineHeight:1.1, color: active?"#fff":(hov?NS.ink:NS.inkSoft), whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:"100%" }}>{label}</span>
-      {active && <span style={{ fontSize:8, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:"rgba(255,255,255,0.65)" }}>{tag}</span>}
-    </button>
-  );
-}
-// ─── SECTION 02 — Methodology ─────────────────────────────────────
-function MethodologySection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-  return (
-    <section id="methodology" ref={ref} style={{ background:NS.paperDeep, opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.teal)}>02 — Strategic research & intelligence solutions</p>
-        <h2 style={H2}>Data-backed solutions that power business growth</h2>
-      </div>
-      <div style={{ maxWidth:1160, margin:"32px auto 0", padding:"0 clamp(16px,4vw,44px)", display:"grid", gridTemplateColumns:"repeat(3,1fr)", borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}`}} className="method-grid">
-        {STUDY_TYPES.map((st,i) => (
-          <MethodTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
-            onClick={() => {
-              const items = RESEARCH_DATA
-                .filter(d=>d.studyType===st.id)
-                .sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
-              onOpen(st.label, st.accent, items);
-            }} />
-        ))}
-      </div>
-      <div style={{ height:"clamp(36px,5vw,64px)" }} />
-    </section>
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="method-grid">
+      {STUDY_TYPES.map((st,i) => {
+        const items = RESEARCH_DATA.filter(d=>d.studyType===st.id).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
+        const COLS = 3;
+        const isRightEdge = (i + 1) % COLS === 0 || i === STUDY_TYPES.length - 1;
+        return (
+          <StudyTypeTile key={st.id} st={st} index={i} total={STUDY_TYPES.length}
+            onClick={()=>onCardClick(st.label, st.accent, items)} />
+        );
+      })}
+    </div>
   );
 }
 
-function MethodTile({ st, index, total, onClick }) {
+function StudyTypeTile({ st, index, total, onClick }) {
   const [hov, setHov] = useState(false);
   const COLS = 3;
   const isRightEdge = (index + 1) % COLS === 0 || index === total - 1;
+  const count = RESEARCH_DATA.filter(d=>d.studyType===st.id).length;
   return (
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
@@ -457,445 +548,83 @@ function MethodTile({ st, index, total, onClick }) {
         <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
         <p style={{ fontSize:CARD.bodySize,lineHeight:CARD.bodyLine,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
-      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",transition:"border-color 0.28s" }}>
+      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"center",transition:"border-color 0.28s" }}>
+        <span style={{ fontSize:11,fontWeight:600,color:hov?"rgba(255,255,255,0.65)":NS.muted }}>{count} {count===1?"study":"studies"}</span>
         <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
       </div>
     </button>
   );
 }
 
-// ─── Shared inline filtered view (used by Methodology + Expertise) ──
-// Shows industry cards for a given base set, with filter pills for
-// region and a second dimension (audience or framework type).
-// Clicking an industry card opens the masonry popup.
-function InlineFilteredView({ accent, baseItems, pill2Label, pill2Options, pill2Filter, onOpen, dimLabel, dimOptions, dimFilter }) {
-  const [geo,  setGeo]  = useState(null);
-  const [pill2, setPill2] = useState(null);
-
-  // Apply filters
-  let filtered = baseItems;
-  if (geo)    filtered = filtered.filter(d => d.geo.includes(geo));
-  if (pill2)  filtered = pill2Filter(filtered, pill2);
-
-  // Build industry cards — only sectors that have matching cases, in SECTOR_ORDER
-  const industryCards = SECTORS.filter(s =>
-    filtered.some(d => d.industry === s.id)
-  );
-
-  const GEO_OPTIONS = [...new Set(baseItems.flatMap(d => d.geo))].filter(g => g !== "Global").sort();
-
-  return (
-    <div style={{ maxWidth:1160, margin:"0 auto", padding:"28px clamp(16px,4vw,44px) clamp(36px,5vw,64px)", animation:"rc-pop 0.22s ease both" }}>
-
-      {/* Filter pills — 50/50 split */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:0, marginBottom:28, border:`1px solid ${NS.rule}`, borderTop:"none" }}>
-        <div style={{ padding:"14px 18px", borderRight:`1px solid ${NS.rule}` }}>
-          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Region</span>
-          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
-            <PillBtn label="All" active={!geo} color={accent} onClick={()=>setGeo(null)} />
-            {GEO_OPTIONS.map(g => (
-              <PillBtn key={g} label={g} active={geo===g} color={accent} onClick={()=>setGeo(geo===g?null:g)} />
-            ))}
-          </div>
-        </div>
-        <div style={{ padding:"14px 18px" }}>
-          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>{pill2Label}</span>
-          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
-            <PillBtn label="All" active={!pill2} color={accent} onClick={()=>setPill2(null)} />
-            {pill2Options.map(o => (
-              <PillBtn key={o.id} label={o.label} active={pill2===o.id} color={accent} onClick={()=>setPill2(pill2===o.id?null:o.id)} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Industry cards grid */}
-      {industryCards.length === 0 ? (
-        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No work samples match these filters.</div>
-      ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:12 }} className="industry-cards-grid">
-          {industryCards.map(sector => {
-            const sectorItems = filtered.filter(d => d.industry === sector.id);
-            return (
-              <IndustryCard
-                key={sector.id}
-                sector={sector}
-                items={sectorItems}
-                onOpen={() => onOpen(sector.label, sector.accent, sectorItems)}
-              />
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function PillBtn({ label, active, color, onClick }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button onClick={onClick}
-      onMouseEnter={()=>setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-      style={{ fontSize:11,fontWeight:active?700:500,color:active?"#fff":(hov?color:NS.muted),background:active?color:(hov?`${color}10`:"transparent"),border:`1px solid ${active?color:(hov?color:NS.rule)}`,borderRadius:2,padding:"4px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>
-      {label}
-    </button>
-  );
-}
-
-function IndustryCard({ sector, items, onOpen }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button onClick={onOpen}
-      onMouseEnter={()=>setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?sector.accent:NS.surface,border:`1.5px solid ${hov?sector.accent:NS.rule}`,borderRadius:3,padding:CARD.padding,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${sector.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column",position:"relative" }}>
-      <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":sector.accent,display:"block",marginBottom:6,transition:"color 0.22s" }}>{sector.tag}</span>
-      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,color:hov?"#fff":NS.ink,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,transition:"color 0.22s",paddingRight:24 }}>{sector.label}</h3>
-      <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":sector.accent,transition:"color 0.22s" }}>↗</span>
-    </button>
-  );
-}
-
-
-// ─── SectorFrameworkView: shown inside Sector after selecting a sector ──
-// Shows framework tiles; clicking a tile opens the masonry popup for
-// sector × framework cases. B2B/B2C pills filter before showing popup.
-function SectorFrameworkView({ sector, items, onOpen }) {
-  const [audience, setAudience] = useState(null);
-  const [geo, setGeo] = useState(null);
-
-  const GEO_OPTIONS = [...new Set(items.flatMap(d=>d.geo))].filter(g=>g!=="Global").sort();
-
-  // Apply audience + geo filter
-  let filtered = items;
-  if (audience === "B2B")  filtered = filtered.filter(d=>d.primaryType==="B2B");
-  if (audience === "B2C")  filtered = filtered.filter(d=>d.primaryType==="B2C");
-  if (audience === "Dual") filtered = filtered.filter(d=>d.primaryType==="Both");
-  if (geo) filtered = filtered.filter(d=>d.geo.includes(geo));
-
-  // Only show framework tiles that have matching cases
-  const activeFrameworks = STUDY_TYPES.filter(st => filtered.some(d=>d.studyType===st.id));
-
-  return (
-    <div style={{ animation:"rc-pop 0.22s ease both" }}>
-      {/* Filter pills — 50/50 */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", border:`1px solid ${NS.rule}`, borderTop:"none" }}>
-        <div style={{ padding:"14px 18px", borderRight:`1px solid ${NS.rule}` }}>
-          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Audience</span>
-          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
-            {[{id:null,label:"All"},{id:"B2B",label:"B2B"},{id:"B2C",label:"B2C"},{id:"Dual",label:"Dual"}].map(o=>(
-              <PillBtn key={String(o.id)} label={o.label} active={audience===o.id} color={sector.accent} onClick={()=>setAudience(audience===o.id&&o.id?null:o.id)} />
-            ))}
-          </div>
-        </div>
-        <div style={{ padding:"14px 18px" }}>
-          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Region</span>
-          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
-            <PillBtn label="All" active={!geo} color={sector.accent} onClick={()=>setGeo(null)} />
-            {GEO_OPTIONS.map(g=>(
-              <PillBtn key={g} label={g} active={geo===g} color={sector.accent} onClick={()=>setGeo(geo===g?null:g)} />
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* Framework tiles */}
-      {activeFrameworks.length === 0 ? (
-        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No work samples match these filters.</div>
-      ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:12, padding:"20px 0 clamp(36px,5vw,64px)" }}>
-          {activeFrameworks.map(st => {
-            const stItems = filtered.filter(d=>d.studyType===st.id);
-            return (
-              <FrameworkCard key={st.id} st={st} items={stItems}
-                onClick={() => onOpen(st.label, sector.accent, stItems)} />
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function FrameworkCard({ st, items, onClick }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button onClick={onClick}
-      onMouseEnter={()=>setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:`1.5px solid ${hov?st.accent:NS.rule}`,borderRadius:3,padding:CARD.padding,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${st.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column",position:"relative" }}>
-      <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":st.accent,display:"block",marginBottom:5,transition:"color 0.22s" }}>{st.tag}</span>
-      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,color:hov?"#fff":NS.ink,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,transition:"color 0.22s",paddingRight:24 }}>{st.label}</h3>
-      <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":st.accent,transition:"color 0.22s" }}>↗</span>
-    </button>
-  );
-}
-
-// ─── SectorPillFilter: sector pills inside the geo popup ─────────
-// Shows sector pills at top of popup; clicking filters the case list.
-function SectorPillFilter({ items, accent, onOpen, onClose }) {
-  const [activeSector, setActiveSector] = useState(null);
-  const presentSectors = SECTORS.filter(s => items.some(d=>d.industry===s.id));
-  const filteredItems = activeSector ? items.filter(d=>d.industry===activeSector) : items;
-
-  return (
-    <>
-      <div style={{ padding:"10px 16px 8px", borderBottom:`1px solid ${NS.rule}`, display:"flex", flexWrap:"wrap", gap:5, alignItems:"center" }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:NS.muted,marginRight:4 }}>Sector</span>
-        <PillBtn label="All" active={!activeSector} color={accent} onClick={()=>setActiveSector(null)} />
-        {presentSectors.map(s=>(
-          <PillBtn key={s.id} label={s.label} active={activeSector===s.id} color={s.accent}
-            onClick={()=>setActiveSector(activeSector===s.id?null:s.id)} />
-        ))}
-      </div>
-      <div style={{ flex:1, overflowY:"auto", padding:"12px 16px 24px" }}>
-        <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10 }}>
-          {filteredItems.map((item,i)=><CaseTile key={i} item={item} accent={accent} onOpen={onOpen} />)}
-        </div>
-      </div>
-    </>
-  );
-}
-
-// ─── SECTION 03 — Geography (D3 + TopoJSON real world map) ───────
-// Loads d3 and topojson from CDN, fetches world-atlas countries-110m,
-// renders via Natural Earth projection into a dark SVG panel.
-// Dot positions are derived from the projection itself — no manual cx/cy.
-
-// Lat/lng centroids for each research region — Global excluded from map
-const GEO_CENTROIDS = {
-  "North America":  [-100,  45],
-  "Europe":         [  15,  50],
-  "Middle East":    [  45,  25],
-  "Africa":         [  20,   5],
-  "South Asia":     [  78,  22],
-  "Southeast Asia": [ 108,  13],
-  "Asia":           [ 105,  38],
-};
-
-function GeoSection({ onOpen }) {
-  const [ref, vis] = useFadeIn();
-
-  const allDots = GEO_DOTS.map(g => ({
+// Region view — chips/tiles for each region
+function RegionView({ onCardClick }) {
+  const regionsWithData = GEO_REGIONS.map(g => ({
     ...g,
-    items: RESEARCH_DATA.filter(d => d.geo.includes(g.id)),
-    coords: GEO_CENTROIDS[g.id] || null,
-  })).filter(g => g.items.length > 0);
-
-  const mapDots   = allDots.filter(g => g.coords !== null);
-  const globalDot = allDots.find(g => g.id === "Global");
-
-  // Clicking a dot or chip opens the masonry popup with sector-ordered pills
-  const handleOpen = (g) => {
-    // Sort items by SECTOR_ORDER for the popup
-    const ordered = [...g.items].sort((a,b) =>
-      SECTOR_ORDER.indexOf(a.industry) - SECTOR_ORDER.indexOf(b.industry)
-    );
-    onOpen(g.label, g.accent, ordered);
-  };
+    items: RESEARCH_DATA.filter(d=>d.geo.includes(g.id)).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry)),
+  })).filter(g=>g.items.length>0);
 
   return (
-    <section id="geography" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.teal)}>03 — Global Reach</p>
-        <h2 style={H2}>Research across every major region</h2>
-      </div>
-      <div style={{ maxWidth:1160, margin:"20px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
-        <D3WorldMap dots={mapDots} activeDot={null} onDotClick={handleOpen} />
-        <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:7, marginTop:12, paddingBottom:"clamp(36px,5vw,64px)" }}>
-          {mapDots.map(g => (
-            <button key={g.id} onClick={() => handleOpen(g)}
-              onMouseEnter={e => { e.currentTarget.style.borderColor=g.accent; e.currentTarget.style.color=g.accent; e.currentTarget.style.background=`${g.accent}0d`; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor=NS.rule; e.currentTarget.style.color=NS.inkSoft; e.currentTarget.style.background=NS.surface; }}
-              style={{ fontSize:12,fontWeight:500,color:NS.inkSoft,background:NS.surface,border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-              {g.label}
-            </button>
-          ))}
-          {globalDot && <span style={{ width:1,height:20,background:NS.rule,display:"inline-block",margin:"0 4px" }} />}
-          {globalDot && <GlobalChip dot={globalDot} onOpen={(_l,_a,items) => handleOpen({ ...globalDot, items })} />}
-        </div>
-      </div>
-    </section>
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
+      {regionsWithData.map((g,i) => {
+        const total = regionsWithData.length;
+        const COLS = 4;
+        const isRight  = (i % COLS) === COLS-1 || i === total-1;
+        const isBottom = i >= total - Math.ceil(total/COLS)*1; // rough last row
+        return (
+          <RegionTile key={g.id} region={g} index={i} total={total}
+            onClick={()=>onCardClick(g.label, g.accent, g.items)} />
+        );
+      })}
+    </div>
   );
 }
 
-function GlobalChip({ dot, onOpen }) {
+function RegionTile({ region, index, total, onClick }) {
   const [hov, setHov] = useState(false);
-  const col = dot.accent || NS.blue;
+  const COLS = 4;
+  const isRight  = (index % COLS) === COLS-1 || index === total-1;
+  const isBottom = index >= total - (total % COLS === 0 ? COLS : total % COLS);
+  const count = region.items.length;
+  const sample = region.items[0];
   return (
-    <button
-      onClick={() => onOpen(dot.label, col, dot.items)}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+    <button onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
       style={{
-        display:"inline-flex", alignItems:"center", gap:7,
-        fontSize:12, fontWeight:600,
-        color: hov ? NS.surface : col,
-        background: hov ? col : `${col}0f`,
-        border:`1px solid ${hov ? col : `${col}30`}`,
-        borderRadius:2, padding:"5px 13px",
-        cursor:"pointer", transition:"all 0.18s",
-        fontFamily:"'DM Sans',sans-serif",
+        textAlign:"left",
+        background: hov ? region.accent : NS.surface,
+        border:"none",
+        borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
+        borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
+        padding:"clamp(18px,2.5vw,28px) clamp(16px,2vw,24px) clamp(16px,2vw,22px)",
+        cursor:"pointer",
+        minHeight:"clamp(160px,20vw,220px)", display:"flex", flexDirection:"column", justifyContent:"space-between", gap:16,
+        transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
+        fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink:0 }}>
-        <circle cx="6" cy="6" r="5" stroke={hov ? NS.surface : col} strokeWidth="1.1"/>
-        <path d="M6 1 C4 3 4 9 6 11 M6 1 C8 3 8 9 6 11" stroke={hov ? NS.surface : col} strokeWidth="1.1" fill="none"/>
-        <line x1="1" y1="6" x2="11" y2="6" stroke={hov ? NS.surface : col} strokeWidth="1.1"/>
-      </svg>
-      Global / Multi-region
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
+        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s" }}>
+          {String(count)} {count===1?"study":"studies"}
+        </span>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":region.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":region.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>Region</span>
+      </div>
+      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{region.label}</h2>
+      <div style={{ flex:1 }} />
+      {sample && (
+        <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
+          <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Sample work</p>
+          <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
+            <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",minHeight:"calc(1.4em * 2)" }}>{sample.title}</p>
+            <span style={{ color:hov?"rgba(255,255,255,0.7)":region.accent,fontSize:15,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
+          </div>
+        </div>
+      )}
     </button>
   );
 }
 
-// Loads D3 + TopoJSON from CDN, draws a real Natural Earth projection
-function D3WorldMap({ dots, activeDot, onDotClick }) {
-  const svgRef  = useRef(null);
-  const [ready, setReady]   = useState(false);   // libs loaded
-  const [paths, setPaths]   = useState([]);       // country path strings
-  const [dotPos, setDotPos] = useState([]);       // projected {id,x,y,dot} for each region
-  const [hov,   setHov]     = useState(null);
-  const [tip,   setTip]     = useState(null);
-  const W = 960, H = 480;
-
-  // Step 1: inject CDN scripts once
-  useEffect(() => {
-    const load = (src) => new Promise((res, rej) => {
-      if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
-      const s = document.createElement("script");
-      s.src = src; s.onload = res; s.onerror = rej;
-      document.head.appendChild(s);
-    });
-
-    Promise.all([
-      load("https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"),
-      load("https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"),
-    ]).then(() => setReady(true)).catch(console.error);
-  }, []);
-
-  // Step 2: once libs ready, fetch world data and build paths + dot positions
-  useEffect(() => {
-    if (!ready) return;
-    const d3  = window.d3;
-    const topo = window.topojson;
-
-    fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
-      .then(r => r.json())
-      .then(world => {
-        // Natural Earth projection fitted to W×H
-        const projection = d3.geoNaturalEarth1()
-          .scale(W / (2 * Math.PI) * 1.25)
-          .translate([W / 2, H / 2]);
-
-        const pathGen = d3.geoPath().projection(projection);
-
-        // All country features → SVG path strings
-        const countries = topo.feature(world, world.objects.countries);
-        const ps = countries.features.map((f, i) => ({
-          id: i,
-          d: pathGen(f),
-        })).filter(p => p.d);
-
-        setPaths(ps);
-
-        // Project each dot's lat/lng → SVG pixel coordinates
-        const dp = dots.map(dot => {
-          const [lng, lat] = dot.coords;
-          const [x, y] = projection([lng, lat]) || [0, 0];
-          return { ...dot, x, y };
-        });
-        setDotPos(dp);
-      })
-      .catch(console.error);
-  }, [ready, dots]);
-
-  return (
-    <div style={{ background:NS.paper, borderRadius:3, overflow:"hidden", position:"relative", border:`1px solid ${NS.rule}` }}>
-      {!ready && (
-        <div style={{ height:480, display:"flex", alignItems:"center", justifyContent:"center", background:NS.paper }}>
-          <span style={{ color:NS.muted, fontSize:13, fontFamily:"'DM Sans',sans-serif" }}>Loading map…</span>
-        </div>
-      )}
-      {ready && (
-        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`}
-          style={{ width:"100%", height:"auto", display:"block" }}
-          onMouseLeave={() => { setHov(null); setTip(null); }}>
-
-          <defs>
-            {/* Dot grid pattern — small teal dots over ocean */}
-            <pattern id="dotgrid" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
-              <circle cx="3" cy="3" r="1" fill={`${NS.blue}28`} />
-            </pattern>
-            {/* Clip path so dots only show in ocean (outside countries) — we invert by drawing rect then masking */}
-          </defs>
-
-          {/* Ocean base — paper colour */}
-          <rect width={W} height={H} fill={NS.paper} />
-
-          {/* Dot grid over entire canvas first — countries will paint on top */}
-          <rect width={W} height={H} fill="url(#dotgrid)" />
-
-          {/* Graticule */}
-          {paths.length > 0 && (() => {
-            const d3 = window.d3;
-            const projection = d3.geoNaturalEarth1()
-              .scale(W / (2 * Math.PI) * 1.25)
-              .translate([W / 2, H / 2]);
-            const pathGen = d3.geoPath().projection(projection);
-            const graticule = d3.geoGraticule()();
-            return <path d={pathGen(graticule)} fill="none" stroke={`${NS.blue}14`} strokeWidth="0.5" />;
-          })()}
-
-          {/* Country fills — solid paper over the dots, giving ocean-dots / land-solid aesthetic */}
-          {paths.map(p => (
-            <path key={p.id} d={p.d} fill={NS.paperDeep} stroke={`${NS.blue}30`} strokeWidth="0.5" />
-          ))}
-
-          {/* Region dots — fixed: pulse is a SEPARATE expanding circle beneath static rings */}
-          {dotPos.map(g => {
-            const ih  = hov === g.id;
-            const col = g.accent || NS.blue;
-            return (
-              <g key={g.id} style={{ cursor:"pointer" }}
-                onMouseEnter={() => { setHov(g.id); setTip({ id:g.id, x:g.x, y:g.y }); }}
-                onMouseLeave={() => { setHov(null); setTip(null); }}
-                onClick={() => onDotClick(g)}>
-                {/* Expanding pulse ring — starts at dot size, expands outward */}
-                <circle cx={g.x} cy={g.y} r="7" fill="none" stroke={col} strokeWidth="1.2" opacity="0">
-                  <animate attributeName="r"       from="7"  to={ih?"28":"22"} dur={ih?"1.0s":"2.6s"} repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.6" to="0"           dur={ih?"1.0s":"2.6s"} repeatCount="indefinite" />
-                </circle>
-                {/* Static outer ring */}
-                <circle cx={g.x} cy={g.y} r={ih?9:6} fill="none" stroke={col} strokeWidth={ih?2:1.5} />
-                {/* Static inner fill */}
-                <circle cx={g.x} cy={g.y} r={ih?4.5:3} fill={col} />
-              </g>
-            );
-          })}
-
-          {/* Tooltip — SVG native, never clips off edge */}
-          {tip && (() => {
-            const g = dotPos.find(d => d.id === tip.id);
-            if (!g) return null;
-            const col = g.accent || NS.blue;
-            const TW = 160, TH = 38;
-            const tx = Math.min(g.x + 14, W - TW - 4);
-            const ty = Math.max(g.y - TH - 6, 4);
-            return (
-              <g style={{ pointerEvents:"none" }}>
-                <rect x={tx} y={ty} width={TW} height={TH} rx="2" fill={col} />
-                <text x={tx + 9} y={ty + 14} fontSize="10" fontWeight="700" fill="#fff" fontFamily="'DM Sans',sans-serif">{g.label}</text>
-                <text x={tx + 9} y={ty + 28} fontSize="9" fill="rgba(255,255,255,0.65)" fontFamily="'DM Sans',sans-serif">Click to explore work</text>
-              </g>
-            );
-          })()}
-        </svg>
-      )}
-    </div>
-  );
-}
-
-// ─── SECTION 04 — Panel Stats ────────────────────────────────────
+// ─── Panel Profile (Expertise stats) ─────────────────────────────
 const PANEL_STATS = [
   { value:"20.2M", label:"Total panelists (proprietary)" },
   { value:"8M",    label:"B2B panelists globally" },
@@ -1014,20 +743,13 @@ function MiniDonut({ segments, size=120 }) {
   );
 }
 
-const REGION_COLORS = {
-  Americas: NS.blue,
-  Europe:   ACCENT.teal,
-  APAC:     ACCENT.amber,
-  MEA:      ACCENT.plum,
-};
-
 const B2B_REGIONS = [
   { label:"APAC",     pct:40, color:ACCENT.amber },
   { label:"Americas", pct:25, color:NS.blue      },
   { label:"Europe",   pct:20, color:ACCENT.teal  },
   { label:"MEA",      pct:15, color:ACCENT.plum  },
 ];
-const B2C_REGIONS = B2B_REGIONS; // same split
+const B2C_REGIONS = B2B_REGIONS;
 
 function RegionDonut({ segments }) {
   return (
@@ -1046,7 +768,6 @@ function RegionDonut({ segments }) {
   );
 }
 
-// Assign alternating accent colours to bars for visual variance
 const B2B_SECTOR_COLORS = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber, ACCENT.plum, ACCENT.rust, ACCENT.forest, NS.blue];
 const B2B_ROLE_COLORS   = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber];
 const B2B_SIZE_COLORS   = [NS.blue, ACCENT.teal, ACCENT.amber, ACCENT.plum];
@@ -1057,11 +778,8 @@ const B2C_INC_COLORS    = [NS.blue, ACCENT.teal, ACCENT.steel, ACCENT.amber, ACC
 function PanelProfileSection() {
   const [ref, vis] = useFadeIn();
   const [tab, setTab] = useState("b2b");
-
   return (
     <div ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.5s ease, transform 0.5s ease", maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
-
-      {/* Tab strip */}
       <div style={{ display:"flex", borderBottom:`1px solid ${NS.rule}`, marginBottom:32 }}>
         {[{id:"b2b",label:"B2B Panel Profile",accent:NS.blue},{id:"b2c",label:"B2C Panel Profile",accent:ACCENT.plum}].map(t=>(
           <button key={t.id} onClick={()=>setTab(t.id)}
@@ -1073,10 +791,8 @@ function PanelProfileSection() {
           </button>
         ))}
       </div>
-
       {tab === "b2b" && (
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"32px 48px" }} className="panel-grid">
-          {/* Row 1 — Sectors + Roles */}
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Dedicated Sector-wise Panel</p>
             {B2B_PROFILE.sectors.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SECTOR_COLORS[i]||NS.blue} delay={i*40} />)}
@@ -1085,7 +801,6 @@ function PanelProfileSection() {
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Job Roles</p>
             {B2B_PROFILE.roles.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_ROLE_COLORS[i]||NS.blue} delay={i*40+80} />)}
           </div>
-          {/* Row 2 — Company Size + Regions */}
           <div style={{ borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Company Size</p>
             {B2B_PROFILE.companySize.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2B_SIZE_COLORS[i]||NS.blue} delay={i*40+160} />)}
@@ -1096,10 +811,8 @@ function PanelProfileSection() {
           </div>
         </div>
       )}
-
       {tab === "b2c" && (
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"32px 48px" }} className="panel-grid">
-          {/* Row 1 */}
           <div>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Age Brackets</p>
             {B2C_PROFILE.age.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2C_AGE_COLORS[i]||ACCENT.plum} delay={i*35} />)}
@@ -1112,7 +825,6 @@ function PanelProfileSection() {
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Household Income</p>
             {B2C_PROFILE.income.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={B2C_INC_COLORS[i]||ACCENT.plum} delay={i*35+200} />)}
           </div>
-          {/* Row 2 — Gender + Regions side by side */}
           <div style={{ borderTop:`1px solid ${NS.ruleSoft}`, paddingTop:28 }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>Gender</p>
             {B2C_PROFILE.gender.map((s,i)=><HBar key={s.label} label={s.label} pct={s.pct} accent={i===0?NS.blue:ACCENT.plum} delay={i*40} />)}
@@ -1123,38 +835,54 @@ function PanelProfileSection() {
           </div>
         </div>
       )}
-
       <div style={{ height:"clamp(36px,4vw,52px)" }} />
     </div>
   );
 }
 
-// ─── SECTION 04 — Expertise ───────────────────────────────────────
-function ExpertiseSection({ onOpen }) {
+// ─── SECTION 02 — Expertise ───────────────────────────────────────
+// Expertise tiles open inline (no popup) — same "page hides" pattern
+function ExpertiseSection({ onOpenCase }) {
   const [ref, vis] = useFadeIn();
+  const [openCard, setOpenCard] = useState(null);
+
   const EXPERTISE_CARDS = [
     { id:"B2B",  label:"B2B Research",            tag:"Decision-maker intelligence", accent:NS.blue,
-      desc:"In-depth interviews with CXOs, executives, industry experts/key stakeholders, and industrial surveys, reaching decision-makers and technical leads across global markets.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"),
+      desc:"In-depth interviews with CXOs, executives, industry experts/key stakeholders, and industrial surveys, reaching decision-makers and technical leads across global markets.",
+      items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"),
       featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
     { id:"B2C",  label:"B2C & Consumer Research",  tag:"Consumer depth",              accent:ACCENT.plum,
-      desc:"Consumer surveys (CAPI/CATI/CAWI), focus groups, face-to-face interviews, home use tests, central location tests with deep panel access across sector. Covers voice of customers, brand tracking, usage and attitude, product concept testing, and shopper behaviour.", items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"),
+      desc:"Consumer surveys (CAPI/CATI/CAWI), focus groups, face-to-face interviews, home use tests, central location tests with deep panel access across sector.",
+      items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"),
       featured:["Online Shopping Patterns for Women's Apparel in the United States","Consumer Insights & Trend Mapping: Women's Adult Beverages","Home Fitness Brand Performance Assessment"] },
     { id:"Dual", label:"Dual B2B / B2C",           tag:"Mixed audience research",     accent:ACCENT.forest,
-      desc:"Research programmes combining stakeholder and end-consumer perspectives. Captures the full market picture from category managers, procurement heads, and industry executives through to everyday consumers, shoppers, and end users across diverse geographies.", items:RESEARCH_DATA.filter(d=>d.primaryType==="Both"),
+      desc:"Research programmes combining stakeholder and end-consumer perspectives — category managers, procurement heads, executives through to everyday consumers.",
+      items:RESEARCH_DATA.filter(d=>d.primaryType==="Both"),
       featured:["Brand Health & Competitive Benchmarking Study for a Health Insurance Company","GTM & Market Potential for Flavoured Milk and Convergence Drinks","Customer Perceptions on In-vehicle Health & Wellness Study"] },
-    { id:"Synthetic Data", label:"Synthetic Data",  tag:"INTEL",                       accent:ACCENT.steel,
-      desc:"Multi-level account intelligence coverage designed to align insight depth with sales objectives and deal maturity.", items:RESEARCH_DATA.filter(d=>d.studyType==="Synthetic Data"),
+    { id:"Synthetic Data", label:"Synthetic Data",  tag:"Data augmentation",           accent:ACCENT.steel,
+      desc:"ML-ready synthetic dataset generation, enabling rapid data augmentation for AI/ML workflows without compromising privacy or requiring new data collection.",
+      items:RESEARCH_DATA.filter(d=>d.studyType==="Synthetic Data"),
       featured:["Scalable Data Augmentation through Synthetic Record Generation"] },
   ];
+
+  const activeCard = openCard ? EXPERTISE_CARDS.find(c=>c.id===openCard) : null;
+
+  const handleCardClick = (card) => {
+    setOpenCard(card.id);
+    setTimeout(() => {
+      document.getElementById("expertise")?.scrollIntoView({ behavior:"smooth", block:"start" });
+    }, 60);
+  };
+
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
 
       {/* ── Header ── */}
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.forest)}>04 — Primary Research Expertise</p>
+        <p style={EYE(ACCENT.forest)}>02 — Primary Research Expertise</p>
         <h2 style={{ ...H2 }} className="expertise-h2">Global Data Collection. Local Market Intelligence.</h2>
 
-        {/* Stat bar — full width, all 4 in one row */}
+        {/* Stat bar */}
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
           {PANEL_STATS.map((s,i)=>(
             <div key={i} style={{ padding:"24px 28px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
@@ -1181,24 +909,37 @@ function ExpertiseSection({ onOpen }) {
         <PanelProfileSection />
       </div>
 
-      {/* ── Expertise tiles ── */}
-      <div style={{ maxWidth:1160, margin:"0 auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
-        <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
+      {/* ── Expertise tiles — or inline case panel ── */}
+      <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
+
+        {!activeCard && (
+          <>
+            <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
+            <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
+              {EXPERTISE_CARDS.map((c,i)=>(
+                <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
+                  onClick={()=>handleCardClick(c)} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {activeCard && (
+          <InlineCasePanel
+            title={activeCard.label}
+            accent={activeCard.accent}
+            items={[...activeCard.items].sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry))}
+            filterDimension="sector"
+            onClose={()=>setOpenCard(null)}
+            onOpenCase={onOpenCase}
+          />
+        )}
       </div>
-      <div style={{ maxWidth:1160,margin:"0 auto 0",padding:"0 clamp(16px,4vw,44px)",display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
-        {EXPERTISE_CARDS.map((c,i)=>(
-          <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
-            onClick={()=>{
-              const items = [...c.items].sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
-              onOpen(c.label, c.accent, items);
-            }} />
-        ))}
-      </div>
+
       <div style={{ height:"clamp(36px,5vw,64px)" }} />
     </section>
   );
 }
-
 
 function ExpertiseTile({ card, isLast, onClick }) {
   const [hov,setHov] = useState(false);
@@ -1223,11 +964,10 @@ function ExpertiseTile({ card, isLast, onClick }) {
   );
 }
 
-// ─── Shared ───────────────────────────────────────────────────────
+// ─── Shared style tokens ──────────────────────────────────────────
 const H2  = { fontSize:"clamp(28px,3.2vw,40px)",fontWeight:700,color:NS.ink,letterSpacing:"-0.025em",lineHeight:1.05,marginBottom:0 };
 const EYE = c => ({ fontSize:11,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:c,marginBottom:10,display:"block" });
 
-// ─── Card style tokens — applied uniformly across all tile types ──
 const CARD = {
   tagSize:    9,
   tagWeight:  700,
@@ -1244,13 +984,10 @@ const CARD = {
 
 // ─── Root ─────────────────────────────────────────────────────────
 export default function Research() {
-  const [popup,  setPopup]  = useState(null);
   const [viewer, setViewer] = useState(null);
 
-  const openPopup  = (title,accent,items) => setPopup({title,accent,items});
-  const closePopup = () => setPopup(null);
-  const openViewer = item  => setViewer(item);
-  const closeViewer = ()  => setViewer(null);
+  const openCase  = item => setViewer(item);
+  const closeCase = ()   => setViewer(null);
 
   return (
     <>
@@ -1264,59 +1001,41 @@ export default function Research() {
         ::-webkit-scrollbar-thumb { background:${NS.rule}; border-radius:3px; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
 
-        /* ── Mobile breakpoints ── */
         @media (max-width: 700px) {
-          .sectors-grid   { grid-template-columns: 1fr !important; }
+          .sectors-grid   { grid-template-columns: 1fr 1fr !important; }
           .method-grid    { grid-template-columns: 1fr 1fr !important; }
           .expertise-grid { grid-template-columns: 1fr 1fr !important; }
-          .popup-grid     { grid-template-columns: 1fr !important; }
-          /* Reset offset on single-col masonry */
-          .popup-grid > div:last-child { margin-top: 0 !important; }
-          /* Sector right border gone when 1-col */
-          .sectors-grid   button { border-right: none !important; }
-          /* Panel grid 2-col on tablet */
+          .sectors-grid button { border-right: none !important; }
           .panel-grid     { grid-template-columns: 1fr 1fr !important; }
-          /* Stats full-width stacked */
           .stats-bar      { grid-template-columns: 1fr 1fr !important; }
-          /* Capabilities 1-col on mobile */
           .caps-grid      { grid-template-columns: 1fr 1fr !important; }
         }
         @media (max-width: 480px) {
+          .sectors-grid   { grid-template-columns: 1fr !important; }
           .method-grid    { grid-template-columns: 1fr !important; }
-          .method-grid    button { border-right: none !important; }
           .expertise-grid { grid-template-columns: 1fr !important; }
           .panel-grid     { grid-template-columns: 1fr !important; }
           .stats-bar      { grid-template-columns: 1fr 1fr !important; }
           .caps-grid      { grid-template-columns: 1fr !important; }
-          /* Industry cards in popup - 1 col */
-          .industry-cards-grid { grid-template-columns: 1fr 1fr !important; }
         }
-        /* Strip overflow on mobile */
-        .sector-strip, .method-strip, .expertise-strip, .geo-strip { overflow-x: auto; }
-        .sector-strip button, .method-strip button, .expertise-strip button, .geo-strip button { min-width: 80px; }
         @media (min-width: 900px) {
           .expertise-h2 { white-space: nowrap; }
         }
       `}</style>
 
-      <div style={{ background:NS.paper,minHeight:"100vh" }}>
+      <div style={{ background:NS.paper, minHeight:"100vh" }}>
         <ResearchNav />
         <ResearchHero />
-        <SectorSection      onOpen={openPopup} />
-        <MethodologySection onOpen={openPopup} />
-        <GeoSection         onOpen={openPopup} />
-        <ExpertiseSection   onOpen={openPopup} />
+        <ExploreSection    onOpenCase={openCase} />
+        <ExpertiseSection  onOpenCase={openCase} />
         <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
           <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
           <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
         </footer>
       </div>
 
-      {popup&&!viewer&&(
-        <ItemsPopup title={popup.title} accent={popup.accent} items={popup.items} onClose={closePopup} onOpen={openViewer} />
-      )}
-      {viewer&&(
-        <CaseViewer item={viewer} accent={popup?.accent||NS.blue} onClose={closeViewer} />
+      {viewer && (
+        <CaseViewer item={viewer} accent={SECTORS.find(s=>s.id===viewer.industry)?.accent||NS.blue} onClose={closeCase} />
       )}
     </>
   );
