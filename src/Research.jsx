@@ -282,12 +282,12 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose
           ← Back
         </button>
         <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
-        <h3 style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0 }}>{title}</h3>
-        <span style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
+        <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0 }}>{title}</h3>
+        <span className="panel-header-count" style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
       </div>
 
       {/* 50/50 filter bar */}
-      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",border:`1px solid ${NS.rule}`,borderTop:"none",marginBottom:24 }}>
+      <div className="filter-bar" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",border:`1px solid ${NS.rule}`,borderTop:"none",marginBottom:24 }}>
         <div style={{ padding:"14px 18px",borderRight:`1px solid ${NS.rule}` }}>
           <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>{dimLabel(filterDim1)}</span>
           <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
@@ -364,7 +364,7 @@ function ResearchNav() {
     <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,display:"flex",alignItems:"center",height:52,padding:"0 clamp(16px,4vw,44px)" }}>
       <a href="/research" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",marginRight:"auto",minWidth:0,overflow:"hidden" }}>
         <img src={logoSrc} alt="Netscribes" style={{ height:19,objectFit:"contain",opacity:0.85,flexShrink:0 }} />
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted,whiteSpace:"nowrap" }}> / Research</span>
+        <span className="nav-label" style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted,whiteSpace:"nowrap" }}> / Research</span>
       </a>
       <nav style={{ display:"flex",gap:1,flexShrink:0 }}>
         {IDS.map(id=>(
@@ -409,10 +409,10 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
 
         {!openPanel && (
           <>
-            <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
+            <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
               <h2 style={H2}>Explore our research work.</h2>
               {/* Toggle */}
-              <div style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
+              <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
                   <ModeTab key={m.id} label={m.label} active={mode===m.id}
                     borderRight={i<MODES.length-1}
@@ -441,14 +441,14 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
 
         {openPanel && (
           <>
-            <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
+            <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
               <h2 style={H2}>Explore our research work.</h2>
               {/* Toggle visible but non-interactive while panel open — clicking a mode closes panel too */}
-              <div style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
+              <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
                   <ModeTab key={m.id} label={m.label} active={mode===m.id}
                     borderRight={i<MODES.length-1}
-                    onClick={()=>{ setMode(m.id); setOpenPanel(null); }} />
+                    onClick={()=>{ setMode(m.id); setOpenPanel(null); onPanelChange(false); }} />
                 ))}
               </div>
             </div>
@@ -1052,6 +1052,32 @@ export default function Research() {
         }
         @media (min-width: 900px) {
           .expertise-h2 { white-space: nowrap; }
+        }
+
+        /* ── New elements: toggle row, filter bar, panel header ── */
+
+        /* Toggle sits below heading on narrow screens */
+        @media (max-width: 600px) {
+          .explore-header { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+          .mode-toggle    { width: 100% !important; }
+          .mode-toggle button { flex: 1 !important; text-align: center !important; }
+        }
+
+        /* Filter bar stacks to single column on mobile */
+        @media (max-width: 580px) {
+          .filter-bar { grid-template-columns: 1fr !important; }
+          .filter-bar > div:first-child { border-right: none !important; border-bottom: 1px solid rgba(0,95,134,0.13); }
+        }
+
+        /* Panel header: hide count, allow title to wrap */
+        @media (max-width: 480px) {
+          .panel-header-count { display: none !important; }
+          .panel-header-title { font-size: 15px !important; }
+        }
+
+        /* Nav: shrink "/ Research" label on very small screens */
+        @media (max-width: 380px) {
+          .nav-label { display: none !important; }
         }
       `}</style>
 
