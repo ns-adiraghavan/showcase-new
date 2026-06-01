@@ -464,12 +464,12 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
   return (
     <section id="explore" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease", minHeight:"60vh" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Work samples</p>
+        <p style={EYE(NS.blue)}>01 — Strategic Intelligence</p>
 
         {!openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
-              <h2 style={H2}>Explore our research work.</h2>
+              <h2 style={H2}>Our Expertise in Action</h2>
               {/* Toggle */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
@@ -501,7 +501,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
         {openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
-              <h2 style={H2}>Explore our research work.</h2>
+              <h2 style={H2}>Our Expertise in Action</h2>
               {/* Toggle visible but non-interactive while panel open — clicking a mode closes panel too */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
@@ -1039,7 +1039,7 @@ function ExpertiseTile({ card, isLast, onClick }) {
       <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:CARD.bodyLine,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:14,marginTop:"auto",transition:"border-color 0.32s" }}>
         <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:9 }}>Featured work</p>
-        {card.featured.map((t,i)=>(
+        {card.featured.slice(0,1).map((t,i)=>(
           <div key={i} style={{ display:"flex",gap:7,alignItems:"flex-start",marginBottom:5 }}>
             <span style={{ color:hov?"rgba(255,255,255,0.5)":card.accent,fontSize:11,flexShrink:0,marginTop:1,transition:"color 0.32s" }}>—</span>
             <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s" }}>{t}</span>
