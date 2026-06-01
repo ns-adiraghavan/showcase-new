@@ -1042,7 +1042,7 @@ function ExpertiseTile({ card, isLast, onClick }) {
         {card.featured.slice(0,1).map((t,i)=>(
           <div key={i} style={{ display:"flex",gap:7,alignItems:"flex-start",marginBottom:5 }}>
             <span style={{ color:hov?"rgba(255,255,255,0.5)":card.accent,fontSize:11,flexShrink:0,marginTop:1,transition:"color 0.32s" }}>—</span>
-            <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s" }}>{t}</span>
+            <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden" }}>{t}</span>
           </div>
         ))}
       </div>
