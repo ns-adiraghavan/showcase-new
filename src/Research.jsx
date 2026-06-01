@@ -370,6 +370,7 @@ function SectorTile({ sector, index, total, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
+      {/* Top row: index + tag */}
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
         <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
           {String(index+1).padStart(2,"00")} / {String(SECTORS.length).padStart(2,"00")}
@@ -377,11 +378,13 @@ function SectorTile({ sector, index, total, onClick }) {
         <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
 
-      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(17px,2vw,26px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
-      </div>
+      {/* Headline — top-anchored so all tiles align */}
+      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
 
-      {/* Spotlight case */}
+      {/* Spacer pushes spotlight to bottom */}
+      <div style={{ flex:1 }} />
+
+      {/* Spotlight case — always at bottom */}
       {spotlight && (
         <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
           <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Sample work</p>
