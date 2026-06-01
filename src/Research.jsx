@@ -233,34 +233,48 @@ function CaseTile({ item, accent, onOpen }) {
 }
 
 // ─── Inline Case Panel — replaces page content when a card is clicked ──
-// Header stays visible with back button; cases fill the space below.
-function InlineCasePanel({ title, accent, items, filterDimension, onClose, onOpenCase }) {
-  // filterDimension = "sector" | "studyType" | "geo" — controls what pill filter shows
-  const [activePill, setActivePill] = useState(null);
+// Two-column 50/50 filter bar, then cases grid.
+// filterDim1 / filterDim2 = "sector" | "studyType" | "geo"
+function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose, onOpenCase }) {
+  const [f1, setF1] = useState(null); // active pill for left filter
+  const [f2, setF2] = useState(null); // active pill for right filter
 
-  // Build pills based on dimension — show things present in items only
-  let pills = [];
-  if (filterDimension === "sector") {
-    pills = SECTORS.filter(s => items.some(d=>d.industry===s.id)).map(s=>({ id:s.id, label:s.label, accent:s.accent }));
-  } else if (filterDimension === "studyType") {
-    pills = STUDY_TYPES.filter(st => items.some(d=>d.studyType===st.id)).map(st=>({ id:st.id, label:st.label, accent:st.accent }));
-  } else if (filterDimension === "geo") {
-    pills = GEO_REGIONS.filter(g => items.some(d=>d.geo.includes(g.id))).map(g=>({ id:g.id, label:g.label, accent:g.accent }));
+  // Build pill list for a given dimension, scoped to items present
+  function buildPills(dim, baseItems) {
+    if (dim === "sector")    return SECTORS.filter(s => baseItems.some(d=>d.industry===s.id)).map(s=>({ id:s.id, label:s.label, accent:s.accent }));
+    if (dim === "studyType") return STUDY_TYPES.filter(st => baseItems.some(d=>d.studyType===st.id)).map(st=>({ id:st.id, label:st.label, accent:st.accent }));
+    if (dim === "geo")       return GEO_REGIONS.filter(g => baseItems.some(d=>d.geo.includes(g.id))).map(g=>({ id:g.id, label:g.label, accent:g.accent }));
+    return [];
   }
 
-  let filtered = items;
-  if (activePill) {
-    if (filterDimension === "sector")    filtered = items.filter(d=>d.industry===activePill);
-    if (filterDimension === "studyType") filtered = items.filter(d=>d.studyType===activePill);
-    if (filterDimension === "geo")       filtered = items.filter(d=>d.geo.includes(activePill));
+  function filterByDim(dim, val, list) {
+    if (!val) return list;
+    if (dim === "sector")    return list.filter(d=>d.industry===val);
+    if (dim === "studyType") return list.filter(d=>d.studyType===val);
+    if (dim === "geo")       return list.filter(d=>d.geo.includes(val));
+    return list;
   }
 
-  const currentAccent = (activePill && pills.find(p=>p.id===activePill)?.accent) || accent;
+  function dimLabel(dim) {
+    if (dim === "sector")    return "Industry";
+    if (dim === "studyType") return "Methodology";
+    if (dim === "geo")       return "Region";
+    return "";
+  }
+
+  const pills1 = buildPills(filterDim1, items);
+  const pills2 = buildPills(filterDim2, items);
+
+  // Apply both filters
+  let filtered = filterByDim(filterDim1, f1, items);
+  filtered = filterByDim(filterDim2, f2, filtered);
+
+  const activeAccent = (f1 && pills1.find(p=>p.id===f1)?.accent) || accent;
 
   return (
     <div style={{ animation:"rc-pop 0.22s ease both" }}>
       {/* Panel header */}
-      <div style={{ display:"flex",alignItems:"center",gap:14,padding:"18px 0 16px",borderBottom:`1px solid ${NS.rule}`,marginBottom:20 }}>
+      <div style={{ display:"flex",alignItems:"center",gap:14,padding:"18px 0 16px",borderBottom:`1px solid ${NS.rule}`,marginBottom:0 }}>
         <button onClick={onClose}
           style={{ display:"flex",alignItems:"center",gap:6,fontSize:11,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:"none",border:`1px solid ${NS.rule}`,borderRadius:2,padding:"5px 11px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.15s",flexShrink:0 }}
           onMouseEnter={e=>{e.currentTarget.style.color=NS.ink;e.currentTarget.style.borderColor=NS.ink;}}
@@ -272,24 +286,37 @@ function InlineCasePanel({ title, accent, items, filterDimension, onClose, onOpe
         <span style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
       </div>
 
-      {/* Filter pills */}
-      {pills.length > 1 && (
-        <div style={{ display:"flex",flexWrap:"wrap",gap:6,marginBottom:20,alignItems:"center" }}>
-          <PillBtn label="All" active={!activePill} color={accent} onClick={()=>setActivePill(null)} />
-          {pills.map(p=>(
-            <PillBtn key={p.id} label={p.label} active={activePill===p.id} color={p.accent}
-              onClick={()=>setActivePill(activePill===p.id?null:p.id)} />
-          ))}
+      {/* 50/50 filter bar */}
+      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",border:`1px solid ${NS.rule}`,borderTop:"none",marginBottom:24 }}>
+        <div style={{ padding:"14px 18px",borderRight:`1px solid ${NS.rule}` }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>{dimLabel(filterDim1)}</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            <PillBtn label="All" active={!f1} color={accent} onClick={()=>setF1(null)} />
+            {pills1.map(p=>(
+              <PillBtn key={p.id} label={p.label} active={f1===p.id} color={p.accent}
+                onClick={()=>setF1(f1===p.id?null:p.id)} />
+            ))}
+          </div>
         </div>
-      )}
+        <div style={{ padding:"14px 18px" }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>{dimLabel(filterDim2)}</span>
+          <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
+            <PillBtn label="All" active={!f2} color={accent} onClick={()=>setF2(null)} />
+            {pills2.map(p=>(
+              <PillBtn key={p.id} label={p.label} active={f2===p.id} color={p.accent}
+                onClick={()=>setF2(f2===p.id?null:p.id)} />
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Cases grid */}
       {filtered.length === 0 ? (
-        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No studies match this filter.</div>
+        <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No studies match these filters.</div>
       ) : (
         <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:10 }}>
           {filtered.map((item,i)=>(
-            <CaseTile key={i} item={item} accent={currentAccent} onOpen={onOpenCase} />
+            <CaseTile key={i} item={item} accent={activeAccent} onOpen={onOpenCase} />
           ))}
         </div>
       )}
@@ -351,22 +378,23 @@ function ResearchNav() {
 // ─── SECTION 01 — Explore Work ────────────────────────────────────
 // Three-way toggle: Industry / Study Type / Region
 // Clicking a card expands inline below (page hides)
-function ExploreSection({ onOpenCase }) {
+function ExploreSection({ onOpenCase, onPanelChange }) {
   const [ref, vis] = useFadeIn();
   // mode: "industry" | "studyType" | "region"
   const [mode, setMode] = useState("industry");
-  // openPanel: null | { title, accent, items, filterDimension }
+  // openPanel: null | { title, accent, items, mode (source mode), filterDim1, filterDim2 }
   const [openPanel, setOpenPanel] = useState(null);
 
-  const handleCardClick = (title, accent, items, filterDimension) => {
-    setOpenPanel({ title, accent, items, filterDimension });
-    // Scroll to top of section
+  const handleCardClick = (title, accent, items, filterDim1, filterDim2) => {
+    const panel = { title, accent, items, filterDim1, filterDim2 };
+    setOpenPanel(panel);
+    onPanelChange(true);
     setTimeout(() => {
       document.getElementById("explore")?.scrollIntoView({ behavior:"smooth", block:"start" });
     }, 60);
   };
 
-  const handleClose = () => setOpenPanel(null);
+  const handleClose = () => { setOpenPanel(null); onPanelChange(false); };
 
   const MODES = [
     { id:"industry",  label:"Industry" },
@@ -395,17 +423,17 @@ function ExploreSection({ onOpenCase }) {
 
             {mode === "industry" && (
               <IndustryView onCardClick={(title, accent, items) =>
-                handleCardClick(title, accent, items, "studyType")
+                handleCardClick(title, accent, items, "studyType", "geo")
               } />
             )}
             {mode === "studyType" && (
               <StudyTypeView onCardClick={(title, accent, items) =>
-                handleCardClick(title, accent, items, "sector")
+                handleCardClick(title, accent, items, "sector", "geo")
               } />
             )}
             {mode === "region" && (
               <RegionView onCardClick={(title, accent, items) =>
-                handleCardClick(title, accent, items, "sector")
+                handleCardClick(title, accent, items, "sector", "studyType")
               } />
             )}
           </>
@@ -428,7 +456,8 @@ function ExploreSection({ onOpenCase }) {
               title={openPanel.title}
               accent={openPanel.accent}
               items={openPanel.items}
-              filterDimension={openPanel.filterDimension}
+              filterDim1={openPanel.filterDim1}
+              filterDim2={openPanel.filterDim2}
               onClose={handleClose}
               onOpenCase={onOpenCase}
             />
@@ -604,8 +633,8 @@ function RegionTile({ region, index, total, onClick }) {
       }}
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s" }}>
-          {String(count)} {count===1?"study":"studies"}
+        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
+          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
         </span>
         <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":region.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":region.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>Region</span>
       </div>
@@ -929,7 +958,8 @@ function ExpertiseSection({ onOpenCase }) {
             title={activeCard.label}
             accent={activeCard.accent}
             items={[...activeCard.items].sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry))}
-            filterDimension="sector"
+            filterDim1="sector"
+            filterDim2="geo"
             onClose={()=>setOpenCard(null)}
             onOpenCase={onOpenCase}
           />
@@ -984,7 +1014,9 @@ const CARD = {
 
 // ─── Root ─────────────────────────────────────────────────────────
 export default function Research() {
-  const [viewer, setViewer] = useState(null);
+  const [viewer,       setViewer]       = useState(null);
+  // Track whether any explore/expertise panel is open — hides hero/expertise/footer
+  const [anyPanelOpen, setAnyPanelOpen] = useState(false);
 
   const openCase  = item => setViewer(item);
   const closeCase = ()   => setViewer(null);
@@ -1025,13 +1057,22 @@ export default function Research() {
 
       <div style={{ background:NS.paper, minHeight:"100vh" }}>
         <ResearchNav />
-        <ResearchHero />
-        <ExploreSection    onOpenCase={openCase} />
-        <ExpertiseSection  onOpenCase={openCase} />
-        <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
-          <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
-          <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
-        </footer>
+        {/* Hero hides when any panel open */}
+        {!anyPanelOpen && <ResearchHero />}
+        <ExploreSection
+          onOpenCase={openCase}
+          onPanelChange={setAnyPanelOpen}
+        />
+        {/* Expertise + footer hide when explore panel is open */}
+        {!anyPanelOpen && (
+          <>
+            <ExpertiseSection onOpenCase={openCase} />
+            <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
+              <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
+              <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
+            </footer>
+          </>
+        )}
       </div>
 
       {viewer && (
