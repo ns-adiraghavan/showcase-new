@@ -870,8 +870,7 @@ function PanelProfileSection() {
 }
 
 // ─── SECTION 02 — Expertise ───────────────────────────────────────
-// Expertise tiles open inline (no popup) — same "page hides" pattern
-function ExpertiseSection({ onOpenCase }) {
+function ExpertiseSection({ onOpenCase, onPanelChange }) {
   const [ref, vis] = useFadeIn();
   const [openCard, setOpenCard] = useState(null);
 
@@ -898,51 +897,49 @@ function ExpertiseSection({ onOpenCase }) {
 
   const handleCardClick = (card) => {
     setOpenCard(card.id);
-    setTimeout(() => {
-      document.getElementById("expertise")?.scrollIntoView({ behavior:"smooth", block:"start" });
-    }, 60);
+    onPanelChange(true);
+    // Scroll to top of nav — page is now cleared, panel starts right below nav
+    setTimeout(() => window.scrollTo({ top: 0, behavior:"smooth" }), 60);
   };
+
+  const handleClose = () => { setOpenCard(null); onPanelChange(false); };
 
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
 
-      {/* ── Header ── */}
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(ACCENT.forest)}>02 — Primary Research Expertise</p>
-        <h2 style={{ ...H2 }} className="expertise-h2">Global Data Collection. Local Market Intelligence.</h2>
+      {/* ── All top content: only shown when no card is open ── */}
+      {!activeCard && (
+        <>
+          <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
+            <p style={EYE(ACCENT.forest)}>02 — Primary Research Expertise</p>
+            <h2 style={{ ...H2 }} className="expertise-h2">Global Data Collection. Local Market Intelligence.</h2>
 
-        {/* Stat bar */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
-          {PANEL_STATS.map((s,i)=>(
-            <div key={i} style={{ padding:"24px 28px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
-              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(24px,2.8vw,36px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
-              <div style={{ fontSize:12, color:NS.muted, marginTop:6, lineHeight:1.3, whiteSpace:"nowrap" }}>{s.label}</div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="stats-bar">
+              {PANEL_STATS.map((s,i)=>(
+                <div key={i} style={{ padding:"24px 28px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
+                  <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"clamp(24px,2.8vw,36px)", fontWeight:700, color:ACCENT.forest, letterSpacing:"-0.02em", lineHeight:1.1 }}>{s.value}</div>
+                  <div style={{ fontSize:12, color:NS.muted, marginTop:6, lineHeight:1.3, whiteSpace:"nowrap" }}>{s.label}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* Capabilities row */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="caps-grid">
-          {PANEL_CAPABILITIES.map((c,i)=>(
-            <div key={i} style={{ background:NS.surface, padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
-              <div style={{ width:20, height:2, background:ACCENT.forest, borderRadius:1, marginBottom:12 }} />
-              <p style={{ fontSize:12, fontWeight:700, color:NS.ink, marginBottom:6, lineHeight:1.3 }}>{c.title}</p>
-              <p style={{ fontSize:12, color:NS.muted, lineHeight:1.6 }}>{c.body}</p>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"0", marginTop:32, borderTop:`1px solid ${NS.rule}`, borderLeft:`1px solid ${NS.rule}`, borderRight:`1px solid ${NS.rule}` }} className="caps-grid">
+              {PANEL_CAPABILITIES.map((c,i)=>(
+                <div key={i} style={{ background:NS.surface, padding:"20px 22px", borderRight: i<3 ? `1px solid ${NS.rule}` : "none", borderBottom:`1px solid ${NS.rule}` }}>
+                  <div style={{ width:20, height:2, background:ACCENT.forest, borderRadius:1, marginBottom:12 }} />
+                  <p style={{ fontSize:12, fontWeight:700, color:NS.ink, marginBottom:6, lineHeight:1.3 }}>{c.title}</p>
+                  <p style={{ fontSize:12, color:NS.muted, lineHeight:1.6 }}>{c.body}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* ── Panel profiles (B2B / B2C tabbed charts) ── */}
-      <div style={{ maxWidth:1160, margin:"40px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
-        <PanelProfileSection />
-      </div>
+          <div style={{ maxWidth:1160, margin:"40px auto 0", padding:"0 clamp(16px,4vw,44px)" }}>
+            <PanelProfileSection />
+          </div>
 
-      {/* ── Expertise tiles — or inline case panel ── */}
-      <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
-
-        {!activeCard && (
-          <>
+          {/* ── Expertise tiles ── */}
+          <div id="expertise-tiles" style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
             <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
               {EXPERTISE_CARDS.map((c,i)=>(
@@ -950,21 +947,25 @@ function ExpertiseSection({ onOpenCase }) {
                   onClick={()=>handleCardClick(c)} />
               ))}
             </div>
-          </>
-        )}
+          </div>
+        </>
+      )}
 
-        {activeCard && (
+      {/* ── Case panel: shown alone when a tile is selected ── */}
+      {activeCard && (
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(24px,4vw,44px) clamp(16px,4vw,44px) 0" }}>
+          <p style={EYE(ACCENT.forest)}>02 — Primary Research Expertise</p>
           <InlineCasePanel
             title={activeCard.label}
             accent={activeCard.accent}
             items={[...activeCard.items].sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry))}
             filterDim1="sector"
             filterDim2="geo"
-            onClose={()=>setOpenCard(null)}
+            onClose={handleClose}
             onOpenCase={onOpenCase}
           />
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ height:"clamp(36px,5vw,64px)" }} />
     </section>
@@ -1015,7 +1016,7 @@ const CARD = {
 // ─── Root ─────────────────────────────────────────────────────────
 export default function Research() {
   const [viewer,       setViewer]       = useState(null);
-  // Track whether any explore/expertise panel is open — hides hero/expertise/footer
+  // "explore" | "expertise" | false — tracks which section has a panel open
   const [anyPanelOpen, setAnyPanelOpen] = useState(false);
 
   const openCase  = item => setViewer(item);
@@ -1085,19 +1086,26 @@ export default function Research() {
         <ResearchNav />
         {/* Hero hides when any panel open */}
         {!anyPanelOpen && <ResearchHero />}
-        <ExploreSection
-          onOpenCase={openCase}
-          onPanelChange={setAnyPanelOpen}
-        />
-        {/* Expertise + footer hide when explore panel is open */}
+        {/* Explore section: hidden when expertise panel is open */}
+        {anyPanelOpen !== "expertise" && (
+          <ExploreSection
+            onOpenCase={openCase}
+            onPanelChange={open => setAnyPanelOpen(open ? "explore" : false)}
+          />
+        )}
+        {/* Expertise section: hidden when explore panel is open */}
+        {anyPanelOpen !== "explore" && (
+          <ExpertiseSection
+            onOpenCase={openCase}
+            onPanelChange={open => setAnyPanelOpen(open ? "expertise" : false)}
+          />
+        )}
+        {/* Footer hides when any panel open */}
         {!anyPanelOpen && (
-          <>
-            <ExpertiseSection onOpenCase={openCase} />
-            <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
-              <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
-              <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
-            </footer>
-          </>
+          <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"0 auto",padding:"22px clamp(20px,4vw,44px) 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10 }}>
+            <img src={logoSrc} alt="Netscribes" style={{ height:17,opacity:0.55 }} />
+            <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research Capabilities</span>
+          </footer>
         )}
       </div>
 
