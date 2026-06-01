@@ -263,7 +263,6 @@ function CaseTile({ item, accent, onOpen }) {
         <button
           onClick={handleSummaryBtn}
           style={{
-            display:"none", // overridden by @media below via className
             marginTop:8,
             fontSize:10,
             fontWeight:700,
