@@ -198,22 +198,33 @@ function PillBtn({ label, active, color, onClick }) {
 // ─── Case Tile (inline grid card) ────────────────────────────────
 function CaseTile({ item, accent, onOpen }) {
   const [hov, setHov] = useState(false);
-  const sector    = SECTORS.find(s=>s.id===item.industry);
+  const [summaryOpen, setSummaryOpen] = useState(false);
+  const sector      = SECTORS.find(s=>s.id===item.industry);
   const sectorLabel = sector?.label || item.industry;
   const sectorAccent = sector?.accent || accent;
   const indBg   = hov ? "rgba(255,255,255,0.14)" : `${sectorAccent}12`;
   const indCol  = hov ? "rgba(255,255,255,0.85)" : sectorAccent;
   const muteBg  = hov ? "rgba(255,255,255,0.14)" : NS.paperDeep;
   const muteCol = hov ? "rgba(255,255,255,0.75)" : NS.muted;
+
+  // desc is shown on desktop via hover, on mobile via tap toggle
+  const showDesc = hov || summaryOpen;
+
+  function handleSummaryBtn(e) {
+    e.stopPropagation(); // don't trigger onOpen
+    setSummaryOpen(v => !v);
+  }
+
   return (
-    <div onClick={()=>onOpen(item)}
+    <div
+      onClick={()=>onOpen(item)}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
       style={{
         background: hov ? accent : NS.surface,
         border:`1.5px solid ${hov ? accent : NS.rule}`,
         borderRadius:3, padding:"16px 18px",
-        cursor:"pointer", transition:"all 0.18s ease",
+        cursor:"pointer", transition:"background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
         transform: hov ? "translateY(-2px)" : "none",
         boxShadow: hov ? `0 8px 24px ${accent}22` : "none",
       }}
@@ -222,12 +233,54 @@ function CaseTile({ item, accent, onOpen }) {
         <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s" }}>{item.title}</p>
         <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
+
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
         {(() => { const st = STUDY_TYPES.find(s=>s.id===item.studyType); const stCol = st?.accent || accent; const stBg = hov ? "rgba(255,255,255,0.18)" : `${stCol}15`; const stFg = hov ? "#fff" : stCol; return <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:stBg,color:stFg,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>; })()}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:indBg,color:indCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{sectorLabel}</span>
         {item.primaryType && <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,fontWeight:600,transition:"all 0.18s" }}>{item.primaryType}</span>}
         {item.geo.map(g=><span key={g} style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,transition:"all 0.18s" }}>{g}</span>)}
       </div>
+
+      {/* Summary: fades in on hover (desktop) or tap (mobile) */}
+      {item.desc && (
+        <p style={{
+          fontSize:11.5,
+          lineHeight:1.55,
+          color: hov ? "rgba(255,255,255,0.88)" : NS.inkSoft,
+          marginTop: showDesc ? 10 : 0,
+          maxHeight: showDesc ? "200px" : "0",
+          opacity: showDesc ? 1 : 0,
+          overflow:"hidden",
+          transition:"opacity 0.2s ease, max-height 0.25s ease, margin-top 0.2s ease, color 0.18s",
+          pointerEvents:"none",
+        }}>
+          {item.desc}
+        </p>
+      )}
+
+      {/* Mobile-only "Summary" toggle button — hidden on pointer:fine (mouse) devices */}
+      {item.desc && (
+        <button
+          onClick={handleSummaryBtn}
+          style={{
+            display:"none", // overridden by @media below via className
+            marginTop:8,
+            fontSize:10,
+            fontWeight:700,
+            letterSpacing:"0.06em",
+            textTransform:"uppercase",
+            border:`1px solid ${summaryOpen ? "rgba(255,255,255,0.4)" : accent}`,
+            borderRadius:2,
+            padding:"3px 8px",
+            background:"transparent",
+            color: summaryOpen ? "rgba(255,255,255,0.8)" : accent,
+            cursor:"pointer",
+          }}
+          className="casetile-summary-btn"
+        >
+          {summaryOpen ? "Hide" : "Summary"}
+        </button>
+      )}
     </div>
   );
 }
@@ -1079,6 +1132,11 @@ export default function Research() {
         /* Nav: shrink "/ Research" label on very small screens */
         @media (max-width: 380px) {
           .nav-label { display: none !important; }
+        }
+        /* Summary button: only visible on coarse-pointer (touch) devices */
+        .casetile-summary-btn { display: none; }
+        @media (pointer: coarse) {
+          .casetile-summary-btn { display: inline-block; }
         }
       `}</style>
 
