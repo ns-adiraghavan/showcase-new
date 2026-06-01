@@ -211,7 +211,13 @@ function CaseTile({ item, accent, onOpen }) {
   const showDesc = hov || summaryOpen;
 
   function handleSummaryBtn(e) {
-    e.stopPropagation(); // don't trigger onOpen
+    e.stopPropagation();
+    e.preventDefault();
+    setSummaryOpen(v => !v);
+  }
+  function handleSummaryTouch(e) {
+    e.stopPropagation();
+    e.preventDefault(); // prevents the subsequent click event firing
     setSummaryOpen(v => !v);
   }
 
@@ -261,7 +267,8 @@ function CaseTile({ item, accent, onOpen }) {
       {/* Mobile-only "Summary" toggle button — hidden on pointer:fine (mouse) devices */}
       {item.desc && (
         <button
-          onClick={handleSummaryBtn}
+          onClick={(e)=>{e.stopPropagation();e.preventDefault();}}
+          onTouchEnd={handleSummaryTouch}
           style={{
             marginTop:8,
             fontSize:10,
@@ -446,7 +453,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
     }, 60);
   };
 
-  const handleClose = () => { setOpenPanel(null); onPanelChange(false); };
+  const handleClose = () => { setOpenPanel(null); onPanelChange(false); setTimeout(()=>document.getElementById("explore")?.scrollIntoView({behavior:"smooth",block:"start"}),30); };
 
   const MODES = [
     { id:"industry",  label:"Industry" },
@@ -468,7 +475,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
                 {MODES.map((m,i)=>(
                   <ModeTab key={m.id} label={m.label} active={mode===m.id}
                     borderRight={i<MODES.length-1}
-                    onClick={()=>{ setMode(m.id); setOpenPanel(null); }} />
+                    onClick={()=>{ setMode(m.id); setOpenPanel(null); setTimeout(()=>document.getElementById("explore")?.scrollIntoView({behavior:"smooth",block:"start"}),30); }} />
                 ))}
               </div>
             </div>
@@ -577,9 +584,7 @@ function SectorTile({ sector, index, total, spotlight, onClick }) {
       }}
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
-        </span>
+
         <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{sector.label}</h2>
@@ -685,9 +690,7 @@ function RegionTile({ region, index, total, onClick }) {
       }}
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
-        </span>
+
         <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":region.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":region.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>Region</span>
       </div>
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{region.label}</h2>
@@ -954,7 +957,7 @@ function ExpertiseSection({ onOpenCase, onPanelChange }) {
     setTimeout(() => window.scrollTo({ top: 0, behavior:"smooth" }), 60);
   };
 
-  const handleClose = () => { setOpenCard(null); onPanelChange(false); };
+  const handleClose = () => { setOpenCard(null); onPanelChange(false); setTimeout(()=>document.getElementById("expertise-tiles")?.scrollIntoView({behavior:"smooth",block:"start"}),30); };
 
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
@@ -1141,8 +1144,10 @@ export default function Research() {
 
       <div style={{ background:NS.paper, minHeight:"100vh" }}>
         <ResearchNav />
-        {/* Hero hides when any panel open */}
-        {!anyPanelOpen && <ResearchHero />}
+        {/* Hero collapses (not unmounts) when panel open — avoids layout jump */}
+        <div style={{ overflow:"hidden", maxHeight: anyPanelOpen ? "0" : "1000px", transition:"max-height 0.3s ease" }}>
+          <ResearchHero />
+        </div>
         {/* Explore section: hidden when expertise panel is open */}
         {anyPanelOpen !== "expertise" && (
           <ExploreSection
