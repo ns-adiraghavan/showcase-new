@@ -186,11 +186,9 @@ function CaseViewer({ item, accent, onClose }) {
 function ItemsPopup({ title, accent, items, onClose, onOpen }) {
   useLock(true);
   useEffect(() => { const h = e => e.key==="Escape"&&onClose(); window.addEventListener("keydown",h); return ()=>window.removeEventListener("keydown",h); }, [onClose]);
-  const col1 = items.filter((_,i)=>i%2===0);
-  const col2 = items.filter((_,i)=>i%2===1);
   return (
     <div onClick={e=>e.target===e.currentTarget&&onClose()} style={{ position:"fixed",inset:0,zIndex:3000,background:"rgba(15,27,39,0.65)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
-      <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:780,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
+      <div style={{ background:NS.surface,borderRadius:3,width:"100%",maxWidth:860,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 32px 80px rgba(0,0,0,0.28)",animation:"rc-pop 0.2s ease both" }}>
         <div style={{ height:4,background:accent,borderRadius:"3px 3px 0 0",flexShrink:0 }} />
         <div style={{ padding:"20px 24px 14px",borderBottom:`1px solid ${NS.rule}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"space-between" }}>
           <div style={{ display:"flex",alignItems:"center",gap:10 }}>
@@ -200,13 +198,8 @@ function ItemsPopup({ title, accent, items, onClose, onOpen }) {
           <button onClick={onClose} style={{ width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",flexShrink:0 }}>✕</button>
         </div>
         <div style={{ flex:1,overflowY:"auto",padding:"16px 18px 24px" }}>
-          <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
-            <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-              {col1.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===0} onOpen={onOpen} />)}
-            </div>
-            <div style={{ display:"flex",flexDirection:"column",gap:10,marginTop:28 }}>
-              {col2.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===1} onOpen={onOpen} />)}
-            </div>
+          <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10 }}>
+            {items.map((item,i)=><CaseTile key={i} item={item} accent={accent} onOpen={onOpen} />)}
           </div>
         </div>
       </div>
@@ -214,7 +207,7 @@ function ItemsPopup({ title, accent, items, onClose, onOpen }) {
   );
 }
 
-function CaseTile({ item, accent, tall, onOpen }) {
+function CaseTile({ item, accent, onOpen }) {
   const [hov, setHov] = useState(false);
   const sector    = SECTORS.find(s=>s.id===item.industry);
   const sectorLabel = sector?.label || item.industry;
@@ -242,7 +235,7 @@ function CaseTile({ item, accent, tall, onOpen }) {
         <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s" }}>{item.title}</p>
         <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
-      {tall && <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.72)":NS.muted,lineHeight:1.5,marginBottom:8,transition:"color 0.18s" }}>{item.desc}</p>}
+
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
         {/* Study type — accent coloured */}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:tagBg,color:tagCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>
@@ -381,14 +374,14 @@ function SectorTile({ sector, index, total, onClick }) {
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
         <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"0")} / {String(SECTORS.length).padStart(2,"0")}
+          {String(index+1).padStart(2,"00")} / {String(SECTORS.length).padStart(2,"00")}
         </span>
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
+        <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
 
       <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:10 }}>
-        <h2 style={{ fontWeight:700,fontSize:"clamp(14px,1.6vw,22px)",letterSpacing:"-0.02em",lineHeight:1.1,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
-        <p style={{ fontSize:"clamp(12px,1.4vw,14px)",color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.5,transition:"color 0.32s" }}>{sector.blurb}</p>
+        <h2 style={{ fontWeight:CARD.headWeight,fontSize:CARD.headSize,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",wordBreak:"normal",overflowWrap:"break-word",hyphens:"auto" }}>{sector.label}</h2>
+        <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:CARD.bodyLine,transition:"color 0.32s" }}>{sector.blurb}</p>
       </div>
 
       {/* Spotlight case */}
@@ -458,11 +451,11 @@ function MethodTile({ st, index, total, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isRightEdge?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(24px,3vw,40px) clamp(20px,2.5vw,32px) clamp(22px,2.5vw,32px)",cursor:"pointer",minHeight:"clamp(220px,24vw,280px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isRightEdge?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,280px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div>
         <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
-        <h3 style={{ fontSize:"clamp(15px,1.6vw,18px)",fontWeight:700,letterSpacing:"-0.01em",color:hov?"#fff":NS.ink,lineHeight:1.25,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
-        <p style={{ fontSize:"clamp(12px,1.2vw,13px)",lineHeight:1.6,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
+        <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
+        <p style={{ fontSize:CARD.bodySize,lineHeight:CARD.bodyLine,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",transition:"border-color 0.28s" }}>
         <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
@@ -556,16 +549,10 @@ function IndustryCard({ sector, items, onOpen }) {
     <button onClick={onOpen}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?sector.accent:NS.surface,border:`1.5px solid ${hov?sector.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${sector.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
-      <div style={{ padding:"22px 20px 18px", position:"relative", borderBottom:`1px solid ${hov?"rgba(255,255,255,0.15)":NS.ruleSoft}`, transition:"border-color 0.22s" }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":sector.accent,display:"block",marginBottom:6,transition:"color 0.22s" }}>{sector.tag}</span>
-        <h3 style={{ fontSize:16,fontWeight:700,color:hov?"#fff":NS.ink,letterSpacing:"-0.01em",lineHeight:1.2,transition:"color 0.22s" }}>{sector.label}</h3>
-        <span style={{ position:"absolute",top:16,right:16,fontSize:18,color:hov?"rgba(255,255,255,0.7)":sector.accent,transition:"color 0.22s" }}>↗</span>
-      </div>
-      {/* Body */}
-      <div style={{ padding:"14px 20px 18px",flex:1 }}>
-        <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.55,transition:"color 0.22s" }}>{sector.blurb}</p>
-      </div>
+      style={{ textAlign:"left",background:hov?sector.accent:NS.surface,border:`1.5px solid ${hov?sector.accent:NS.rule}`,borderRadius:3,padding:CARD.padding,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${sector.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column",position:"relative" }}>
+      <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":sector.accent,display:"block",marginBottom:6,transition:"color 0.22s" }}>{sector.tag}</span>
+      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,color:hov?"#fff":NS.ink,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,transition:"color 0.22s",paddingRight:24 }}>{sector.label}</h3>
+      <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":sector.accent,transition:"color 0.22s" }}>↗</span>
     </button>
   );
 }
@@ -636,15 +623,10 @@ function FrameworkCard({ st, items, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:`1.5px solid ${hov?st.accent:NS.rule}`,borderRadius:3,padding:0,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${st.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column" }}>
-      <div style={{ padding:"20px 18px 16px", position:"relative", borderBottom:`1px solid ${hov?"rgba(255,255,255,0.15)":NS.ruleSoft}`, transition:"border-color 0.22s" }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":st.accent,display:"block",marginBottom:5,transition:"color 0.22s" }}>{st.tag}</span>
-        <h3 style={{ fontSize:15,fontWeight:700,color:hov?"#fff":NS.ink,letterSpacing:"-0.01em",lineHeight:1.2,transition:"color 0.22s" }}>{st.label}</h3>
-        <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":st.accent,transition:"color 0.22s" }}>↗</span>
-      </div>
-      <div style={{ padding:"12px 18px 16px",flex:1 }}>
-        <p style={{ fontSize:12,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.55,transition:"color 0.22s" }}>{st.desc}</p>
-      </div>
+      style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:`1.5px solid ${hov?st.accent:NS.rule}`,borderRadius:3,padding:CARD.padding,cursor:"pointer",overflow:"hidden",transition:"all 0.22s ease",transform:hov?"translateY(-3px)":"none",boxShadow:hov?`0 10px 28px ${st.accent}22`:"none",fontFamily:"'DM Sans',sans-serif",width:"100%",display:"flex",flexDirection:"column",position:"relative" }}>
+      <span style={{ fontSize:CARD.tagSize,fontWeight:CARD.tagWeight,letterSpacing:CARD.tagSpacing,textTransform:"uppercase",color:hov?"rgba(255,255,255,0.65)":st.accent,display:"block",marginBottom:5,transition:"color 0.22s" }}>{st.tag}</span>
+      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,color:hov?"#fff":NS.ink,letterSpacing:CARD.headSpacing,lineHeight:CARD.headLine,transition:"color 0.22s",paddingRight:24 }}>{st.label}</h3>
+      <span style={{ position:"absolute",top:14,right:14,fontSize:16,color:hov?"rgba(255,255,255,0.7)":st.accent,transition:"color 0.22s" }}>↗</span>
     </button>
   );
 }
@@ -655,8 +637,6 @@ function SectorPillFilter({ items, accent, onOpen, onClose }) {
   const [activeSector, setActiveSector] = useState(null);
   const presentSectors = SECTORS.filter(s => items.some(d=>d.industry===s.id));
   const filteredItems = activeSector ? items.filter(d=>d.industry===activeSector) : items;
-  const col1 = filteredItems.filter((_,i)=>i%2===0);
-  const col2 = filteredItems.filter((_,i)=>i%2===1);
 
   return (
     <>
@@ -669,13 +649,8 @@ function SectorPillFilter({ items, accent, onOpen, onClose }) {
         ))}
       </div>
       <div style={{ flex:1, overflowY:"auto", padding:"12px 16px 24px" }}>
-        <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,alignItems:"start" }}>
-          <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-            {col1.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===0} onOpen={onOpen} />)}
-          </div>
-          <div style={{ display:"flex",flexDirection:"column",gap:10,marginTop:28 }}>
-            {col2.map((item,i)=><CaseTile key={i} item={item} accent={accent} tall={i%3===1} onOpen={onOpen} />)}
-          </div>
+        <div className="popup-grid" style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10 }}>
+          {filteredItems.map((item,i)=><CaseTile key={i} item={item} accent={accent} onOpen={onOpen} />)}
         </div>
       </div>
     </>
@@ -1231,10 +1206,10 @@ function ExpertiseTile({ card, isLast, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:"clamp(20px,3vw,36px) clamp(16px,2.5vw,28px) clamp(18px,3vw,30px)",cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
-      <h3 style={{ fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:hov?"#fff":NS.ink,lineHeight:1.15,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
-      <p style={{ fontSize:13,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:1.65,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
+      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
+      <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:CARD.bodyLine,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:14,marginTop:"auto",transition:"border-color 0.32s" }}>
         <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:9 }}>Featured work</p>
         {card.featured.map((t,i)=>(
@@ -1251,6 +1226,21 @@ function ExpertiseTile({ card, isLast, onClick }) {
 // ─── Shared ───────────────────────────────────────────────────────
 const H2  = { fontSize:"clamp(28px,3.2vw,40px)",fontWeight:700,color:NS.ink,letterSpacing:"-0.025em",lineHeight:1.05,marginBottom:0 };
 const EYE = c => ({ fontSize:11,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:c,marginBottom:10,display:"block" });
+
+// ─── Card style tokens — applied uniformly across all tile types ──
+const CARD = {
+  tagSize:    9,
+  tagWeight:  700,
+  tagSpacing: "0.15em",
+  headSize:   "clamp(15px,1.55vw,19px)",
+  headWeight: 700,
+  headSpacing:"-0.015em",
+  headLine:   1.2,
+  bodySize:   13,
+  bodyLine:   1.6,
+  padding:    "clamp(20px,2.5vw,28px) clamp(18px,2vw,24px)",
+  padBody:    "clamp(14px,1.8vw,18px) clamp(18px,2vw,24px) clamp(16px,2vw,22px)",
+};
 
 // ─── Root ─────────────────────────────────────────────────────────
 export default function Research() {
