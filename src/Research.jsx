@@ -474,6 +474,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
   const MODES = [
     { id:"industry",  label:"Industry" },
     { id:"studyType", label:"Study Type" },
+    { id:"region",    label:"Region" },
   ];
 
   return (
@@ -503,6 +504,11 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
             {mode === "studyType" && (
               <StudyTypeView onCardClick={(title, accent, items) =>
                 handleCardClick(title, accent, items, "sector", "geo")
+              } />
+            )}
+            {mode === "region" && (
+              <RegionView onCardClick={(title, accent, items) =>
+                handleCardClick(title, accent, items, "sector", "studyType")
               } />
             )}
           </>
