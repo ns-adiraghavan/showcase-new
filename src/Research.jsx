@@ -72,11 +72,11 @@ const RESEARCH_DATA = [
   { title:"Account Intelligence Sample Report – Level 2: Home Depot", desc:"Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry:"tech", studyType:"Sales Enablement", geo:["North America"], primaryType:null, ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
   { title:"Account Intelligence Sample Report – Level 3: Tesco", desc:"Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry:"tech", studyType:"Sales Enablement", geo:["Europe"], primaryType:null, ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
   { title:"Account Intelligence Sample Report – Level 4: DuPont", desc:"Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry:"tech", studyType:"Sales Enablement", geo:["North America"], primaryType:null, ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
-  { title:"Scalable Data Augmentation through Synthetic Record Generation", desc:"A detailed case study on how Netscribes transformed a 50-record survey into a 500-record, ML-ready synthetic dataset in under two weeks.", industry:"tech", studyType:"Synthetic Data", geo:["Global"], primaryType:"B2B", ...driveFile("1uSBvuSAJ3w0zSVowREbkzCZPRttVuFw2") },
+  { title:"Scalable Data Augmentation through Synthetic Record Generation", desc:"A detailed case study on how Netscribes transformed a 50-record survey into a 500-record, ML-ready synthetic dataset in under two weeks.", industry:"tech", studyType:"Synthetic Data", geo:["Global"], primaryType:null, ...driveFile("1uSBvuSAJ3w0zSVowREbkzCZPRttVuFw2") },
   { title:"Brand & Product Performance Tracking Study for Cleaning Wipes", desc:"Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry:"retail", studyType:"Competitive Benchmarking", geo:["North America"], primaryType:"B2C", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
   { title:"Competitive Landscape Analysis for Juice Market", desc:"Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry:"fnb", studyType:"Competitive Benchmarking", geo:["Middle East","Africa"], primaryType:"B2B", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
   { title:"Middle East Portable Air Compressor and Hand-held Tool Market", desc:"Competitive intelligence on the Middle East market for portable air compressors and handheld power tools — rival capabilities and channel strategies.", industry:"mfg", studyType:"Competitive Benchmarking", geo:["Middle East"], primaryType:"B2B", ...driveFile("1-uxzXR3sRlI3sFlnvTeX2mWHRDRA0nvn") },
-  { title:"Consumer Payments Trend Analysis & Declining Retail Credit Card Relevance", desc:"Consumer research study on shifting payment preferences and the declining relevance of retail credit cards among digitally-native consumers.", industry:"bfsi", studyType:"Consumer Research", geo:["North America"], primaryType:"B2C", ...driveFile("1I8YddJ9L5MH2H06H3kqHiFyqVWHAX_wr") },
+  { title:"Consumer Payments Trend Analysis & Declining Retail Credit Card Relevance", desc:"Consumer research study on shifting payment preferences and the declining relevance of retail credit cards among digitally-native consumers.", industry:"bfsi", studyType:"Consumer Research", geo:["North America"], primaryType:null, ...driveFile("1I8YddJ9L5MH2H06H3kqHiFyqVWHAX_wr") },
   { title:"Engagement Perception for an International Bank", desc:"Primary research study measuring customer engagement perceptions, satisfaction drivers, and loyalty indicators for an international retail bank.", industry:"bfsi", studyType:"Consumer Research", geo:["North America","Europe","Middle East","Asia"], primaryType:"B2B", ...driveFile("1ev3tJR6XmJ6DH3UuXBYZUQyZ-ScIdHHn") },
   { title:"Customer Insights for 3D Printing Business", desc:"Consumer and B2B buyer research for a 3D printing company — use case discovery, willingness-to-pay, and purchase decision mapping.", industry:"tech", studyType:"Consumer Research", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1UVXsMr4jX7QLEAPrQ-kwpYR8IUPqrVER") },
   { title:"Home Fitness Brand Performance Assessment", desc:"Consumer research assessing brand health, product satisfaction, and category engagement for a home fitness brand post-pandemic.", industry:"retail", studyType:"Consumer Research", geo:["Europe"], primaryType:"B2C", ...driveFile("146-JQwHnYONXWyug_4TWuwZ6Wj2CHHEt") },
@@ -97,6 +97,24 @@ const RESEARCH_DATA = [
   { title:"Customer Satisfaction for Petrochemical Products", desc:"B2B customer satisfaction research for a petrochemical products portfolio — supplier NPS, product performance ratings, and renewal intent.", industry:"mfg", studyType:"Consumer Research", geo:["Middle East","Asia","Europe","North America"], primaryType:"B2B", ...driveFile("1vbaayaNvuL45j9SJTwKt77hh5PjBdD2I") },
   { title:"AI Adoption in Telecom Sector", desc:"Global benchmarking study evaluating regional AI maturity, high-impact operator use cases, and capability gaps to sharpen GTM positioning.", industry:"telecom", studyType:"AI Readiness", geo:["North America","Europe","Asia","Middle East","Africa"], primaryType:"B2B", ...driveFile("10abj6wddyAktZvwSu3mt-S-kYHDh0fWU") },
   { title:"AI Ethics and Transparency Impact Assessment", desc:"Assessment of enterprise AI ethics posture and transparency readiness — governance frameworks, bias risk, and regulatory alignment across tech deployments.", industry:"tech", studyType:"AI Readiness", geo:["North America","Europe","Asia"], primaryType:"B2B", ...driveFile("1ggtWzS3z5NkYro1QefJMT5oW9upYzPYV") },
+
+  // ── Investment Research ──────────────────────────────────────────
+  { title:"Analysis of Private Equity Deals", desc:"Deep-dive analysis of private equity deal flow, valuation trends, and sectoral investment patterns across global markets.", industry:"bfsi", studyType:"Investment Research", geo:["Global"], primaryType:null, ...driveFile("16fWaznLtKl_GfotKSGsElRw68lrBPyEz") },
+  { title:"Dedicated Research Desk for a European PE Firm", desc:"Ongoing research desk support for a European private equity firm — market monitoring, company profiling, and deal intelligence.", industry:"bfsi", studyType:"Investment Research", geo:["Europe"], primaryType:null, ...driveFile("1b_BFFwMCEwmIOBM12jU4LKwtuzNugZHF") },
+  { title:"Due Diligence of a Wealth Management Firm", desc:"Comprehensive due diligence covering competitive landscape, client retention risk, and strategic positioning for a wealth management acquisition target.", industry:"bfsi", studyType:"Investment Research", geo:["Europe","Asia"], primaryType:"B2B", ...driveFile("1NAuMGw_3VWTUbauM0Ptrou6rxb83v2kj") },
+  { title:"M&A Deal Activity of Wealth and Asset Management Companies in the US and Europe", desc:"Structured analysis of M&A activity, deal rationale, and consolidation trends among wealth and asset managers across the US and European markets.", industry:"bfsi", studyType:"Investment Research", geo:["North America","Europe"], primaryType:null, ...driveFile("1MqsZL2buDFlWHr8RimygF-OeERrZAQT8") },
+  { title:"Research and Modeling Support to a US Private Equity Client", desc:"Analytical and financial modelling support for a US-based private equity client — sector sizing, comparable analysis, and portfolio benchmarking.", industry:"bfsi", studyType:"Investment Research", geo:["Global"], primaryType:null, ...driveFile("1lyIMTflwaAJ6E67gvqAYw0lQyn-mlbM7") },
+
+  // ── Patent Research ──────────────────────────────────────────────
+  { title:"In-vehicle Windscreen Display Systems — Landscape Study", desc:"Patent landscape study mapping IP activity, key assignees, and whitespace opportunities in automotive windscreen display and HUD systems.", industry:"auto", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1CpjK4oO4VWMgAfDXiSsmO8_RZSRT_cAo") },
+  { title:"In-Cabin Sensing in the Automotive Industry — Landscape Study", desc:"Patent landscape analysis of in-cabin sensing technologies — occupant monitoring, gesture control, and driver alertness detection.", industry:"auto", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1rLaxR37L_fXvGG_HQioPE3BYxCtu-3yp") },
+  { title:"AI in the Automotive Industry — Whitespace Analysis", desc:"IP whitespace analysis identifying underserved innovation areas in automotive AI — spanning ADAS, predictive maintenance, and autonomous systems.", industry:"auto", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1NSSLEiMKAl7uc6aVES6ppMuwldwHdDWK") },
+  { title:"Patentability Search — AI Driven Radar Digital Twin", desc:"Patentability assessment examining prior art landscape for radar digital twin technology driven by artificial intelligence.", industry:"auto", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("15nM1Dk649iJ3qpMJO-FzfiRU1uj0oKHI") },
+  { title:"Patentability Search — Vehicle Sensor Calibration Devices", desc:"Prior art search and patentability analysis for novel vehicle sensor calibration device concepts.", industry:"auto", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1_ADgdczVG73D0V-lUF0ABATvQh9KTBNX") },
+  { title:"Patent Portfolio Analysis in the Tobacco Industry", desc:"Strategic patent portfolio analysis covering IP holdings, citation networks, and competitive positioning across the tobacco and reduced-risk products sector.", industry:"retail", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1T8_p3cUk0fcMLEe55BOshl3LsZg92pvA") },
+  { title:"Patentability Search — Smart Fibres", desc:"Patentability assessment examining prior art for advanced smart fibre technologies across wearable, medical, and performance textile applications.", industry:"retail", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1w_FxXe8iFOOwdWn1Ea6Pu8ouK2YJRfiQ") },
+  { title:"Patentability Search — Advanced Transistors", desc:"Prior art landscape analysis for next-generation transistor architectures — covering FinFET, gate-all-around, and 2D material innovations.", industry:"tech", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1OS4ltVm4Yj3tc216WKXfRstSegxJASTC") },
+  { title:"Nanomaterials — Technology and Market Assessment", desc:"Combined patent and market assessment of the nanomaterials space — innovation trajectories, key IP holders, and emerging application domains.", industry:"tech", studyType:"Patent Research", geo:["Global"], primaryType:null, ...driveFile("1UMs7b7GVn1qhV5Fu_PnX3p7Uz8Dao2gn") },
 ];
 
 const SECTOR_ORDER = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
@@ -119,6 +137,8 @@ const STUDY_TYPES = [
   { id:"Consumer Research",        label:"Consumer Research",       accent:ACCENT.plum,    tag:"Consumer",  desc:"Attitude & usage studies, consumer segmentation, needs mapping, brand tracking, and purchase behaviour analysis." },
   { id:"Sales Enablement",         label:"Sales Enablement",        accent:ACCENT.steel,   tag:"INTEL",     desc:"Multi-level account intelligence coverage designed to align insight depth with sales objectives and deal maturity." },
   { id:"AI Readiness",             label:"AI Readiness Assessment", accent:ACCENT.forest,  tag:"MATURITY",  desc:"AI adoption evaluation, competitive benchmarking, use case identification, and best practice analysis to position your organisation ahead of the curve." },
+  { id:"Investment Research",      label:"Investment Research",     accent:ACCENT.amber,   tag:"INVEST",    desc:"Private equity deal analysis, due diligence, M&A monitoring, and financial modelling support — enabling investment decisions with deep market and competitive intelligence." },
+  { id:"Patent Research",          label:"Patent Research",         accent:ACCENT.plum,    tag:"IP",        desc:"Patent landscape studies, whitespace analysis, patentability searches, and IP portfolio assessments — mapping the innovation frontier across industries and technologies." },
 ];
 
 const GEO_REGIONS = [
@@ -211,13 +231,7 @@ function CaseTile({ item, accent, onOpen }) {
   const showDesc = hov || summaryOpen;
 
   function handleSummaryBtn(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    setSummaryOpen(v => !v);
-  }
-  function handleSummaryTouch(e) {
-    e.stopPropagation();
-    e.preventDefault(); // prevents the subsequent click event firing
+    e.stopPropagation(); // don't trigger onOpen
     setSummaryOpen(v => !v);
   }
 
@@ -236,7 +250,7 @@ function CaseTile({ item, accent, onOpen }) {
       }}
     >
       <div style={{ display:"flex",justifyContent:"space-between",gap:8,marginBottom:8 }}>
-        <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s" }}>{item.title}</p>
+        <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s",textWrap:"balance" }}>{item.title}</p>
         <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
 
@@ -247,29 +261,31 @@ function CaseTile({ item, accent, onOpen }) {
         {item.geo.map(g=><span key={g} style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,transition:"all 0.18s" }}>{g}</span>)}
       </div>
 
-      {/* Summary: fades in on hover (desktop) or tap (mobile) */}
+      {/* Summary: slides in on hover (desktop) or tap (mobile) */}
       {item.desc && (
-        <p style={{
-          fontSize:11.5,
-          lineHeight:1.55,
-          color: hov ? "rgba(255,255,255,0.88)" : NS.inkSoft,
-          marginTop: showDesc ? 10 : 0,
-          maxHeight: showDesc ? "200px" : "0",
-          opacity: showDesc ? 1 : 0,
+        <div style={{
+          maxHeight: showDesc ? "120px" : "0",
           overflow:"hidden",
-          transition:"opacity 0.2s ease, max-height 0.25s ease, margin-top 0.2s ease, color 0.18s",
-          pointerEvents:"none",
+          transition:"max-height 0.22s ease",
         }}>
-          {item.desc}
-        </p>
+          <p style={{
+            fontSize:11.5,
+            lineHeight:1.55,
+            color: hov ? "rgba(255,255,255,0.88)" : NS.inkSoft,
+            marginTop:10,
+            transition:"color 0.18s",
+          }}>
+            {item.desc}
+          </p>
+        </div>
       )}
 
       {/* Mobile-only "Summary" toggle button — hidden on pointer:fine (mouse) devices */}
       {item.desc && (
         <button
-          onClick={(e)=>{e.stopPropagation();e.preventDefault();}}
-          onTouchEnd={handleSummaryTouch}
+          onClick={handleSummaryBtn}
           style={{
+            display:"none", // overridden by @media below via className
             marginTop:8,
             fontSize:10,
             fontWeight:700,
@@ -316,7 +332,7 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose
 
   function dimLabel(dim) {
     if (dim === "sector")    return "Industry";
-    if (dim === "studyType") return "Methodology";
+    if (dim === "studyType") return "Study Type";
     if (dim === "geo")       return "Region";
     return "";
   }
@@ -453,29 +469,28 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
     }, 60);
   };
 
-  const handleClose = () => { setOpenPanel(null); onPanelChange(false); setTimeout(()=>document.getElementById("explore")?.scrollIntoView({behavior:"smooth",block:"start"}),30); };
+  const handleClose = () => { setOpenPanel(null); onPanelChange(false); };
 
   const MODES = [
     { id:"industry",  label:"Industry" },
     { id:"studyType", label:"Study Type" },
-    { id:"region",    label:"Region" },
   ];
 
   return (
     <section id="explore" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease", minHeight:"60vh" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Strategic Intelligence</p>
+        <p style={EYE(NS.blue)}>01 — Work samples</p>
 
         {!openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
-              <h2 style={H2}>Our Expertise in Action</h2>
+              <h2 style={H2}>Explore our research work.</h2>
               {/* Toggle */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
                   <ModeTab key={m.id} label={m.label} active={mode===m.id}
                     borderRight={i<MODES.length-1}
-                    onClick={()=>{ setMode(m.id); setOpenPanel(null); setTimeout(()=>document.getElementById("explore")?.scrollIntoView({behavior:"smooth",block:"start"}),30); }} />
+                    onClick={()=>{ setMode(m.id); setOpenPanel(null); }} />
                 ))}
               </div>
             </div>
@@ -490,18 +505,13 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
                 handleCardClick(title, accent, items, "sector", "geo")
               } />
             )}
-            {mode === "region" && (
-              <RegionView onCardClick={(title, accent, items) =>
-                handleCardClick(title, accent, items, "sector", "studyType")
-              } />
-            )}
           </>
         )}
 
         {openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
-              <h2 style={H2}>Our Expertise in Action</h2>
+              <h2 style={H2}>Explore our research work.</h2>
               {/* Toggle visible but non-interactive while panel open — clicking a mode closes panel too */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
@@ -543,7 +553,7 @@ function ModeTab({ label, active, borderRight, onClick }) {
 // Industry view — 4-column grid of sector tiles
 function IndustryView({ onCardClick }) {
   return (
-    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="sectors-grid">
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
       {SECTORS.map((s,i) => {
         const items = RESEARCH_DATA.filter(d=>d.industry===s.id).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
         const spotlight = items.find(d=>d.title===s.spotlight) || items[0];
@@ -584,10 +594,12 @@ function SectorTile({ sector, index, total, spotlight, onClick }) {
       }}
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-
+        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
+          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
+        </span>
         <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
       </div>
-      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{sector.label}</h2>
+      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{sector.label}</h2>
       <div style={{ flex:1 }} />
       {spotlight && (
         <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
@@ -631,7 +643,7 @@ function StudyTypeTile({ st, index, total, onClick }) {
       style={{ textAlign:"left",background:hov?st.accent:NS.surface,border:"none",borderRight:!isRightEdge?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,280px)",display:"flex",flexDirection:"column",justifyContent:"space-between",gap:12,transition:"background 0.28s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div>
         <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":st.accent,borderRadius:1,marginBottom:18,transition:"background 0.28s" }} />
-        <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:10,transition:"color 0.28s" }}>{st.label}</h3>
+        <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:10,transition:"color 0.28s",textWrap:"balance" }}>{st.label}</h3>
         <p style={{ fontSize:CARD.bodySize,lineHeight:CARD.bodyLine,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"center",transition:"border-color 0.28s" }}>
@@ -650,7 +662,7 @@ function RegionView({ onCardClick }) {
   })).filter(g=>g.items.length>0);
 
   return (
-    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="sectors-grid">
+    <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="sectors-grid">
       {regionsWithData.map((g,i) => {
         const total = regionsWithData.length;
         const COLS = 4;
@@ -690,7 +702,9 @@ function RegionTile({ region, index, total, onClick }) {
       }}
     >
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-
+        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
+          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
+        </span>
         <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":region.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":region.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>Region</span>
       </div>
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{region.label}</h2>
@@ -957,7 +971,7 @@ function ExpertiseSection({ onOpenCase, onPanelChange }) {
     setTimeout(() => window.scrollTo({ top: 0, behavior:"smooth" }), 60);
   };
 
-  const handleClose = () => { setOpenCard(null); onPanelChange(false); setTimeout(()=>document.getElementById("expertise-tiles")?.scrollIntoView({behavior:"smooth",block:"start"}),30); };
+  const handleClose = () => { setOpenCard(null); onPanelChange(false); };
 
   return (
     <section id="expertise" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease" }}>
@@ -996,7 +1010,7 @@ function ExpertiseSection({ onOpenCase, onPanelChange }) {
           {/* ── Expertise tiles ── */}
           <div id="expertise-tiles" style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)" }}>
             <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", textTransform:"uppercase", color:NS.muted, marginBottom:16 }}>How we engage respondents</p>
-            <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gridAutoRows:"1fr",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,alignItems:"stretch" }} className="expertise-grid">
+            <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }} className="expertise-grid">
               {EXPERTISE_CARDS.map((c,i)=>(
                 <ExpertiseTile key={c.id} card={c} isLast={i===EXPERTISE_CARDS.length-1}
                   onClick={()=>handleCardClick(c)} />
@@ -1033,16 +1047,16 @@ function ExpertiseTile({ card, isLast, onClick }) {
     <button onClick={onClick}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",height:"100%",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
+      style={{ textAlign:"left",background:hov?card.accent:NS.surface,border:"none",borderRight:!isLast?`1px solid ${NS.rule}`:"none",borderBottom:`1px solid ${NS.rule}`,padding:CARD.padding,cursor:"pointer",minHeight:"clamp(220px,24vw,300px)",display:"flex",flexDirection:"column",gap:0,transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",fontFamily:"'DM Sans',sans-serif",width:"100%" }}>
       <div style={{ width:hov?"100%":"28px",height:2,background:hov?"rgba(255,255,255,0.35)":card.accent,borderRadius:1,marginBottom:20,transition:"width 0.35s ease,background 0.32s" }} />
-      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:12,transition:"color 0.32s" }}>{card.label}</h3>
+      <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:12,transition:"color 0.32s",textWrap:"balance" }}>{card.label}</h3>
       <p style={{ fontSize:CARD.bodySize,color:hov?"rgba(255,255,255,0.78)":NS.muted,lineHeight:CARD.bodyLine,marginBottom:20,flex:1,transition:"color 0.32s" }}>{card.desc}</p>
       <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:14,marginTop:"auto",transition:"border-color 0.32s" }}>
         <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:9 }}>Featured work</p>
-        {card.featured.slice(0,1).map((t,i)=>(
+        {card.featured.map((t,i)=>(
           <div key={i} style={{ display:"flex",gap:7,alignItems:"flex-start",marginBottom:5 }}>
             <span style={{ color:hov?"rgba(255,255,255,0.5)":card.accent,fontSize:11,flexShrink:0,marginTop:1,transition:"color 0.32s" }}>—</span>
-            <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden" }}>{t}</span>
+            <span style={{ fontSize:12,color:hov?"rgba(255,255,255,0.82)":NS.inkSoft,lineHeight:1.4,transition:"color 0.32s" }}>{t}</span>
           </div>
         ))}
       </div>
@@ -1144,10 +1158,8 @@ export default function Research() {
 
       <div style={{ background:NS.paper, minHeight:"100vh" }}>
         <ResearchNav />
-        {/* Hero collapses (not unmounts) when panel open — avoids layout jump */}
-        <div style={{ overflow:"hidden", maxHeight: anyPanelOpen ? "0" : "1000px", transition:"max-height 0.3s ease" }}>
-          <ResearchHero />
-        </div>
+        {/* Hero hides when any panel open */}
+        {!anyPanelOpen && <ResearchHero />}
         {/* Explore section: hidden when expertise panel is open */}
         {anyPanelOpen !== "expertise" && (
           <ExploreSection
