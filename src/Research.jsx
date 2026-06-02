@@ -598,7 +598,9 @@ function SectorTile({ sector, index, total, spotlight, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":sector.accent,borderRadius:1,transition:"background 0.32s" }} />
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:8 }}>
+        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
+      </div>
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{sector.label}</h2>
       <div style={{ flex:1 }} />
       {spotlight && (
