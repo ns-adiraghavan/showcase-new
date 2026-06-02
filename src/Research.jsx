@@ -479,12 +479,12 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
   return (
     <section id="explore" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease", minHeight:"60vh" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Work samples</p>
+        <p style={EYE(NS.blue)}>01 — Strategic Intelligence </p>
 
         {!openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
-              <h2 style={H2}>Explore our research work.</h2>
+              <h2 style={H2}>Our expertise in action.</h2>
               {/* Toggle */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
