@@ -187,7 +187,7 @@ function CaseViewer({ item, accent, onClose }) {
                 {item.primaryType && <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{item.primaryType}</span>}
                 {item.geo.slice(0,3).map(g=><span key={g} style={{ fontSize:10,fontWeight:500,color:NS.muted,background:NS.paperDeep,padding:"2px 7px",borderRadius:2 }}>{g}</span>)}
               </div>
-              <h2 style={{ fontSize:"clamp(15px,1.8vw,19px)",fontWeight:700,color:NS.ink,lineHeight:1.35,letterSpacing:"-0.015em" }}>{item.title}</h2>
+              <h2 style={{ fontSize:"clamp(15px,1.8vw,19px)",fontWeight:700,color:NS.ink,lineHeight:1.35,letterSpacing:"-0.015em",textWrap:"balance" }}>{item.title}</h2>
               <p style={{ marginTop:5,fontSize:13,color:NS.muted,lineHeight:1.6,maxWidth:600 }}>{item.desc}</p>
               <a href={item.driveViewUrl} target="_blank" rel="noreferrer" style={{ display:"inline-flex",alignItems:"center",gap:5,marginTop:9,fontSize:11,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",color:accent,textDecoration:"none" }}>Open in Drive ↗</a>
             </div>
@@ -357,7 +357,7 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose
           ← Back
         </button>
         <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
-        <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0 }}>{title}</h3>
+        <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0,textWrap:"balance" }}>{title}</h3>
         <span className="panel-header-count" style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
       </div>
 
@@ -479,12 +479,12 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
   return (
     <section id="explore" ref={ref} style={{ opacity:vis?1:0, transform:vis?"none":"translateY(14px)", transition:"opacity 0.4s ease,transform 0.4s ease", minHeight:"60vh" }}>
       <div style={{ maxWidth:1160, margin:"0 auto", padding:"clamp(36px,5vw,64px) clamp(16px,4vw,44px) 0" }}>
-        <p style={EYE(NS.blue)}>01 — Strategic Intelligence </p>
+        <p style={EYE(NS.blue)}>01 — Strategic Intelligence</p>
 
         {!openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:28 }}>
-              <h2 style={H2}>Our expertise in action.</h2>
+              <h2 style={H2}>Our Expertise in Action.</h2>
               {/* Toggle */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
@@ -511,7 +511,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
         {openPanel && (
           <>
             <div className="explore-header" style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:20,flexWrap:"wrap",marginBottom:4 }}>
-              <h2 style={H2}>Explore our research work.</h2>
+              <h2 style={H2}>Our Expertise in Action.</h2>
               {/* Toggle visible but non-interactive while panel open — clicking a mode closes panel too */}
               <div className="mode-toggle" style={{ display:"flex",border:`1px solid ${NS.rule}`,borderRadius:3,overflow:"hidden",flexShrink:0 }}>
                 {MODES.map((m,i)=>(
@@ -701,13 +701,12 @@ function RegionTile({ region, index, total, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
+      <div style={{ display:"flex",alignItems:"center",gap:8 }}>
         <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
           {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
         </span>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":region.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":region.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>Region</span>
       </div>
-      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s" }}>{region.label}</h2>
+      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{region.label}</h2>
       <div style={{ flex:1 }} />
       {sample && (
         <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
