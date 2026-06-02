@@ -358,7 +358,6 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose
         </button>
         <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
         <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0,textWrap:"balance" }}>{title}</h3>
-        <span className="panel-header-count" style={{ fontSize:12,color:NS.muted,flexShrink:0 }}>{filtered.length} {filtered.length===1?"study":"studies"}</span>
       </div>
 
       {/* 50/50 filter bar */}
@@ -599,12 +598,7 @@ function SectorTile({ sector, index, total, spotlight, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
-        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
-        </span>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
-      </div>
+      <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":sector.accent,borderRadius:1,transition:"background 0.32s" }} />
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{sector.label}</h2>
       <div style={{ flex:1 }} />
       {spotlight && (
@@ -652,8 +646,7 @@ function StudyTypeTile({ st, index, total, onClick }) {
         <h3 style={{ fontSize:CARD.headSize,fontWeight:CARD.headWeight,letterSpacing:CARD.headSpacing,color:hov?"#fff":NS.ink,lineHeight:CARD.headLine,marginBottom:10,transition:"color 0.28s",textWrap:"balance" }}>{st.label}</h3>
         <p style={{ fontSize:CARD.bodySize,lineHeight:CARD.bodyLine,color:hov?"rgba(255,255,255,0.75)":NS.muted,transition:"color 0.28s" }}>{st.desc}</p>
       </div>
-      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"space-between",alignItems:"center",transition:"border-color 0.28s" }}>
-        <span style={{ fontSize:11,fontWeight:600,color:hov?"rgba(255,255,255,0.65)":NS.muted }}>{count} {count===1?"study":"studies"}</span>
+      <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.2)":NS.ruleSoft}`,paddingTop:12,display:"flex",justifyContent:"flex-end",alignItems:"center",transition:"border-color 0.28s" }}>
         <span style={{ fontSize:16,color:hov?"rgba(255,255,255,0.8)":st.accent,transform:hov?"translateX(3px)":"none",transition:"all 0.28s" }}>→</span>
       </div>
     </button>
@@ -707,11 +700,7 @@ function RegionTile({ region, index, total, onClick }) {
         fontFamily:"'DM Sans',sans-serif", width:"100%",
       }}
     >
-      <div style={{ display:"flex",alignItems:"center",gap:8 }}>
-        <span style={{ fontSize:10,fontWeight:600,letterSpacing:"0.14em",color:hov?"rgba(255,255,255,0.55)":NS.muted,transition:"color 0.32s",fontVariantNumeric:"tabular-nums" }}>
-          {String(index+1).padStart(2,"0")} / {String(total).padStart(2,"0")}
-        </span>
-      </div>
+      <div style={{ width:24,height:2,background:hov?"rgba(255,255,255,0.4)":region.accent,borderRadius:1,transition:"background 0.32s" }} />
       <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,20px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{region.label}</h2>
       <div style={{ flex:1 }} />
       {sample && (
