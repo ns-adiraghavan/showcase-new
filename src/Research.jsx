@@ -943,7 +943,7 @@ function ExpertiseSection({ onOpenCase, onPanelChange }) {
     { id:"B2B",  label:"B2B Research",            tag:"Decision-maker intelligence", accent:NS.blue,
       desc:"In-depth interviews with CXOs, executives, industry experts/key stakeholders, and industrial surveys, reaching decision-makers and technical leads across global markets.",
       items:RESEARCH_DATA.filter(d=>d.primaryType==="B2B"),
-      featured:["Engagement Perception for an International Bank","AI Ethics and Transparency Impact Assessment","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
+      featured:["AI Ethics and Transparency Impact Assessment","Engagement Perception for an International Bank","GTM Strategy for a Cloud-Based Cybersecurity Startup"] },
     { id:"B2C",  label:"B2C & Consumer Research",  tag:"Consumer depth",              accent:ACCENT.plum,
       desc:"Consumer surveys (CAPI/CATI/CAWI), focus groups, face-to-face interviews, home use tests, central location tests with deep panel access across sector.",
       items:RESEARCH_DATA.filter(d=>d.primaryType==="B2C"),
