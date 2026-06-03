@@ -242,7 +242,7 @@ function BottleneckRow({ item, accent, isLast }) {
   return (
     <div>
       {!isLast && (
-        <div style={{ height:1, background: hov ? `${accent}28` : `${accent}12`, margin:"0 2px", transition:"background 0.18s" }} />
+        <div style={{ height:1, background: hov ? `${accent}35` : `${accent}12`, margin:"0 2px", transition:"background 0.18s" }} />
       )}
       <div
         onMouseEnter={() => setHov(true)}
@@ -250,16 +250,16 @@ function BottleneckRow({ item, accent, isLast }) {
         style={{
           display:"flex", alignItems:"flex-start", gap:12, padding:"11px 4px",
           borderRadius:3,
-          background: hov ? `${accent}08` : "transparent",
+          background: hov ? `${accent}18` : "transparent",
           transition:"background 0.18s ease",
           cursor:"default",
         }}
       >
         <div style={{
           width:30, height:30, borderRadius:3,
-          background: hov ? `${accent}18` : `${accent}0e`,
+          background: hov ? `${accent}30` : `${accent}0e`,
           display:"flex", alignItems:"center", justifyContent:"center",
-          color: hov ? accent : `${accent}bb`,
+          color: hov ? accent : `${accent}99`,
           flexShrink:0,
           transition:"background 0.18s, color 0.18s",
         }}>
@@ -268,9 +268,9 @@ function BottleneckRow({ item, accent, isLast }) {
         <p style={{
           fontSize:12.5, lineHeight:1.55,
           color: hov ? NS.ink : NS.inkSoft,
-          fontWeight: hov ? 500 : 400,
+          fontWeight: hov ? 600 : 400,
           margin:0, paddingTop:5,
-          transition:"color 0.18s, font-weight 0.18s",
+          transition:"color 0.18s",
         }}>
           {item.text}
         </p>
@@ -284,7 +284,7 @@ function SolutionRow({ item, isLast }) {
   return (
     <div>
       {!isLast && (
-        <div style={{ height:1, background: hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.12)", margin:"0 2px", transition:"background 0.18s" }} />
+        <div style={{ height:1, background: hov ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.12)", margin:"0 2px", transition:"background 0.18s" }} />
       )}
       <div
         onMouseEnter={() => setHov(true)}
@@ -292,16 +292,16 @@ function SolutionRow({ item, isLast }) {
         style={{
           display:"flex", alignItems:"flex-start", gap:12, padding:"11px 4px",
           borderRadius:3,
-          background: hov ? "rgba(255,255,255,0.09)" : "transparent",
+          background: hov ? "rgba(255,255,255,0.16)" : "transparent",
           transition:"background 0.18s ease",
           cursor:"default",
         }}
       >
         <div style={{
           width:30, height:30, borderRadius:3,
-          background: hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.13)",
+          background: hov ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.13)",
           display:"flex", alignItems:"center", justifyContent:"center",
-          color: hov ? "#fff" : "rgba(255,255,255,0.9)",
+          color: hov ? "#fff" : "rgba(255,255,255,0.75)",
           flexShrink:0,
           transition:"background 0.18s, color 0.18s",
         }}>
@@ -310,9 +310,9 @@ function SolutionRow({ item, isLast }) {
         <p style={{
           fontSize:12.5, lineHeight:1.55,
           color: hov ? "#fff" : "rgba(255,255,255,0.88)",
-          fontWeight: hov ? 500 : 400,
+          fontWeight: hov ? 600 : 400,
           margin:0, paddingTop:5,
-          transition:"color 0.18s, font-weight 0.18s",
+          transition:"color 0.18s",
         }}>
           {item.text}
         </p>
@@ -434,7 +434,7 @@ export default function TechAlt2() {
         <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance",marginBottom:14 }}>
           {hero.noun} <em style={{ fontStyle:"normal",color:accent }}>Insights</em>
         </h1>
-        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,maxWidth:520,fontWeight:400 }}>
+        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,fontWeight:400 }}>
           {hero.desc}
         </p>
       </div>
