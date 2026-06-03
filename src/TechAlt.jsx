@@ -302,7 +302,7 @@ function InsightBoxes({ accent }) {
 
   // Autoplay — 4 s interval, pauses on hover
   useEffect(() => {
-    const id = setInterval(() => { if (!paused.current) next(); }, 4000);
+    const id = setInterval(() => { if (!paused.current) next(); }, 8000);
     return () => clearInterval(id);
   }, [idx]);
 
@@ -481,13 +481,6 @@ export default function TechAlt() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Count */}
-        <div style={{ marginBottom:16 }}>
-          <span style={{ fontSize:11,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted }}>
-            {filtered.length} {filtered.length === 1 ? "sample" : "samples"}{(activeStudyType || activeRegion) ? " · filtered" : ""}
-          </span>
         </div>
 
         {/* Cases grid */}
