@@ -263,7 +263,7 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent, idx, dir =
           color:hdrCircCol, flexShrink:0 }}>
           {headerIcon}
         </div>
-        <h3 style={{ fontSize:12,fontWeight:700,letterSpacing:"0.06em",color:headCol,
+        <h3 style={{ fontSize:13.2,fontWeight:700,letterSpacing:"0.06em",color:headCol,
           textTransform:"uppercase",margin:0,transition:"color 0.28s" }}>
           {title}
         </h3>
@@ -272,7 +272,7 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent, idx, dir =
       {/* Slide content */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center" }}>
         <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:18,
-          animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.26s cubic-bezier(0.22,1,0.36,1) both` }}>
+          animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.38s cubic-bezier(0.16,1,0.3,1) both` }}>
           <div style={{ width:52,height:52,borderRadius:6,background:iconBg,
             display:"flex",alignItems:"center",justifyContent:"center",
             color:iconCol,flexShrink:0 }}>
@@ -346,7 +346,7 @@ function InsightBoxes({ accent }) {
           <div style={{ display:"flex",gap:5,alignItems:"center" }}>
             {BOTTLENECKS.map((_, i) => (
               <button key={i} onClick={() => setIdx(i)}
-                style={{ width: i===idx ? 20 : 6, height:6, borderRadius:3,
+                style={{ width: i===idx ? 16 : 5, height:3, borderRadius:2,
                   background: i===idx ? dotActive : dotInact,
                   border:"none", padding:0, cursor:"pointer",
                   transition:"all 0.2s ease",
@@ -417,8 +417,8 @@ export default function TechAlt() {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
-        @keyframes slide-fwd { from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:none;} }
-        @keyframes slide-bwd { from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:none;} }
+        @keyframes slide-fwd { from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes slide-bwd { from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);} }
         @media (max-width:580px) {
           .ta-filter-bar { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13); }
