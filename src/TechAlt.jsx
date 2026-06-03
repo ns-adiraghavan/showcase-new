@@ -3,7 +3,7 @@
 // landing directly in the panel view. The Industry/Study Type/Region
 // toggle bar is replaced by the industry paragraph description.
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import logoSrc from "./assets/netscribes-logo.png";
 import {
   NS, SECTORS, STUDY_TYPES, RESEARCH_DATA, GEO_REGIONS, INDUSTRY_HERO,
@@ -237,7 +237,7 @@ const SOLUTIONS = [
 ];
 
 // ─── Carousel panel (display-only, no own state) ─────────────────
-function CarouselPanel({ items, title, headerIcon, startDark, accent, idx }) {
+function CarouselPanel({ items, title, headerIcon, startDark, accent, idx, dir = 1 }) {
   // dark = alternates per slide, opposite on each side
   const dark = startDark ? (idx % 2 === 0) : (idx % 2 === 1);
 
@@ -272,7 +272,7 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent, idx }) {
       {/* Slide content */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center" }}>
         <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:18,
-          animation:"slide-in 0.22s ease both" }}>
+          animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.26s cubic-bezier(0.22,1,0.36,1) both` }}>
           <div style={{ width:52,height:52,borderRadius:6,background:iconBg,
             display:"flex",alignItems:"center",justifyContent:"center",
             color:iconCol,flexShrink:0 }}>
@@ -291,19 +291,27 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent, idx }) {
 
 // ─── Two-box insight section ───────────────────────────────────────
 function InsightBoxes({ accent }) {
-  const total = BOTTLENECKS.length; // same as SOLUTIONS.length
+  const total = BOTTLENECKS.length;
   const [idx, setIdx] = useState(0);
-  const prev = () => setIdx(i => (i - 1 + total) % total);
-  const next = () => setIdx(i => (i + 1) % total);
+  const [dir, setDir] = useState(1); // 1=forward, -1=backward — drives animation direction
+  const paused = useRef(false);
 
-  // Controls colour: left panel on even = white, so use left-panel dark state
-  const leftDark = idx % 2 === 1;
-  const dotActive  = leftDark ? accent : accent;
-  const dotInact   = leftDark ? `${accent}30` : `${accent}30`;
-  const btnBg      = `${accent}0e`;
-  const btnHovBg   = `${accent}22`;
-  const btnCol     = accent;
-  const cntCol     = NS.muted;
+  const goTo = (i, direction = 1) => { setDir(direction); setIdx(i); };
+  const prev = () => goTo((idx - 1 + total) % total, -1);
+  const next = () => goTo((idx + 1) % total, 1);
+
+  // Autoplay — 4 s interval, pauses on hover
+  useEffect(() => {
+    const id = setInterval(() => { if (!paused.current) next(); }, 4000);
+    return () => clearInterval(id);
+  }, [idx]);
+
+  const dotActive = accent;
+  const dotInact  = `${accent}30`;
+  const btnBg     = `${accent}0e`;
+  const btnHovBg  = `${accent}22`;
+  const btnCol    = accent;
+  const cntCol    = NS.muted;
 
   const infoIcon = (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
@@ -317,15 +325,17 @@ function InsightBoxes({ accent }) {
   );
 
   return (
-    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
+    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}
+      onMouseEnter={() => { paused.current = true; }}
+      onMouseLeave={() => { paused.current = false; }}>
       <div style={{ borderRadius:4,overflow:"hidden", boxShadow:"0 2px 20px rgba(0,95,134,0.12)" }}>
 
         {/* Two panels — stack on mobile, side-by-side on desktop */}
         <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
           <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
-            headerIcon={infoIcon} startDark={false} accent={accent} idx={idx} />
+            headerIcon={infoIcon} startDark={false} accent={accent} idx={idx} dir={dir} />
           <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
-            headerIcon={checkIcon} startDark={true} accent={accent} idx={idx} />
+            headerIcon={checkIcon} startDark={true} accent={accent} idx={idx} dir={dir} />
         </div>
 
         {/* Shared controls bar — always below both panels */}
@@ -407,7 +417,8 @@ export default function TechAlt() {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
-        @keyframes slide-in { from{opacity:0;transform:translateX(10px);}to{opacity:1;transform:none;} }
+        @keyframes slide-fwd { from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:none;} }
+        @keyframes slide-bwd { from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:none;} }
         @media (max-width:580px) {
           .ta-filter-bar { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13); }
