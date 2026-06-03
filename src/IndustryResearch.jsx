@@ -5,6 +5,26 @@ import {
   NS, SECTORS, STUDY_TYPES, RESEARCH_DATA, GEO_REGIONS, INDUSTRY_HERO,
 } from "./researchData";
 
+// Short display tags for each study type
+const ST_TAG = {
+  "Industry Analysis":        "Landscape",
+  "GTM":                      "Strategy",
+  "Competitive Benchmarking": "Rivals",
+  "Consumer Research":        "Consumer",
+  "Sales Enablement":         "Intel",
+  "AI Readiness":             "Maturity",
+  "Investment Research":      "Invest",
+  "Patent Research":          "IP",
+  "Synthetic Data":           "Data",
+};
+
+// Industry → URL slug
+const INDUSTRY_PATHS = {
+  tech:"technology", telecom:"telecom", retail:"retail",
+  fnb:"food-and-beverage", auto:"automotive", bfsi:"finance",
+  mfg:"manufacturing", health:"healthcare",
+};
+
 // ─── Logo ─────────────────────────────────────────────────────────
 function Logo({ height = 19, opacity = 0.85 }) {
   return <img src={logoSrc} alt="Netscribes" style={{ height, opacity, objectFit:"contain", display:"block" }} />;
@@ -52,7 +72,7 @@ function CaseViewer({ item, accent, onClose }) {
               </a>
             </div>
             <button onClick={onClose}
-              style={{ flexShrink:0,width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif" }}>✕</button>
+              style={{ flexShrink:0,width:30,height:30,borderRadius:"50%",border:`1px solid ${NS.rule}`,background:NS.paper,cursor:"pointer",fontSize:14,color:NS.muted,display:"flex",alignItems:"center",justifyContent:"center" }}>✕</button>
           </div>
         </div>
         <div style={{ flex:1,minHeight:0,background:NS.paperDeep }}>
@@ -64,22 +84,16 @@ function CaseViewer({ item, accent, onClose }) {
   );
 }
 
-// ─── Industry path map ────────────────────────────────────────────
-const INDUSTRY_PATHS = {
-  tech:"technology", telecom:"telecom", retail:"retail",
-  fnb:"food-and-beverage", auto:"automotive", bfsi:"finance",
-  mfg:"manufacturing", health:"healthcare",
-};
-
-// ─── Sticky Nav ───────────────────────────────────────────────────
-// Entire breadcrumb links back to this industry page — resets to strip view
-function IndustryNav({ sector }) {
+// ─── Nav — logo + breadcrumb links back to gateway (null selection) ──
+function IndustryNav({ sector, onLogoClick }) {
   const path = `/research/${INDUSTRY_PATHS[sector.id] || sector.id}`;
   return (
     <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",
       backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,
       display:"flex",alignItems:"center",height:52,padding:"0 clamp(16px,4vw,44px)" }}>
-      <a href={path} style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",minWidth:0,overflow:"hidden" }}>
+      {/* Clicking goes back to the big gateway tile view */}
+      <a href={path} onClick={e => { e.preventDefault(); onLogoClick(); }}
+        style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none",minWidth:0,overflow:"hidden" }}>
         <Logo height={19} opacity={0.85} />
         <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted,whiteSpace:"nowrap" }}> / Research</span>
         <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:sector.accent,whiteSpace:"nowrap" }}> / {sector.tag}</span>
@@ -99,7 +113,7 @@ function IndustryHero({ sector, hero }) {
         border:`1px solid ${sector.accent}50`,color:sector.accent,padding:"3px 8px",borderRadius:2 }}>
         {sector.tag}
       </span>
-      <div className="hero-row" style={{ display:"grid",gridTemplateColumns:"minmax(0,1fr) 320px",alignItems:"end",columnGap:40,rowGap:20 }}>
+      <div className="ir-hero-row" style={{ display:"grid",gridTemplateColumns:"minmax(0,1fr) 320px",alignItems:"end",columnGap:40,rowGap:20 }}>
         <div style={{ minWidth:0 }}>
           <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:20,display:"flex",alignItems:"center",gap:10 }}>
             <span style={{ display:"inline-block",width:22,height:1,background:NS.red,flexShrink:0 }} />
@@ -118,21 +132,106 @@ function IndustryHero({ sector, hero }) {
   );
 }
 
-// ─── Capability Strip — always visible, mirrors App.jsx StripTile exactly ──
+// ─── GATEWAY — big hero tiles, one per study type ─────────────────
+// Mirrors App.jsx HeroTile/HeroTiles exactly
+function GatewayTiles({ types, onSelect }) {
+  const total = types.length;
+  return (
+    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
+      <div style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",
+        borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}` }}
+        className="ir-gateway-grid">
+        {types.map((st, i) => {
+          const cols = 2;
+          const lastRowStart = Math.floor((total-1)/cols)*cols;
+          const spanFull = (i === total-1) && (total % cols === 1);
+          const isRight  = spanFull || i % 2 === 1;
+          const isBottom = i >= lastRowStart;
+          return <GatewayTile key={st.id} st={st} num={String(i+1).padStart(2,"0")} total={total}
+            spanFull={spanFull} isRight={isRight} isBottom={isBottom}
+            onClick={() => onSelect(st.id)} />;
+        })}
+      </div>
+    </div>
+  );
+}
+
+function GatewayTile({ st, num, total, spanFull, isRight, isBottom, onClick }) {
+  const [hov, setHov] = useState(false);
+  const tag = ST_TAG[st.id] || st.label.split(" ")[0].toUpperCase();
+  return (
+    <button onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        textAlign:"left",
+        gridColumn: spanFull ? "1 / -1" : undefined,
+        background: hov ? st.accent : NS.surface,
+        border:"none",
+        borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
+        borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
+        padding:"44px 40px 36px",
+        cursor:"pointer",
+        minHeight:280,
+        display:"flex",flexDirection:"column",justifyContent:"space-between",gap:24,
+        transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
+        fontFamily:"'DM Sans',sans-serif",
+        width:"100%",
+      }}>
+      {/* Top row: number + tag pill */}
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12 }}>
+        <span style={{ fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:11,fontWeight:500,
+          letterSpacing:"0.12em",color:hov?"rgba(255,255,255,0.7)":NS.muted,transition:"color 0.32s" }}>
+          {num} / {String(total).padStart(2,"0")}
+        </span>
+        <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.24em",textTransform:"uppercase",
+          color:hov?"rgba(255,255,255,0.78)":st.accent,
+          padding:"5px 10px",border:`1px solid ${hov?"rgba(255,255,255,0.45)":st.accent+"55"}`,
+          transition:"color 0.32s,border-color 0.32s" }}>
+          {tag}
+        </span>
+      </div>
+
+      {/* Label + blurb */}
+      <div style={{ flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",gap:14 }}>
+        <h2 style={{ fontFamily:"'DM Sans',sans-serif",fontWeight:700,
+          fontSize:"clamp(36px,4.2vw,56px)",letterSpacing:"-0.025em",lineHeight:0.98,
+          color:hov?"#fff":NS.ink,transition:"color 0.32s",margin:0 }}>
+          {st.label}
+        </h2>
+        <p style={{ fontSize:14,color:hov?"rgba(255,255,255,0.85)":NS.inkSoft,
+          lineHeight:1.5,maxWidth:320,transition:"color 0.32s" }}>
+          {st.desc}
+        </p>
+      </div>
+
+      {/* Bottom: "View samples →" */}
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",
+        paddingTop:16,borderTop:`1px solid ${hov?"rgba(255,255,255,0.25)":NS.ruleSoft}`,
+        transition:"border-color 0.32s" }}>
+        <span style={{ fontSize:11,fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",
+          color:hov?"#fff":st.accent,transition:"color 0.32s" }}>View samples</span>
+        <span style={{ fontSize:18,color:hov?"#fff":st.accent,
+          transform:hov?"translateX(4px)":"none",transition:"color 0.32s,transform 0.32s" }}>→</span>
+      </div>
+    </button>
+  );
+}
+
+// ─── STRIP — compact tab row, shown once a type is selected ───────
+// Mirrors App.jsx CategoryStrip / StripTile exactly
 function CapabilityStrip({ types, active, onSelect }) {
   const count = types.length;
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
-      <div className="strip-grid" style={{
-        display:"grid",
+      <div className="ir-strip-grid" style={{ display:"grid",
         gridTemplateColumns:`repeat(${count},1fr)`,
-        border:`1px solid ${NS.rule}`,
-        background:NS.surface,
-      }}>
+        border:`1px solid ${NS.rule}`,background:NS.surface }}>
         {types.map((st, i) => {
           const isActive = st.id === active;
           const isLast   = i === count - 1;
-          return <StripTile key={st.id} st={st} num={String(i+1).padStart(2,"0")} active={isActive} borderRight={!isLast} onClick={() => onSelect(st.id)} />;
+          return <StripTile key={st.id} st={st} num={String(i+1).padStart(2,"0")}
+            active={isActive} borderRight={!isLast} onClick={() => onSelect(st.id)} />;
         })}
       </div>
     </div>
@@ -145,69 +244,41 @@ function StripTile({ st, num, active, borderRight, onClick }) {
     <button onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        textAlign:"left",
+      style={{ textAlign:"left",
         background: active ? st.accent : (hov ? NS.paperDeep : NS.surface),
         borderRight: borderRight ? `1px solid ${NS.rule}` : "none",
-        borderTop:"none", borderBottom:"none", borderLeft:"none",
-        padding:"22px 22px",
-        cursor:"pointer",
-        display:"flex", flexDirection:"column", gap:8,
-        fontFamily:"'DM Sans',sans-serif",
-        transition:"background 0.22s",
-        width:"100%",
-      }}>
-      {/* number row */}
+        borderTop:"none",borderBottom:"none",borderLeft:"none",
+        padding:"22px 22px",cursor:"pointer",
+        display:"flex",flexDirection:"column",gap:8,
+        fontFamily:"'DM Sans',sans-serif",transition:"background 0.22s",width:"100%" }}>
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12 }}>
-        <span style={{ fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:10,fontWeight:500,letterSpacing:"0.12em",
-          color: active ? "rgba(255,255,255,0.75)" : NS.muted }}>
+        <span style={{ fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:10,fontWeight:500,
+          letterSpacing:"0.12em",color:active?"rgba(255,255,255,0.75)":NS.muted }}>
           {num}
         </span>
         {active && <span style={{ width:6,height:6,borderRadius:"50%",background:"#fff",flexShrink:0 }} />}
       </div>
-      {/* label */}
       <h3 style={{ fontFamily:"'DM Sans',sans-serif",fontWeight:700,fontSize:24,
         letterSpacing:"-0.02em",lineHeight:1,color:active?"#fff":NS.ink,
-        whiteSpace:"nowrap",margin:0,
-        overflow:"hidden",textOverflow:"ellipsis",
-      }}>
+        whiteSpace:"nowrap",margin:0,overflow:"hidden",textOverflow:"ellipsis" }}>
         {st.label}
       </h3>
-      {/* tag */}
       <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",
-        color: active ? "rgba(255,255,255,0.78)" : st.accent }}>
-        {/* Use a short tag for each study type */}
+        color:active?"rgba(255,255,255,0.78)":st.accent }}>
         {ST_TAG[st.id] || st.label.split(" ")[0].toUpperCase()}
       </span>
     </button>
   );
 }
 
-// Short tags for each study type, matching App.jsx's tag pattern
-const ST_TAG = {
-  "Industry Analysis":        "Landscape",
-  "GTM":                      "Strategy",
-  "Competitive Benchmarking": "Rivals",
-  "Consumer Research":        "Consumer",
-  "Sales Enablement":         "Intel",
-  "AI Readiness":             "Maturity",
-  "Investment Research":      "Invest",
-  "Patent Research":          "IP",
-  "Synthetic Data":           "Data",
-};
-
-// ─── Section banner — mirrors App.jsx SectionBanner exactly ──────
+// ─── Section banner (below strip) ─────────────────────────────────
 function SectionBanner({ st }) {
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
-      <div style={{
-        borderLeft:`1px solid ${NS.rule}`,
-        borderRight:`1px solid ${NS.rule}`,
-        borderBottom:`1px solid ${NS.rule}`,
-        background:NS.surface,
-        padding:"32px 32px",
-        display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:24,flexWrap:"wrap",
-      }}>
+      <div style={{ borderLeft:`1px solid ${NS.rule}`,borderRight:`1px solid ${NS.rule}`,
+        borderBottom:`1px solid ${NS.rule}`,background:NS.surface,
+        padding:"32px 32px",display:"flex",alignItems:"flex-end",
+        justifyContent:"space-between",gap:24,flexWrap:"wrap" }}>
         <div style={{ flex:"1 1 320px" }}>
           <p style={{ fontSize:10,fontWeight:700,letterSpacing:"0.24em",textTransform:"uppercase",
             color:st.accent,marginBottom:8 }}>
@@ -244,9 +315,9 @@ function PillBtn({ label, active, color, onClick }) {
   );
 }
 
-// ─── Case Tile — same compact card as Research.jsx CaseTile ──────
+// ─── Case Tile — compact card identical to Research.jsx ───────────
 function CaseTile({ item, accent, onOpen }) {
-  const [hov, setHov]         = useState(false);
+  const [hov, setHov] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const sector       = SECTORS.find(s => s.id === item.industry);
   const sectorLabel  = sector?.label || item.industry;
@@ -261,71 +332,59 @@ function CaseTile({ item, accent, onOpen }) {
     <div onClick={() => onOpen(item)}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        background: hov ? accent : NS.surface,
-        border:`1.5px solid ${hov ? accent : NS.rule}`,
-        borderRadius:3, padding:"16px 18px", cursor:"pointer",
-        transition:"background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
-        transform: hov ? "translateY(-2px)" : "none",
-        boxShadow: hov ? `0 8px 24px ${accent}22` : "none",
-      }}>
+      style={{ background:hov?accent:NS.surface,
+        border:`1.5px solid ${hov?accent:NS.rule}`,
+        borderRadius:3,padding:"16px 18px",cursor:"pointer",
+        transition:"background 0.18s ease,border-color 0.18s ease,box-shadow 0.18s ease,transform 0.18s ease",
+        transform:hov?"translateY(-2px)":"none",
+        boxShadow:hov?`0 8px 24px ${accent}22`:"none" }}>
       <div style={{ display:"flex",justifyContent:"space-between",gap:8,marginBottom:8 }}>
         <p style={{ fontSize:13,fontWeight:700,color:hov?"#fff":NS.ink,lineHeight:1.35,flex:1,transition:"color 0.18s",textWrap:"balance" }}>{item.title}</p>
         <span style={{ color:hov?"rgba(255,255,255,0.8)":accent,fontSize:15,flexShrink:0,transition:"color 0.18s" }}>↗</span>
       </div>
       <div style={{ display:"flex",gap:4,flexWrap:"wrap",marginTop:4 }}>
         {(() => {
-          const st   = STUDY_TYPES.find(s => s.id === item.studyType);
+          const st = STUDY_TYPES.find(s => s.id === item.studyType);
           const stCol = st?.accent || accent;
-          const stBg  = hov ? "rgba(255,255,255,0.18)" : `${stCol}15`;
-          const stFg  = hov ? "#fff" : stCol;
-          return <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:stBg,color:stFg,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>;
+          return <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:hov?"rgba(255,255,255,0.18)":`${stCol}15`,color:hov?"#fff":stCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{item.studyType}</span>;
         })()}
         <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:indBg,color:indCol,fontWeight:700,letterSpacing:"0.07em",textTransform:"uppercase",transition:"all 0.18s" }}>{sectorLabel}</span>
         {item.primaryType && <span style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,fontWeight:600,transition:"all 0.18s" }}>{item.primaryType}</span>}
         {item.geo.map(g => <span key={g} style={{ fontSize:9,padding:"2px 6px",borderRadius:2,background:muteBg,color:muteCol,transition:"all 0.18s" }}>{g}</span>)}
       </div>
       {item.desc && (
-        <div style={{ maxHeight:showDesc?"120px":"0", overflow:"hidden", transition:"max-height 0.22s ease" }}>
-          <p style={{ fontSize:11.5,lineHeight:1.55,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,marginTop:10,transition:"color 0.18s" }}>
-            {item.desc}
-          </p>
+        <div style={{ maxHeight:showDesc?"120px":"0",overflow:"hidden",transition:"max-height 0.22s ease" }}>
+          <p style={{ fontSize:11.5,lineHeight:1.55,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,marginTop:10,transition:"color 0.18s" }}>{item.desc}</p>
         </div>
       )}
       {item.desc && (
-        <button onClick={e => { e.stopPropagation(); setSummaryOpen(v=>!v); }}
-          className="casetile-summary-btn"
+        <button onClick={e=>{e.stopPropagation();setSummaryOpen(v=>!v);}}
+          className="ir-summary-btn"
           style={{ display:"none",marginTop:8,fontSize:10,fontWeight:700,letterSpacing:"0.06em",
             textTransform:"uppercase",border:`1px solid ${summaryOpen?"rgba(255,255,255,0.4)":accent}`,
             borderRadius:2,padding:"3px 8px",background:"transparent",
-            color:summaryOpen?"rgba(255,255,255,0.8)":accent,cursor:"pointer",fontFamily:"'DM Sans',sans-serif" }}>
-          {summaryOpen ? "Hide" : "Summary"}
+            color:summaryOpen?"rgba(255,255,255,0.8)":accent,cursor:"pointer" }}>
+          {summaryOpen?"Hide":"Summary"}
         </button>
       )}
     </div>
   );
 }
 
-// ─── Samples section (below the strip) ───────────────────────────
+// ─── Samples section ──────────────────────────────────────────────
 function SamplesSection({ studyType, sector, items }) {
   const accent = studyType.accent;
   const availableRegions = GEO_REGIONS.filter(g => items.some(i => i.geo.includes(g.id)));
   const [activeRegion, setActiveRegion] = useState(null);
   const [viewer, setViewer] = useState(null);
-
-  // Reset region filter when study type changes
   useEffect(() => { setActiveRegion(null); }, [studyType.id]);
 
-  const shown = activeRegion
-    ? items.filter(i => i.geo.includes(activeRegion))
-    : items;
+  const shown = activeRegion ? items.filter(i => i.geo.includes(activeRegion)) : items;
 
   return (
     <>
       <div style={{ maxWidth:1160,margin:"0 auto",padding:"clamp(24px,3.5vw,40px) clamp(16px,4vw,44px) 0" }}>
-        {/* Count + region filter row */}
-        <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",
-          gap:16,marginBottom:20,flexWrap:"wrap" }}>
+        <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,marginBottom:20,flexWrap:"wrap" }}>
           <span style={{ fontSize:11,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:NS.muted }}>
             {shown.length} {shown.length===1?"sample":"samples"}{activeRegion?" · filtered":""}
           </span>
@@ -335,12 +394,11 @@ function SamplesSection({ studyType, sector, items }) {
               <PillBtn label="All" active={!activeRegion} color={accent} onClick={() => setActiveRegion(null)} />
               {availableRegions.map(g => (
                 <PillBtn key={g.id} label={g.label} active={activeRegion===g.id} color={g.accent}
-                  onClick={() => setActiveRegion(activeRegion===g.id ? null : g.id)} />
+                  onClick={() => setActiveRegion(activeRegion===g.id?null:g.id)} />
               ))}
             </div>
           )}
         </div>
-
         {shown.length === 0 ? (
           <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No samples match the selected region.</div>
         ) : (
@@ -351,7 +409,6 @@ function SamplesSection({ studyType, sector, items }) {
         )}
         <div style={{ height:56 }} />
       </div>
-
       {viewer && (
         <CaseViewer item={viewer}
           accent={(STUDY_TYPES.find(s=>s.id===viewer.studyType)?.accent)||sector.accent}
@@ -368,41 +425,55 @@ export default function IndustryResearch({ industryId = "auto" }) {
   const samples = RESEARCH_DATA.filter(d => d.industry === sector.id);
   const availableTypes = STUDY_TYPES.filter(st => samples.some(s => s.studyType === st.id));
 
-  // Start with first available type selected (strip is always shown)
-  const [activeType, setActiveType] = useState(availableTypes[0]?.id || null);
+  // null = gateway tiles visible; string = study type selected → strip + samples
+  const [activeType, setActiveType] = useState(null);
   useEffect(() => {
-    setActiveType(availableTypes[0]?.id || null);
+    setActiveType(null);
     window.scrollTo({ top:0, behavior:"smooth" });
   }, [industryId]);
 
   const activeStudy = STUDY_TYPES.find(s => s.id === activeType);
-  const shown       = activeStudy ? samples.filter(d => d.studyType === activeType) : [];
+  const shown = activeStudy ? samples.filter(d => d.studyType === activeType) : [];
+
+  function handleSelect(id) {
+    setActiveType(id);
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+
+  function handleLogoClick() {
+    setActiveType(null);
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
 
   return (
     <div style={{ background:NS.paper, minHeight:"100vh" }}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         html { scroll-behavior:smooth; }
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a, input, select, textarea { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);} to{opacity:1;transform:none;} }
-        @media (max-width:860px){ .hero-row{ grid-template-columns:1fr !important; align-items:start !important; } }
-        @media (max-width:700px){ .strip-grid{ grid-template-columns:repeat(2,1fr) !important; } }
-        @media (max-width:420px){ .strip-grid{ grid-template-columns:1fr !important; } }
-        @media (pointer:coarse){ .casetile-summary-btn{ display:inline-block !important; } }
+        @media (max-width:860px){ .ir-hero-row{ grid-template-columns:1fr !important; align-items:start !important; } }
+        @media (max-width:760px){ .ir-gateway-grid{ grid-template-columns:1fr !important; } }
+        @media (max-width:700px){ .ir-strip-grid{ grid-template-columns:repeat(2,1fr) !important; } }
+        @media (max-width:420px){ .ir-strip-grid{ grid-template-columns:1fr !important; } }
+        @media (pointer:coarse){ .ir-summary-btn{ display:inline-block !important; } }
       `}</style>
 
-      <IndustryNav sector={sector} />
+      <IndustryNav sector={sector} onLogoClick={handleLogoClick} />
       <IndustryHero sector={sector} hero={hero} />
 
-      {/* Capability strip — always visible */}
-      <CapabilityStrip types={availableTypes} active={activeType} onSelect={setActiveType} />
-
-      {/* Section banner + samples */}
-      {activeStudy && (
+      {activeStudy ? (
+        /* Strip + section banner + samples */
         <>
+          <CapabilityStrip types={availableTypes} active={activeType} onSelect={handleSelect} />
           <SectionBanner st={activeStudy} />
           <SamplesSection studyType={activeStudy} sector={sector} items={shown} />
         </>
+      ) : (
+        /* Gateway: big hero tiles */
+        <GatewayTiles types={availableTypes} onSelect={handleSelect} />
       )}
 
       <footer style={{ borderTop:`1px solid ${NS.rule}`,maxWidth:1160,margin:"clamp(44px,6vw,80px) auto 0",
