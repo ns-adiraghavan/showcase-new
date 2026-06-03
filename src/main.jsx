@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import Research from "./Research.jsx";
 import IndustryResearch from "./IndustryResearch.jsx";
+import TechAlt from "./TechAlt.jsx";
 
 // ─── Minimal path router ──────────────────────────────────────────
 // Watches window.location.pathname and re-renders on popstate/pushstate.
@@ -42,12 +43,15 @@ function Root() {
     technology: "tech",
     telecommunications: "telecom",
     "retail-ecommerce": "retail",
-    // Alt layout routes for internal team comparison
-    tech1: "tech",
   };
 
   if (path === "/research") {
     return <Research />;
+  }
+
+  // Alt layout: Tech & Software — team comparison build
+  if (path === "/research/tech1") {
+    return <TechAlt industryId="tech" />;
   }
 
   if (path.startsWith("/research/")) {

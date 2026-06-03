@@ -120,7 +120,7 @@ function IndustryHero({ sector, hero }) {
             Research · {sector.label}
           </p>
           <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
-            {hero.noun} Insights
+            {hero.noun} <em style={{ fontStyle:"normal",color:sector.accent }}>Insights</em>
           </h1>
         </div>
         <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.65,maxWidth:360,fontWeight:400,minWidth:0,paddingBottom:6 }}>
@@ -420,7 +420,7 @@ function SamplesSection({ studyType, sector, items }) {
 }
 
 // ─── Root ─────────────────────────────────────────────────────────
-export default function IndustryResearch({ industryId = "auto" }) {
+export default function TechAlt({ industryId = "auto" }) {
   const sector = SECTORS.find(s => s.id === industryId) || SECTORS[0];
   const hero   = INDUSTRY_HERO[sector.id] || { noun:sector.tag, desc:sector.blurb };
   const samples = RESEARCH_DATA.filter(d => d.industry === sector.id);
