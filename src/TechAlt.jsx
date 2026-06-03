@@ -236,80 +236,123 @@ const SOLUTIONS = [
   { icon: ICONS.layers,     text: <>Combines <strong>IP intelligence</strong> with market, regulatory, competitor, and commercialization assessments to develop <strong>market-entry and go-to-market strategies</strong></> },
 ];
 
-// ─── Two-box insight section ───────────────────────────────────────
-function InsightBoxes({ accent }) {
+// ─── Carousel panel (shared) ─────────────────────────────────────
+function CarouselPanel({ items, title, headerIcon, dark, accent }) {
+  const [idx, setIdx] = useState(0);
+  const total = items.length;
+  const prev = () => setIdx(i => (i - 1 + total) % total);
+  const next = () => setIdx(i => (i + 1) % total);
+
+  const bg        = dark ? accent       : NS.surface;
+  const headCol   = dark ? "#fff"       : NS.ink;
+  const textCol   = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
+  const iconBg    = dark ? "rgba(255,255,255,0.13)" : `${accent}0e`;
+  const iconCol   = dark ? "rgba(255,255,255,0.9)"  : accent;
+  const dotActive = dark ? "#fff"       : accent;
+  const dotInact  = dark ? "rgba(255,255,255,0.25)" : `${accent}30`;
+  const btnBg     = dark ? "rgba(255,255,255,0.12)" : `${accent}0e`;
+  const btnHovBg  = dark ? "rgba(255,255,255,0.22)" : `${accent}20`;
+  const btnCol    = dark ? "rgba(255,255,255,0.85)" : accent;
+  const sepCol    = dark ? "rgba(255,255,255,0.10)" : `${accent}12`;
+  const cntCol    = dark ? "rgba(255,255,255,0.45)" : NS.muted;
+
+  const item = items[idx];
 
   return (
-    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
-      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,borderRadius:4,overflow:"hidden",
-        boxShadow:"0 2px 16px rgba(0,95,134,0.10)" }}
-        className="ta-insight-grid">
-
-        {/* Left — Bottlenecks */}
-        <div style={{ background:NS.surface,padding:"28px 30px" }}>
-          <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:20 }}>
-            <div style={{ width:32,height:32,borderRadius:"50%",background:`${accent}12`,
-              display:"flex",alignItems:"center",justifyContent:"center",color:accent,flexShrink:0 }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-            </div>
-            <h3 style={{ fontSize:13,fontWeight:700,letterSpacing:"0.04em",color:NS.ink,textTransform:"uppercase",margin:0 }}>
-              Industry Bottlenecks
-            </h3>
-          </div>
-          <div style={{ display:"flex",flexDirection:"column" }}>
-            {BOTTLENECKS.map((item, i) => (
-              <div key={i}>
-                {i > 0 && <div style={{ height:1,background:`${accent}12`,margin:"0 2px" }} />}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:12,padding:"11px 4px" }}>
-                  <div style={{ width:30,height:30,borderRadius:3,background:`${accent}0e`,
-                    display:"flex",alignItems:"center",justifyContent:"center",
-                    color:accent,flexShrink:0 }}>
-                    {item.icon}
-                  </div>
-                  <p style={{ fontSize:12.5,lineHeight:1.55,color:NS.inkSoft,margin:0,paddingTop:5 }}>{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+    <div style={{ background:bg, padding:"28px 30px", display:"flex", flexDirection:"column", minHeight:280 }}>
+      {/* Header */}
+      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:20,flexShrink:0 }}>
+        <div style={{ width:32,height:32,borderRadius:"50%",
+          background: dark ? "rgba(255,255,255,0.15)" : `${accent}12`,
+          display:"flex",alignItems:"center",justifyContent:"center",
+          color: dark ? "rgba(255,255,255,0.95)" : accent, flexShrink:0 }}>
+          {headerIcon}
         </div>
+        <h3 style={{ fontSize:13,fontWeight:700,letterSpacing:"0.04em",color:headCol,textTransform:"uppercase",margin:0 }}>
+          {title}
+        </h3>
+      </div>
 
-        {/* Right — Solutions (Tech blue filled) */}
-        <div style={{ background:accent,padding:"28px 30px" }}>
-          <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:20 }}>
-            <div style={{ width:32,height:32,borderRadius:"50%",background:"rgba(255,255,255,0.15)",
-              display:"flex",alignItems:"center",justifyContent:"center",color:"rgba(255,255,255,0.95)",flexShrink:0 }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <h3 style={{ fontSize:13,fontWeight:700,letterSpacing:"0.04em",color:"#fff",textTransform:"uppercase",margin:0 }}>
-              How Netscribes Solves This
-            </h3>
+      {/* Slide content */}
+      <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center", minHeight:160 }}>
+        <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:16,
+          animation:"slide-in 0.22s ease both" }}>
+          <div style={{ width:44,height:44,borderRadius:4,background:iconBg,
+            display:"flex",alignItems:"center",justifyContent:"center",
+            color:iconCol,flexShrink:0 }}>
+            {item.icon}
           </div>
-          <div style={{ display:"flex",flexDirection:"column" }}>
-            {SOLUTIONS.map((item, i) => (
-              <div key={i}>
-                {i > 0 && <div style={{ height:1,background:"rgba(255,255,255,0.12)",margin:"0 2px" }} />}
-                <div style={{ display:"flex",alignItems:"flex-start",gap:12,padding:"11px 4px" }}>
-                  <div style={{ width:30,height:30,borderRadius:3,background:"rgba(255,255,255,0.13)",
-                    display:"flex",alignItems:"center",justifyContent:"center",
-                    color:"rgba(255,255,255,0.9)",flexShrink:0 }}>
-                    {item.icon}
-                  </div>
-                  <p style={{ fontSize:12.5,lineHeight:1.55,color:"rgba(255,255,255,0.88)",margin:0,paddingTop:5 }}>{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <p style={{ fontSize:13,lineHeight:1.6,color:textCol,margin:0,paddingTop:5 }}>{item.text}</p>
         </div>
+      </div>
 
+      {/* Separator */}
+      <div style={{ height:1,background:sepCol,margin:"16px 0 14px",flexShrink:0 }} />
+
+      {/* Controls row */}
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0 }}>
+        {/* Dot indicators */}
+        <div style={{ display:"flex",gap:5,alignItems:"center" }}>
+          {items.map((_, i) => (
+            <button key={i} onClick={() => setIdx(i)}
+              style={{ width: i===idx ? 18 : 6, height:6, borderRadius:3,
+                background: i===idx ? dotActive : dotInact,
+                border:"none", padding:0, cursor:"pointer",
+                transition:"all 0.2s ease" }} />
+          ))}
+        </div>
+        {/* Counter + arrows */}
+        <div style={{ display:"flex",alignItems:"center",gap:8 }}>
+          <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",fontFamily:"'DM Sans',sans-serif" }}>
+            {idx+1} / {total}
+          </span>
+          <button onClick={prev}
+            onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
+            onMouseLeave={e => e.currentTarget.style.background=btnBg}
+            style={{ width:28,height:28,borderRadius:3,border:"none",background:btnBg,
+              color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button onClick={next}
+            onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
+            onMouseLeave={e => e.currentTarget.style.background=btnBg}
+            style={{ width:28,height:28,borderRadius:3,border:"none",background:btnBg,
+              color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+              transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
+// ─── Two-box insight section ───────────────────────────────────────
+function InsightBoxes({ accent }) {
+  const infoIcon = (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  );
+  const checkIcon = (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  );
+  return (
+    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
+      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,borderRadius:4,overflow:"hidden",
+        boxShadow:"0 2px 16px rgba(0,95,134,0.10)" }}
+        className="ta-insight-grid">
+        <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
+          headerIcon={infoIcon} dark={false} accent={accent} />
+        <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
+          headerIcon={checkIcon} dark={true} accent={accent} />
+      </div>
+    </div>
+  );
+}
 // ─── Root ─────────────────────────────────────────────────────────
 export default function TechAlt() {
   const sector  = SECTORS.find(s => s.id === "tech");
@@ -342,6 +385,7 @@ export default function TechAlt() {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
+        @keyframes slide-in { from{opacity:0;transform:translateX(10px);}to{opacity:1;transform:none;} }
         @media (max-width:580px) {
           .ta-filter-bar { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13); }
@@ -372,7 +416,7 @@ export default function TechAlt() {
         <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance",marginBottom:14 }}>
           {hero.noun} <em style={{ fontStyle:"normal",color:accent }}>Insights</em>
         </h1>
-        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,maxWidth:520,fontWeight:400 }}>
+        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,fontWeight:400 }}>
           {hero.desc}
         </p>
       </div>
