@@ -215,33 +215,39 @@ const ICONS = {
   ),
 };
 
+// text is JSX — bold spans for key phrases. Index 2 (point 3) stays plain per brief.
 const BOTTLENECKS = [
-  { icon: ICONS.cpu,        text: "Challenges in assessing the impact of emerging technologies such as AI, IoT, and cloud computing on operations, governance, and stakeholder trust" },
-  { icon: ICONS.barChart,   text: "Limited visibility into competitor pricing, product differentiation, and market adoption trends in fast-evolving tech segments" },
+  { icon: ICONS.cpu,        text: <>Challenges in assessing the <strong>impact of emerging technologies</strong> such as <strong>AI, IoT, and cloud computing</strong> on operations, governance, and stakeholder trust</> },
+  { icon: ICONS.barChart,   text: <>Limited visibility into <strong>competitor pricing, product differentiation,</strong> and <strong>market adoption trends</strong> in fast-evolving tech segments</> },
   { icon: ICONS.network,    text: "Difficulty in identifying market-entry triggers, target accounts, and partnership opportunities in complex technology ecosystems" },
-  { icon: ICONS.compass,    text: "Lack of clarity on competitive positioning in niche domains like cloud-based SCM and 3D printing" },
-  { icon: ICONS.megaphone,  text: "Inability to measure marketing effectiveness, brand awareness, perception, and purchase intent for technology solutions" },
-  { icon: ICONS.lightbulb,  text: "Challenges in identifying innovation whitespaces and emerging technology opportunities across domains such as Generative AI, in-cabin sensing, advanced displays, semiconductors, and smart materials" },
-  { icon: ICONS.fileSearch, text: "Inability to benchmark competitor patent portfolios, innovation focus areas, and R&D trajectories to understand relative competitive positioning" },
+  { icon: ICONS.compass,    text: <>Lack of clarity on <strong>competitive positioning</strong> in niche domains like <strong>cloud-based SCM</strong> and <strong>3D printing</strong></> },
+  { icon: ICONS.megaphone,  text: <>Inability to measure <strong>marketing effectiveness, brand awareness, perception,</strong> and <strong>purchase intent</strong> for technology solutions</> },
+  { icon: ICONS.lightbulb,  text: <>Challenges in identifying <strong>innovation whitespaces</strong> and emerging technology opportunities across domains such as <strong>Generative AI, in-cabin sensing, advanced displays, semiconductors,</strong> and <strong>smart materials</strong></> },
+  { icon: ICONS.fileSearch, text: <>Inability to benchmark <strong>competitor patent portfolios, innovation focus areas,</strong> and <strong>R&D trajectories</strong> to understand relative competitive positioning</> },
 ];
 
 const SOLUTIONS = [
-  { icon: ICONS.microscope, text: "Conducts deep-dive assessments through expert-led primary research with C-suite and R&D leaders to evaluate technology readiness, adoption trends, and governance requirements" },
-  { icon: ICONS.map,        text: "Delivers ecosystem mapping, customer profiling, and stakeholder interviews to identify market-entry opportunities and growth triggers" },
+  { icon: ICONS.microscope, text: <>Conducts <strong>deep-dive assessments</strong> through expert-led primary research with <strong>C-suite and R&D leaders</strong> to evaluate technology readiness, adoption trends, and governance requirements</> },
+  { icon: ICONS.map,        text: <>Delivers <strong>ecosystem mapping, customer profiling,</strong> and <strong>stakeholder interviews</strong> to identify market-entry opportunities and growth triggers</> },
   { icon: ICONS.target,     text: "Leverages competitive benchmarking, market analysis, and stakeholder insights to decode pricing structures and competitive positioning" },
-  { icon: ICONS.shield,     text: "Identifies market white-space opportunities to strengthen positioning in emerging technology domains" },
-  { icon: ICONS.activity,   text: "Applies pre- and post-campaign evaluations using quantitative surveys and statistical analysis to track KPI improvements, brand perception, and purchase intent" },
-  { icon: ICONS.award,      text: "Conducts comprehensive patent landscape, whitespace, patentability, and Freedom-to-Operate (FTO) analysis using global patent and non-patent literature databases" },
-  { icon: ICONS.layers,     text: "Combines IP intelligence with market, regulatory, competitor, and commercialization assessments to develop market-entry and go-to-market strategies" },
+  { icon: ICONS.shield,     text: <>Identifies <strong>market white-space opportunities</strong> to strengthen positioning in emerging technology domains</> },
+  { icon: ICONS.activity,   text: <>Applies <strong>pre- and post-campaign evaluations</strong> using quantitative surveys and statistical analysis to track <strong>KPI improvements, brand perception,</strong> and <strong>purchase intent</strong></> },
+  { icon: ICONS.award,      text: <>Conducts comprehensive <strong>patent landscape, whitespace, patentability,</strong> and <strong>Freedom-to-Operate (FTO) analysis</strong> using global patent and non-patent literature databases</> },
+  { icon: ICONS.layers,     text: <>Combines <strong>IP intelligence</strong> with market, regulatory, competitor, and commercialization assessments to develop <strong>market-entry and go-to-market strategies</strong></> },
 ];
 
 // ─── Two-box insight section ───────────────────────────────────────
 function InsightBoxes({ accent }) {
+  // Alternating row tint — skipped on index 2 (point 3) per brief
+  const leftAlt  = (i) => i !== 2 && i % 2 === 1 ? `${accent}07` : "transparent";
+  const rightAlt = (i) => i !== 2 && i % 2 === 1 ? "rgba(255,255,255,0.07)" : "transparent";
+
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
       <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,borderRadius:4,overflow:"hidden",
         boxShadow:"0 2px 16px rgba(0,95,134,0.10)" }}
         className="ta-insight-grid">
+
         {/* Left — Bottlenecks */}
         <div style={{ background:NS.surface,padding:"28px 30px" }}>
           <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:20 }}>
@@ -255,12 +261,19 @@ function InsightBoxes({ accent }) {
               Industry Bottlenecks
             </h3>
           </div>
-          <div style={{ display:"flex",flexDirection:"column",gap:13 }}>
+          <div style={{ display:"flex",flexDirection:"column",gap:0 }}>
             {BOTTLENECKS.map((item, i) => (
-              <div key={i} style={{ display:"flex",alignItems:"flex-start",gap:12 }}>
+              <div key={i} style={{
+                display:"flex",alignItems:"flex-start",gap:12,
+                padding:"10px 10px 10px 6px",
+                borderRadius:3,
+                background: leftAlt(i),
+                borderLeft: i !== 2 && i % 2 === 1 ? `2px solid ${accent}30` : "2px solid transparent",
+                transition:"background 0.15s",
+              }}>
                 <div style={{ width:30,height:30,borderRadius:3,background:`${accent}0e`,
                   display:"flex",alignItems:"center",justifyContent:"center",
-                  color:accent,flexShrink:0,marginTop:0 }}>
+                  color:accent,flexShrink:0 }}>
                   {item.icon}
                 </div>
                 <p style={{ fontSize:12.5,lineHeight:1.55,color:NS.inkSoft,margin:0,paddingTop:5 }}>{item.text}</p>
@@ -282,12 +295,19 @@ function InsightBoxes({ accent }) {
               How Netscribes Solves This
             </h3>
           </div>
-          <div style={{ display:"flex",flexDirection:"column",gap:13 }}>
+          <div style={{ display:"flex",flexDirection:"column",gap:0 }}>
             {SOLUTIONS.map((item, i) => (
-              <div key={i} style={{ display:"flex",alignItems:"flex-start",gap:12 }}>
+              <div key={i} style={{
+                display:"flex",alignItems:"flex-start",gap:12,
+                padding:"10px 10px 10px 6px",
+                borderRadius:3,
+                background: rightAlt(i),
+                borderLeft: i !== 2 && i % 2 === 1 ? "2px solid rgba(255,255,255,0.2)" : "2px solid transparent",
+                transition:"background 0.15s",
+              }}>
                 <div style={{ width:30,height:30,borderRadius:3,background:"rgba(255,255,255,0.13)",
                   display:"flex",alignItems:"center",justifyContent:"center",
-                  color:"rgba(255,255,255,0.9)",flexShrink:0,marginTop:0 }}>
+                  color:"rgba(255,255,255,0.9)",flexShrink:0 }}>
                   {item.icon}
                 </div>
                 <p style={{ fontSize:12.5,lineHeight:1.55,color:"rgba(255,255,255,0.88)",margin:0,paddingTop:5 }}>{item.text}</p>
@@ -295,6 +315,7 @@ function InsightBoxes({ accent }) {
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );
