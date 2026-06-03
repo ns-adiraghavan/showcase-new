@@ -236,16 +236,9 @@ const SOLUTIONS = [
   { icon: ICONS.layers,     text: <>Combines <strong>IP intelligence</strong> with market, regulatory, competitor, and commercialization assessments to develop <strong>market-entry and go-to-market strategies</strong></> },
 ];
 
-// ─── Carousel panel (shared) ─────────────────────────────────────
-// startDark=false → slide 0 white, 1 blue, 2 white...
-// startDark=true  → slide 0 blue,  1 white, 2 blue...
-function CarouselPanel({ items, title, headerIcon, startDark, accent }) {
-  const [idx, setIdx] = useState(0);
-  const total = items.length;
-  const prev = () => setIdx(i => (i - 1 + total) % total);
-  const next = () => setIdx(i => (i + 1) % total);
-
-  // Alternate per slide
+// ─── Carousel panel (display-only, no own state) ─────────────────
+function CarouselPanel({ items, title, headerIcon, startDark, accent, idx }) {
+  // dark = alternates per slide, opposite on each side
   const dark = startDark ? (idx % 2 === 0) : (idx % 2 === 1);
 
   const bg         = dark ? accent                   : NS.surface;
@@ -253,13 +246,7 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent }) {
   const textCol    = dark ? "rgba(255,255,255,0.90)" : NS.inkSoft;
   const iconBg     = dark ? "rgba(255,255,255,0.14)" : `${accent}12`;
   const iconCol    = dark ? "#fff"                   : accent;
-  const dotActive  = dark ? "#fff"                   : accent;
-  const dotInact   = dark ? "rgba(255,255,255,0.28)" : `${accent}30`;
-  const btnBg      = dark ? "rgba(255,255,255,0.13)" : `${accent}0e`;
-  const btnHovBg   = dark ? "rgba(255,255,255,0.24)" : `${accent}22`;
-  const btnCol     = dark ? "#fff"                   : accent;
   const sepCol     = dark ? "rgba(255,255,255,0.12)" : `${accent}14`;
-  const cntCol     = dark ? "rgba(255,255,255,0.50)" : NS.muted;
   const hdrCircBg  = dark ? "rgba(255,255,255,0.16)" : `${accent}12`;
   const hdrCircCol = dark ? "rgba(255,255,255,0.95)" : accent;
 
@@ -297,48 +284,27 @@ function CarouselPanel({ items, title, headerIcon, startDark, accent }) {
       </div>
 
       {/* Separator */}
-      <div style={{ height:1,background:sepCol,margin:"20px 0 16px",flexShrink:0 }} />
-
-      {/* Controls */}
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0 }}>
-        <div style={{ display:"flex",gap:5,alignItems:"center" }}>
-          {items.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)}
-              style={{ width: i===idx ? 20 : 6, height:6, borderRadius:3,
-                background: i===idx ? dotActive : dotInact,
-                border:"none", padding:0, cursor:"pointer",
-                transition:"all 0.2s ease" }} />
-          ))}
-        </div>
-        <div style={{ display:"flex",alignItems:"center",gap:8 }}>
-          <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",
-            fontFamily:"'DM Sans',sans-serif",transition:"color 0.28s" }}>
-            {idx+1} / {total}
-          </span>
-          <button onClick={prev}
-            onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
-            onMouseLeave={e => e.currentTarget.style.background=btnBg}
-            style={{ width:30,height:30,borderRadius:3,border:"none",background:btnBg,
-              color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-              transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button onClick={next}
-            onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
-            onMouseLeave={e => e.currentTarget.style.background=btnBg}
-            style={{ width:30,height:30,borderRadius:3,border:"none",background:btnBg,
-              color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-              transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-      </div>
+      <div style={{ height:1,background:sepCol,margin:"20px 0 0",flexShrink:0 }} />
     </div>
   );
 }
 
 // ─── Two-box insight section ───────────────────────────────────────
 function InsightBoxes({ accent }) {
+  const total = BOTTLENECKS.length; // same as SOLUTIONS.length
+  const [idx, setIdx] = useState(0);
+  const prev = () => setIdx(i => (i - 1 + total) % total);
+  const next = () => setIdx(i => (i + 1) % total);
+
+  // Controls colour: left panel on even = white, so use left-panel dark state
+  const leftDark = idx % 2 === 1;
+  const dotActive  = leftDark ? accent : accent;
+  const dotInact   = leftDark ? `${accent}30` : `${accent}30`;
+  const btnBg      = `${accent}0e`;
+  const btnHovBg   = `${accent}22`;
+  const btnCol     = accent;
+  const cntCol     = NS.muted;
+
   const infoIcon = (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -349,17 +315,62 @@ function InsightBoxes({ accent }) {
       <polyline points="20 6 9 17 4 12"/>
     </svg>
   );
+
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
-      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,borderRadius:4,overflow:"hidden",
-        boxShadow:"0 2px 20px rgba(0,95,134,0.12)" }}
-        className="ta-insight-grid">
-        {/* Left: starts white → W B W B W B W */}
-        <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
-          headerIcon={infoIcon} startDark={false} accent={accent} />
-        {/* Right: starts blue → B W B W B W B */}
-        <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
-          headerIcon={checkIcon} startDark={true} accent={accent} />
+      <div style={{ borderRadius:4,overflow:"hidden", boxShadow:"0 2px 20px rgba(0,95,134,0.12)" }}>
+
+        {/* Two panels — stack on mobile, side-by-side on desktop */}
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
+          <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
+            headerIcon={infoIcon} startDark={false} accent={accent} idx={idx} />
+          <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
+            headerIcon={checkIcon} startDark={true} accent={accent} idx={idx} />
+        </div>
+
+        {/* Shared controls bar — always below both panels */}
+        <div style={{ background:NS.paperDeep, padding:"14px 34px",
+          display:"flex",alignItems:"center",justifyContent:"space-between",
+          borderTop:`1px solid ${accent}14` }}>
+          {/* Dot indicators */}
+          <div style={{ display:"flex",gap:5,alignItems:"center" }}>
+            {BOTTLENECKS.map((_, i) => (
+              <button key={i} onClick={() => setIdx(i)}
+                style={{ width: i===idx ? 20 : 6, height:6, borderRadius:3,
+                  background: i===idx ? dotActive : dotInact,
+                  border:"none", padding:0, cursor:"pointer",
+                  transition:"all 0.2s ease",
+                  minWidth: i===idx ? 20 : 6, /* touch-friendly tap area via padding trick */
+                  paddingTop:8, paddingBottom:8, marginTop:-8, marginBottom:-8 }} />
+            ))}
+          </div>
+          {/* Counter + arrows */}
+          <div style={{ display:"flex",alignItems:"center",gap:8 }}>
+            <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",
+              fontFamily:"'DM Sans',sans-serif" }}>
+              {idx+1} / {total}
+            </span>
+            <button onClick={prev}
+              onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
+              onMouseLeave={e => e.currentTarget.style.background=btnBg}
+              style={{ width:36,height:36,borderRadius:3,border:"none",background:btnBg,
+                color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+                transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif",
+                WebkitTapHighlightColor:"transparent" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button onClick={next}
+              onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
+              onMouseLeave={e => e.currentTarget.style.background=btnBg}
+              style={{ width:36,height:36,borderRadius:3,border:"none",background:btnBg,
+                color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
+                transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif",
+                WebkitTapHighlightColor:"transparent" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
