@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import Research from "./Research.jsx";
 import IndustryResearch from "./IndustryResearch.jsx";
 import TechAlt from "./TechAlt.jsx";
+import TechAlt2 from "./TechAlt2-full.jsx";
 
 // ─── Minimal path router ──────────────────────────────────────────
 // Watches window.location.pathname and re-renders on popstate/pushstate.
@@ -52,6 +53,11 @@ function Root() {
   // Alt layout: Tech & Software — team comparison build
   if (path === "/research/tech1") {
     return <TechAlt industryId="tech" />;
+  }
+
+  // Alt layout v2: full-width boxes, no sample count, hover point effect
+  if (path === "/research/tech2") {
+    return <TechAlt2 industryId="tech" />;
   }
 
   if (path.startsWith("/research/")) {
