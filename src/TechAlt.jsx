@@ -237,90 +237,99 @@ const SOLUTIONS = [
 ];
 
 // ─── Carousel panel (shared) ─────────────────────────────────────
-function CarouselPanel({ items, title, headerIcon, dark, accent }) {
+// startDark=false → slide 0 white, 1 blue, 2 white...
+// startDark=true  → slide 0 blue,  1 white, 2 blue...
+function CarouselPanel({ items, title, headerIcon, startDark, accent }) {
   const [idx, setIdx] = useState(0);
   const total = items.length;
   const prev = () => setIdx(i => (i - 1 + total) % total);
   const next = () => setIdx(i => (i + 1) % total);
 
-  const bg        = dark ? accent       : NS.surface;
-  const headCol   = dark ? "#fff"       : NS.ink;
-  const textCol   = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
-  const iconBg    = dark ? "rgba(255,255,255,0.13)" : `${accent}0e`;
-  const iconCol   = dark ? "rgba(255,255,255,0.9)"  : accent;
-  const dotActive = dark ? "#fff"       : accent;
-  const dotInact  = dark ? "rgba(255,255,255,0.25)" : `${accent}30`;
-  const btnBg     = dark ? "rgba(255,255,255,0.12)" : `${accent}0e`;
-  const btnHovBg  = dark ? "rgba(255,255,255,0.22)" : `${accent}20`;
-  const btnCol    = dark ? "rgba(255,255,255,0.85)" : accent;
-  const sepCol    = dark ? "rgba(255,255,255,0.10)" : `${accent}12`;
-  const cntCol    = dark ? "rgba(255,255,255,0.45)" : NS.muted;
+  // Alternate per slide
+  const dark = startDark ? (idx % 2 === 0) : (idx % 2 === 1);
+
+  const bg         = dark ? accent                   : NS.surface;
+  const headCol    = dark ? "#fff"                   : NS.ink;
+  const textCol    = dark ? "rgba(255,255,255,0.90)" : NS.inkSoft;
+  const iconBg     = dark ? "rgba(255,255,255,0.14)" : `${accent}12`;
+  const iconCol    = dark ? "#fff"                   : accent;
+  const dotActive  = dark ? "#fff"                   : accent;
+  const dotInact   = dark ? "rgba(255,255,255,0.28)" : `${accent}30`;
+  const btnBg      = dark ? "rgba(255,255,255,0.13)" : `${accent}0e`;
+  const btnHovBg   = dark ? "rgba(255,255,255,0.24)" : `${accent}22`;
+  const btnCol     = dark ? "#fff"                   : accent;
+  const sepCol     = dark ? "rgba(255,255,255,0.12)" : `${accent}14`;
+  const cntCol     = dark ? "rgba(255,255,255,0.50)" : NS.muted;
+  const hdrCircBg  = dark ? "rgba(255,255,255,0.16)" : `${accent}12`;
+  const hdrCircCol = dark ? "rgba(255,255,255,0.95)" : accent;
 
   const item = items[idx];
 
   return (
-    <div style={{ background:bg, padding:"28px 30px", display:"flex", flexDirection:"column", minHeight:280 }}>
+    <div style={{ background:bg, padding:"32px 34px", display:"flex", flexDirection:"column",
+      minHeight:300, transition:"background 0.28s ease" }}>
+
       {/* Header */}
-      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:20,flexShrink:0 }}>
-        <div style={{ width:32,height:32,borderRadius:"50%",
-          background: dark ? "rgba(255,255,255,0.15)" : `${accent}12`,
+      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:24,flexShrink:0 }}>
+        <div style={{ width:32,height:32,borderRadius:"50%", background:hdrCircBg,
           display:"flex",alignItems:"center",justifyContent:"center",
-          color: dark ? "rgba(255,255,255,0.95)" : accent, flexShrink:0 }}>
+          color:hdrCircCol, flexShrink:0 }}>
           {headerIcon}
         </div>
-        <h3 style={{ fontSize:13,fontWeight:700,letterSpacing:"0.04em",color:headCol,textTransform:"uppercase",margin:0 }}>
+        <h3 style={{ fontSize:12,fontWeight:700,letterSpacing:"0.06em",color:headCol,
+          textTransform:"uppercase",margin:0,transition:"color 0.28s" }}>
           {title}
         </h3>
       </div>
 
       {/* Slide content */}
-      <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center", minHeight:160 }}>
-        <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:16,
+      <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center" }}>
+        <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:18,
           animation:"slide-in 0.22s ease both" }}>
-          <div style={{ width:44,height:44,borderRadius:4,background:iconBg,
+          <div style={{ width:52,height:52,borderRadius:6,background:iconBg,
             display:"flex",alignItems:"center",justifyContent:"center",
             color:iconCol,flexShrink:0 }}>
-            {item.icon}
+            <span style={{ transform:"scale(1.3)", display:"flex" }}>{item.icon}</span>
           </div>
-          <p style={{ fontSize:13,lineHeight:1.6,color:textCol,margin:0,paddingTop:5 }}>{item.text}</p>
+          <p style={{ fontSize:15,lineHeight:1.65,color:textCol,margin:0,paddingTop:4,
+            fontWeight:400,transition:"color 0.28s" }}>{item.text}</p>
         </div>
       </div>
 
       {/* Separator */}
-      <div style={{ height:1,background:sepCol,margin:"16px 0 14px",flexShrink:0 }} />
+      <div style={{ height:1,background:sepCol,margin:"20px 0 16px",flexShrink:0 }} />
 
-      {/* Controls row */}
+      {/* Controls */}
       <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0 }}>
-        {/* Dot indicators */}
         <div style={{ display:"flex",gap:5,alignItems:"center" }}>
           {items.map((_, i) => (
             <button key={i} onClick={() => setIdx(i)}
-              style={{ width: i===idx ? 18 : 6, height:6, borderRadius:3,
+              style={{ width: i===idx ? 20 : 6, height:6, borderRadius:3,
                 background: i===idx ? dotActive : dotInact,
                 border:"none", padding:0, cursor:"pointer",
                 transition:"all 0.2s ease" }} />
           ))}
         </div>
-        {/* Counter + arrows */}
         <div style={{ display:"flex",alignItems:"center",gap:8 }}>
-          <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",fontFamily:"'DM Sans',sans-serif" }}>
+          <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",
+            fontFamily:"'DM Sans',sans-serif",transition:"color 0.28s" }}>
             {idx+1} / {total}
           </span>
           <button onClick={prev}
             onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
             onMouseLeave={e => e.currentTarget.style.background=btnBg}
-            style={{ width:28,height:28,borderRadius:3,border:"none",background:btnBg,
+            style={{ width:30,height:30,borderRadius:3,border:"none",background:btnBg,
               color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
               transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
           <button onClick={next}
             onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
             onMouseLeave={e => e.currentTarget.style.background=btnBg}
-            style={{ width:28,height:28,borderRadius:3,border:"none",background:btnBg,
+            style={{ width:30,height:30,borderRadius:3,border:"none",background:btnBg,
               color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
               transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif" }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
       </div>
@@ -331,24 +340,26 @@ function CarouselPanel({ items, title, headerIcon, dark, accent }) {
 // ─── Two-box insight section ───────────────────────────────────────
 function InsightBoxes({ accent }) {
   const infoIcon = (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
     </svg>
   );
   const checkIcon = (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12"/>
     </svg>
   );
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
       <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,borderRadius:4,overflow:"hidden",
-        boxShadow:"0 2px 16px rgba(0,95,134,0.10)" }}
+        boxShadow:"0 2px 20px rgba(0,95,134,0.12)" }}
         className="ta-insight-grid">
+        {/* Left: starts white → W B W B W B W */}
         <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
-          headerIcon={infoIcon} dark={false} accent={accent} />
+          headerIcon={infoIcon} startDark={false} accent={accent} />
+        {/* Right: starts blue → B W B W B W B */}
         <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
-          headerIcon={checkIcon} dark={true} accent={accent} />
+          headerIcon={checkIcon} startDark={true} accent={accent} />
       </div>
     </div>
   );
