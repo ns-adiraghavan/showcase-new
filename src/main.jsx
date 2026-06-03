@@ -2,18 +2,21 @@ import { StrictMode, useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import Research from "./Research.jsx";
+import IndustryResearch from "./IndustryResearch.jsx";
 
-// ─── Minimal path router — no dependency needed ───────────────────
+// ─── Minimal path router ──────────────────────────────────────────
 // Watches window.location.pathname and re-renders on popstate/pushstate.
-// All paths under /research → Research microsite.
-// Everything else → main NetscribesShowcase.
+//   /research                → Research index (existing page, untouched)
+//   /research/:industry      → IndustryResearch for that industry slug
+//   everything else          → main App
+
+const INDUSTRY_SLUGS = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
 
 function usePathname() {
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
     const sync = () => setPath(window.location.pathname);
     window.addEventListener("popstate", sync);
-    // Also catch programmatic navigation (pushState/replaceState)
     const origPush    = history.pushState.bind(history);
     const origReplace = history.replaceState.bind(history);
     history.pushState    = (...a) => { origPush(...a);    sync(); };
@@ -25,10 +28,36 @@ function usePathname() {
 
 function Root() {
   const path = usePathname();
-  // Match /research and any sub-path under it
-  if (path === "/research" || path.startsWith("/research/")) {
+
+  // /research/automotive  →  industryId = "auto"  (slug aliases below)
+  // /research/tech        →  industryId = "tech"
+  // etc.
+  const SLUG_ALIASES = {
+    automotive: "auto",
+    finance:    "bfsi",
+    "food-and-beverage": "fnb",
+    manufacturing: "mfg",
+    healthcare: "health",
+    technology: "tech",
+    telecommunications: "telecom",
+    "retail-ecommerce": "retail",
+  };
+
+  if (path === "/research") {
     return <Research />;
   }
+
+  if (path.startsWith("/research/")) {
+    const slug = path.replace("/research/", "").toLowerCase();
+    // Accept both the short id ("auto") and friendly aliases ("automotive")
+    const industryId = SLUG_ALIASES[slug] || (INDUSTRY_SLUGS.includes(slug) ? slug : null);
+    if (industryId) {
+      return <IndustryResearch industryId={industryId} />;
+    }
+    // Unknown slug — fall back to Research index
+    return <Research />;
+  }
+
   return <App />;
 }
 
