@@ -219,15 +219,14 @@ function GatewayTile({ st, num, total, spanFull, isRight, isBottom, onClick }) {
 }
 
 // ─── STRIP — compact tab row, shown once a type is selected ───────
-// Mirrors App.jsx CategoryStrip / StripTile exactly
+// Max 6 columns. Font 20% smaller than main showcase. Fully responsive.
 function CapabilityStrip({ types, active, onSelect }) {
-  const count = types.length;
+  const count = Math.min(types.length, 6);
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
-      <div className="ir-strip-grid" style={{ display:"grid",
-        gridTemplateColumns:`repeat(${count},1fr)`,
+      <div className={`ir-strip-grid ir-strip-c${count}`} style={{ display:"grid",
         border:`1px solid ${NS.rule}`,background:NS.surface }}>
-        {types.map((st, i) => {
+        {types.slice(0,6).map((st, i) => {
           const isActive = st.id === active;
           const isLast   = i === count - 1;
           return <StripTile key={st.id} st={st} num={String(i+1).padStart(2,"0")}
@@ -248,23 +247,25 @@ function StripTile({ st, num, active, borderRight, onClick }) {
         background: active ? st.accent : (hov ? NS.paperDeep : NS.surface),
         borderRight: borderRight ? `1px solid ${NS.rule}` : "none",
         borderTop:"none",borderBottom:"none",borderLeft:"none",
-        padding:"22px 22px",cursor:"pointer",
-        display:"flex",flexDirection:"column",gap:8,
+        padding:"16px 16px",cursor:"pointer",minWidth:0,
+        display:"flex",flexDirection:"column",gap:6,
         fontFamily:"'DM Sans',sans-serif",transition:"background 0.22s",width:"100%" }}>
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12 }}>
-        <span style={{ fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:10,fontWeight:500,
-          letterSpacing:"0.12em",color:active?"rgba(255,255,255,0.75)":NS.muted }}>
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:8 }}>
+        <span style={{ fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:9,fontWeight:500,
+          letterSpacing:"0.12em",color:active?"rgba(255,255,255,0.75)":NS.muted,flexShrink:0 }}>
           {num}
         </span>
-        {active && <span style={{ width:6,height:6,borderRadius:"50%",background:"#fff",flexShrink:0 }} />}
+        {active && <span style={{ width:5,height:5,borderRadius:"50%",background:"#fff",flexShrink:0 }} />}
       </div>
-      <h3 style={{ fontFamily:"'DM Sans',sans-serif",fontWeight:700,fontSize:24,
-        letterSpacing:"-0.02em",lineHeight:1,color:active?"#fff":NS.ink,
-        whiteSpace:"nowrap",margin:0,overflow:"hidden",textOverflow:"ellipsis" }}>
+      {/* Label: allow wrapping, no ellipsis — grid handles the width */}
+      <h3 style={{ fontFamily:"'DM Sans',sans-serif",fontWeight:700,
+        fontSize:"clamp(13px,1.4vw,19px)",
+        letterSpacing:"-0.02em",lineHeight:1.1,color:active?"#fff":NS.ink,
+        margin:0,wordBreak:"break-word",hyphens:"auto" }}>
         {st.label}
       </h3>
-      <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",
-        color:active?"rgba(255,255,255,0.78)":st.accent }}>
+      <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",
+        color:active?"rgba(255,255,255,0.78)":st.accent,marginTop:2 }}>
         {ST_TAG[st.id] || st.label.split(" ")[0].toUpperCase()}
       </span>
     </button>
@@ -454,10 +455,30 @@ export default function IndustryResearch({ industryId = "auto" }) {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a, input, select, textarea { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);} to{opacity:1;transform:none;} }
+        /* Strip column counts by item count — desktop */
+        .ir-strip-c1{ grid-template-columns:1fr; }
+        .ir-strip-c2{ grid-template-columns:repeat(2,1fr); }
+        .ir-strip-c3{ grid-template-columns:repeat(3,1fr); }
+        .ir-strip-c4{ grid-template-columns:repeat(4,1fr); }
+        .ir-strip-c5{ grid-template-columns:repeat(5,1fr); }
+        .ir-strip-c6{ grid-template-columns:repeat(6,1fr); }
+        /* Hero row collapses on narrow screens */
         @media (max-width:860px){ .ir-hero-row{ grid-template-columns:1fr !important; align-items:start !important; } }
-        @media (max-width:760px){ .ir-gateway-grid{ grid-template-columns:1fr !important; } }
-        @media (max-width:700px){ .ir-strip-grid{ grid-template-columns:repeat(2,1fr) !important; } }
-        @media (max-width:420px){ .ir-strip-grid{ grid-template-columns:1fr !important; } }
+        /* Gateway tiles: 2-col → 1-col */
+        @media (max-width:600px){ .ir-gateway-grid{ grid-template-columns:1fr !important; } }
+        /* Strip: 4–6 cols → 3 → 2 → 1 */
+        @media (max-width:900px){
+          .ir-strip-c5,.ir-strip-c6{ grid-template-columns:repeat(3,1fr) !important; }
+        }
+        @media (max-width:700px){
+          .ir-strip-c3,.ir-strip-c4,.ir-strip-c5,.ir-strip-c6{ grid-template-columns:repeat(2,1fr) !important; }
+        }
+        @media (max-width:420px){
+          .ir-strip-c1,.ir-strip-c2,.ir-strip-c3,.ir-strip-c4,.ir-strip-c5,.ir-strip-c6{ grid-template-columns:1fr !important; }
+        }
+        /* Strip tile borders in wrapped rows */
+        @media (max-width:700px){ .ir-strip-grid button:nth-child(even){ border-right:none !important; } }
+        @media (max-width:420px){ .ir-strip-grid button{ border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13) !important; } }
         @media (pointer:coarse){ .ir-summary-btn{ display:inline-block !important; } }
       `}</style>
 
