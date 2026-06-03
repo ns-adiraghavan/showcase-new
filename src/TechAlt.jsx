@@ -364,15 +364,15 @@ export default function TechAlt() {
 
       {/* Hero — stacked: eyebrow → h1 → desc */}
       <div style={{ maxWidth:1160,margin:"0 auto",
-        padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) clamp(28px,4vw,44px)" }}>
+        padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) 20px" }}>
         <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:20,display:"flex",alignItems:"center",gap:10 }}>
           <span style={{ display:"inline-block",width:22,height:1,background:NS.red,flexShrink:0 }} />
           Research · {sector.label}
         </p>
-        <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance",marginBottom:18 }}>
+        <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance",marginBottom:14 }}>
           {hero.noun} <em style={{ fontStyle:"normal",color:accent }}>Insights</em>
         </h1>
-        <p style={{ color:NS.inkSoft,fontSize:15,lineHeight:1.65,maxWidth:600,fontWeight:400 }}>
+        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,maxWidth:520,fontWeight:400 }}>
           {hero.desc}
         </p>
       </div>
