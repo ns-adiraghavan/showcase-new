@@ -107,7 +107,7 @@ function IndustryHero({ sector, hero }) {
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",
       padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) clamp(28px,4vw,44px)",
-      borderBottom:`1px solid ${NS.rule}`,position:"relative" }}>
+      position:"relative" }}>
       <span style={{ position:"absolute",top:"clamp(20px,3.5vw,32px)",right:"clamp(16px,4vw,44px)",
         fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",
         border:`1px solid ${sector.accent}50`,color:sector.accent,padding:"3px 8px",borderRadius:2 }}>
@@ -220,7 +220,7 @@ function GatewayTile({ st, num, total, spanFull, isRight, isBottom, onClick }) {
 
 // ─── STRIP — compact tab row, shown once a type is selected ───────
 // Max 6 columns. Font 20% smaller than main showcase. Fully responsive.
-function CapabilityStrip({ types, active, onSelect }) {
+function CapabilityStrip({ types, active, onSelect, onDeselect }) {
   const count = Math.min(types.length, 6);
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
@@ -230,7 +230,8 @@ function CapabilityStrip({ types, active, onSelect }) {
           const isActive = st.id === active;
           const isLast   = i === count - 1;
           return <StripTile key={st.id} st={st} num={String(i+1).padStart(2,"0")}
-            active={isActive} borderRight={!isLast} onClick={() => onSelect(st.id)} />;
+            active={isActive} borderRight={!isLast}
+            onClick={() => isActive ? onDeselect() : onSelect(st.id)} />;
         })}
       </div>
     </div>
@@ -488,7 +489,7 @@ export default function IndustryResearch({ industryId = "auto" }) {
       {activeStudy ? (
         /* Strip + section banner + samples */
         <>
-          <CapabilityStrip types={availableTypes} active={activeType} onSelect={handleSelect} />
+          <CapabilityStrip types={availableTypes} active={activeType} onSelect={handleSelect} onDeselect={handleLogoClick} />
           <SectionBanner st={activeStudy} />
           <SamplesSection studyType={activeStudy} sector={sector} items={shown} />
         </>
