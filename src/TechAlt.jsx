@@ -238,9 +238,6 @@ const SOLUTIONS = [
 
 // ─── Two-box insight section ───────────────────────────────────────
 function InsightBoxes({ accent }) {
-  // Alternating row tint — skipped on index 2 (point 3) per brief
-  const leftAlt  = (i) => i !== 2 && i % 2 === 1 ? `${accent}07` : "transparent";
-  const rightAlt = (i) => i !== 2 && i % 2 === 1 ? "rgba(255,255,255,0.07)" : "transparent";
 
   return (
     <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}>
@@ -261,22 +258,18 @@ function InsightBoxes({ accent }) {
               Industry Bottlenecks
             </h3>
           </div>
-          <div style={{ display:"flex",flexDirection:"column",gap:0 }}>
+          <div style={{ display:"flex",flexDirection:"column" }}>
             {BOTTLENECKS.map((item, i) => (
-              <div key={i} style={{
-                display:"flex",alignItems:"flex-start",gap:12,
-                padding:"10px 10px 10px 6px",
-                borderRadius:3,
-                background: leftAlt(i),
-                borderLeft: i !== 2 && i % 2 === 1 ? `2px solid ${accent}30` : "2px solid transparent",
-                transition:"background 0.15s",
-              }}>
-                <div style={{ width:30,height:30,borderRadius:3,background:`${accent}0e`,
-                  display:"flex",alignItems:"center",justifyContent:"center",
-                  color:accent,flexShrink:0 }}>
-                  {item.icon}
+              <div key={i}>
+                {i > 0 && <div style={{ height:1,background:`${accent}12`,margin:"0 2px" }} />}
+                <div style={{ display:"flex",alignItems:"flex-start",gap:12,padding:"11px 4px" }}>
+                  <div style={{ width:30,height:30,borderRadius:3,background:`${accent}0e`,
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    color:accent,flexShrink:0 }}>
+                    {item.icon}
+                  </div>
+                  <p style={{ fontSize:12.5,lineHeight:1.55,color:NS.inkSoft,margin:0,paddingTop:5 }}>{item.text}</p>
                 </div>
-                <p style={{ fontSize:12.5,lineHeight:1.55,color:NS.inkSoft,margin:0,paddingTop:5 }}>{item.text}</p>
               </div>
             ))}
           </div>
@@ -295,22 +288,18 @@ function InsightBoxes({ accent }) {
               How Netscribes Solves This
             </h3>
           </div>
-          <div style={{ display:"flex",flexDirection:"column",gap:0 }}>
+          <div style={{ display:"flex",flexDirection:"column" }}>
             {SOLUTIONS.map((item, i) => (
-              <div key={i} style={{
-                display:"flex",alignItems:"flex-start",gap:12,
-                padding:"10px 10px 10px 6px",
-                borderRadius:3,
-                background: rightAlt(i),
-                borderLeft: i !== 2 && i % 2 === 1 ? "2px solid rgba(255,255,255,0.2)" : "2px solid transparent",
-                transition:"background 0.15s",
-              }}>
-                <div style={{ width:30,height:30,borderRadius:3,background:"rgba(255,255,255,0.13)",
-                  display:"flex",alignItems:"center",justifyContent:"center",
-                  color:"rgba(255,255,255,0.9)",flexShrink:0 }}>
-                  {item.icon}
+              <div key={i}>
+                {i > 0 && <div style={{ height:1,background:"rgba(255,255,255,0.12)",margin:"0 2px" }} />}
+                <div style={{ display:"flex",alignItems:"flex-start",gap:12,padding:"11px 4px" }}>
+                  <div style={{ width:30,height:30,borderRadius:3,background:"rgba(255,255,255,0.13)",
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    color:"rgba(255,255,255,0.9)",flexShrink:0 }}>
+                    {item.icon}
+                  </div>
+                  <p style={{ fontSize:12.5,lineHeight:1.55,color:"rgba(255,255,255,0.88)",margin:0,paddingTop:5 }}>{item.text}</p>
                 </div>
-                <p style={{ fontSize:12.5,lineHeight:1.55,color:"rgba(255,255,255,0.88)",margin:0,paddingTop:5 }}>{item.text}</p>
               </div>
             ))}
           </div>
