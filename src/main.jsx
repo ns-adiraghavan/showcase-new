@@ -8,6 +8,7 @@ import IndustryResearch from "./IndustryResearch.jsx";
 // Watches window.location.pathname and re-renders on popstate/pushstate.
 //   /research                → Research index (existing page, untouched)
 //   /research/:industry      → IndustryResearch for that industry slug
+//   /research/tech1          → Alt layout for Tech & Software (team comparison)
 //   everything else          → main App
 
 const INDUSTRY_SLUGS = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
@@ -41,6 +42,8 @@ function Root() {
     technology: "tech",
     telecommunications: "telecom",
     "retail-ecommerce": "retail",
+    // Alt layout routes for internal team comparison
+    tech1: "tech",
   };
 
   if (path === "/research") {

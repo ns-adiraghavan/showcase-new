@@ -120,8 +120,7 @@ function IndustryHero({ sector, hero }) {
             Research · {sector.label}
           </p>
           <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance" }}>
-            {hero.noun} intelligence<br />
-            <em style={{ fontStyle:"normal",color:sector.accent }}>that drives decisions.</em>
+            {hero.noun} insights
           </h1>
         </div>
         <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.65,maxWidth:360,fontWeight:400,minWidth:0,paddingBottom:6 }}>
