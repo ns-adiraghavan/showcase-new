@@ -127,284 +127,161 @@ function CaseTile({ item, accent, onOpen }) {
   );
 }
 
-// ─── Inline SVG icons (Lucide-style, open source) ─────────────────
-const ICONS = {
-  cpu: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
-      <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
-      <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
-      <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
-      <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
-    </svg>
-  ),
-  barChart: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-      <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
-    </svg>
-  ),
-  network: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-      <line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/>
-    </svg>
-  ),
-  compass: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
-    </svg>
-  ),
-  megaphone: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 11l19-9-9 19-2-8-8-2z"/>
-    </svg>
-  ),
-  lightbulb: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6H8.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/>
-    </svg>
-  ),
-  fileSearch: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-      <circle cx="11.5" cy="14.5" r="2.5"/><line x1="13.25" y1="16.25" x2="15" y2="18"/>
-    </svg>
-  ),
-  // Solve icons
-  microscope: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/>
-      <path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6l3-3 3 3v4a2 2 0 0 1-2 2Z"/>
-    </svg>
-  ),
-  map: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-      <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
-    </svg>
-  ),
-  target: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-    </svg>
-  ),
-  shield: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-    </svg>
-  ),
-  activity: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-    </svg>
-  ),
-  award: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
-    </svg>
-  ),
-  layers: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-      <polyline points="2 17 12 22 22 17"/>
-      <polyline points="2 12 12 17 22 12"/>
-    </svg>
-  ),
-};
-
-// text is JSX — bold spans for key phrases. Index 2 (point 3) stays plain per brief.
-const BOTTLENECKS = [
-  { icon: ICONS.cpu,        text: <>Challenges in assessing the <strong>impact of emerging technologies</strong> such as <strong>AI, IoT, and cloud computing</strong> on operations, governance, and stakeholder trust</> },
-  { icon: ICONS.barChart,   text: <>Limited visibility into <strong>competitor pricing, product differentiation,</strong> and <strong>market adoption trends</strong> in fast-evolving tech segments</> },
-  { icon: ICONS.network,    text: "Difficulty in identifying market-entry triggers, target accounts, and partnership opportunities in complex technology ecosystems" },
-  { icon: ICONS.compass,    text: <>Lack of clarity on <strong>competitive positioning</strong> in niche domains like <strong>cloud-based SCM</strong> and <strong>3D printing</strong></> },
-  { icon: ICONS.megaphone,  text: <>Inability to measure <strong>marketing effectiveness, brand awareness, perception,</strong> and <strong>purchase intent</strong> for technology solutions</> },
-  { icon: ICONS.lightbulb,  text: <>Challenges in identifying <strong>innovation whitespaces</strong> and emerging technology opportunities across domains such as <strong>Generative AI, in-cabin sensing, advanced displays, semiconductors,</strong> and <strong>smart materials</strong></> },
-  { icon: ICONS.fileSearch, text: <>Inability to benchmark <strong>competitor patent portfolios, innovation focus areas,</strong> and <strong>R&D trajectories</strong> to understand relative competitive positioning</> },
+// ─── Slide data (image pairs from .ai export) ─────────────────────
+const SLIDES = [
+  {
+    bottleneck: "/tech-slides/slide-01.png",
+    solution:   "/tech-slides/slide-02.png",
+  },
+  {
+    bottleneck: "/tech-slides/slide-03.png",
+    solution:   "/tech-slides/slide-04.png",
+  },
+  {
+    bottleneck: "/tech-slides/slide-05.png",
+    solution:   "/tech-slides/slide-06.png",
+  },
+  {
+    bottleneck: "/tech-slides/slide-07.png",
+    solution:   "/tech-slides/slide-08.png",
+  },
 ];
 
-const SOLUTIONS = [
-  { icon: ICONS.microscope, text: <>Conducts <strong>deep-dive assessments</strong> through expert-led primary research with <strong>C-suite and R&D leaders</strong> to evaluate technology readiness, adoption trends, and governance requirements</> },
-  { icon: ICONS.map,        text: <>Delivers <strong>ecosystem mapping, customer profiling,</strong> and <strong>stakeholder interviews</strong> to identify market-entry opportunities and growth triggers</> },
-  { icon: ICONS.target,     text: "Leverages competitive benchmarking, market analysis, and stakeholder insights to decode pricing structures and competitive positioning" },
-  { icon: ICONS.shield,     text: <>Identifies <strong>market white-space opportunities</strong> to strengthen positioning in emerging technology domains</> },
-  { icon: ICONS.activity,   text: <>Applies <strong>pre- and post-campaign evaluations</strong> using quantitative surveys and statistical analysis to track <strong>KPI improvements, brand perception,</strong> and <strong>purchase intent</strong></> },
-  { icon: ICONS.award,      text: <>Conducts comprehensive <strong>patent landscape, whitespace, patentability,</strong> and <strong>Freedom-to-Operate (FTO) analysis</strong> using global patent and non-patent literature databases</> },
-  { icon: ICONS.layers,     text: <>Combines <strong>IP intelligence</strong> with market, regulatory, competitor, and commercialization assessments to develop <strong>market-entry and go-to-market strategies</strong></> },
-];
-
-// ─── Carousel panel (display-only, no own state) ─────────────────
-function CarouselPanel({ items, title, headerIcon, startDark, accent, idx, dir = 1 }) {
-  // dark = alternates per slide, opposite on each side
-  const dark = startDark ? (idx % 2 === 0) : (idx % 2 === 1);
-
-  const bg         = dark ? accent                   : NS.surface;
-  const headCol    = dark ? "#fff"                   : NS.ink;
-  const textCol    = dark ? "rgba(255,255,255,0.90)" : NS.inkSoft;
-  const iconBg     = dark ? "rgba(255,255,255,0.14)" : `${accent}12`;
-  const iconCol    = dark ? "#fff"                   : accent;
-  const sepCol     = dark ? "rgba(255,255,255,0.12)" : `${accent}14`;
-  const hdrCircBg  = dark ? "rgba(255,255,255,0.16)" : `${accent}12`;
-  const hdrCircCol = dark ? "rgba(255,255,255,0.95)" : accent;
-
-  const item = items[idx];
-
-  return (
-    <div style={{ background:bg, padding:"32px 34px", display:"flex", flexDirection:"column",
-      minHeight:300, transition:"background 0.28s ease" }}>
-
-      {/* Header */}
-      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:24,flexShrink:0 }}>
-        <div style={{ width:32,height:32,borderRadius:"50%", background:hdrCircBg,
-          display:"flex",alignItems:"center",justifyContent:"center",
-          color:hdrCircCol, flexShrink:0 }}>
-          {headerIcon}
-        </div>
-        <h3 style={{ fontSize:13.2,fontWeight:700,letterSpacing:"0.06em",color:headCol,
-          textTransform:"uppercase",margin:0,transition:"color 0.28s" }}>
-          {title}
-        </h3>
-      </div>
-
-      {/* Slide content */}
-      <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center" }}>
-        <div key={idx} style={{ display:"flex",alignItems:"flex-start",gap:18,
-          animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.38s cubic-bezier(0.16,1,0.3,1) both` }}>
-          <div style={{ width:52,height:52,borderRadius:6,background:iconBg,
-            display:"flex",alignItems:"center",justifyContent:"center",
-            color:iconCol,flexShrink:0 }}>
-            <span style={{ transform:"scale(1.3)", display:"flex" }}>{item.icon}</span>
-          </div>
-          <p style={{ fontSize:15,lineHeight:1.65,color:textCol,margin:0,paddingTop:4,
-            fontWeight:400,transition:"color 0.28s" }}>{item.text}</p>
-        </div>
-      </div>
-
-      {/* Separator */}
-      <div style={{ height:1,background:sepCol,margin:"20px 0 0",flexShrink:0 }} />
-    </div>
-  );
-}
-
-// ─── Two-box insight section ───────────────────────────────────────
+// ─── Two-box insight section (image carousel) ─────────────────────
 function InsightBoxes({ accent }) {
-  const total = BOTTLENECKS.length;
+  const total = SLIDES.length;
   const [idx, setIdx] = useState(0);
-  const [dir, setDir] = useState(1); // 1=forward, -1=backward — drives animation direction
+  const [dir, setDir] = useState(1);
   const paused = useRef(false);
 
   const goTo = (i, direction = 1) => { setDir(direction); setIdx(i); };
   const prev = () => goTo((idx - 1 + total) % total, -1);
   const next = () => goTo((idx + 1) % total, 1);
 
-  // Autoplay — 4 s interval, pauses on hover
   useEffect(() => {
-    const id = setInterval(() => { if (!paused.current) next(); }, 8000);
+    const id = setInterval(() => { if (!paused.current) next(); }, 6000);
     return () => clearInterval(id);
   }, [idx]);
 
-  const dotActive = accent;
-  const dotInact  = `${accent}30`;
-  const btnBg     = `${accent}0e`;
-  const btnHovBg  = `${accent}22`;
-  const btnCol    = accent;
-  const cntCol    = NS.muted;
-
-  const infoIcon = (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-    </svg>
-  );
-  const checkIcon = (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
-  );
+  const slide = SLIDES[idx];
 
   return (
-    <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)",marginBottom:36 }}
+    <div
+      style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)", marginBottom:36 }}
       onMouseEnter={() => { paused.current = true; }}
-      onMouseLeave={() => { paused.current = false; }}>
-      <div style={{ borderRadius:4,overflow:"hidden", boxShadow:"0 2px 20px rgba(0,95,134,0.12)" }}>
+      onMouseLeave={() => { paused.current = false; }}
+    >
+      <div style={{ borderRadius:4, overflow:"hidden", boxShadow:"0 2px 20px rgba(0,95,134,0.12)", position:"relative" }}>
 
-        {/* Two panels — stack on mobile, side-by-side on desktop */}
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
-          <CarouselPanel items={BOTTLENECKS} title="Industry Bottlenecks"
-            headerIcon={infoIcon} startDark={false} accent={accent} idx={idx} dir={dir} />
-          <CarouselPanel items={SOLUTIONS} title="How Netscribes Solves This"
-            headerIcon={checkIcon} startDark={true} accent={accent} idx={idx} dir={dir} />
+        {/* Two image panels */}
+        <div key={idx} style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }}
+          className="ta-insight-grid">
+
+          {/* Left — bottleneck (dark teal) */}
+          <div style={{ overflow:"hidden", position:"relative", minHeight:260 }}>
+            <img
+              src={slide.bottleneck}
+              alt="Industry Bottlenecks"
+              style={{
+                width:"100%", height:"100%", objectFit:"cover", objectPosition:"center",
+                display:"block",
+                animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.38s cubic-bezier(0.16,1,0.3,1) both`,
+              }}
+            />
+          </div>
+
+          {/* Right — solution (light) */}
+          <div style={{ overflow:"hidden", position:"relative", minHeight:260 }}>
+            <img
+              src={slide.solution}
+              alt="How Netscribes Solves This"
+              style={{
+                width:"100%", height:"100%", objectFit:"cover", objectPosition:"center",
+                display:"block",
+                animation:`${dir >= 0 ? "slide-fwd" : "slide-bwd"} 0.38s cubic-bezier(0.16,1,0.3,1) both`,
+              }}
+            />
+          </div>
         </div>
 
-        {/* Shared controls bar — always below both panels */}
-        <div style={{ background:NS.paperDeep, padding:"14px 34px",
-          display:"flex",alignItems:"center",justifyContent:"space-between",
-          borderTop:`1px solid ${accent}14` }}>
-          {/* Dot indicators */}
-          <div style={{ display:"flex",gap:5,alignItems:"center" }}>
-            {BOTTLENECKS.map((_, i) => (
-              <button key={i} onClick={() => setIdx(i)}
-                style={{ width: i===idx ? 16 : 5, height:3, borderRadius:2,
-                  background: i===idx ? dotActive : dotInact,
-                  border:"none", padding:0, cursor:"pointer",
-                  transition:"all 0.2s ease",
-                  minWidth: i===idx ? 20 : 6, /* touch-friendly tap area via padding trick */
-                  paddingTop:8, paddingBottom:8, marginTop:-8, marginBottom:-8 }} />
+        {/* Controls bar */}
+        <div style={{
+          background: NS.paperDeep,
+          padding: "12px 28px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderTop: `1px solid ${accent}14`,
+        }}>
+          {/* Dot indicators — centred */}
+          <div style={{ flex:1, display:"flex", justifyContent:"center", gap:7, alignItems:"center" }}>
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i, i > idx ? 1 : -1)}
+                style={{
+                  width: i === idx ? 20 : 7,
+                  height: 7,
+                  borderRadius: 4,
+                  background: i === idx ? accent : `${accent}30`,
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                  /* expanded tap area */
+                  paddingTop: 8, paddingBottom: 8, marginTop: -8, marginBottom: -8,
+                  /* active dot pulse animation */
+                  animation: i === idx ? "dot-pulse 2s ease-in-out infinite" : "none",
+                  outline: "none",
+                }}
+              />
             ))}
           </div>
-          {/* Counter + arrows */}
-          <div style={{ display:"flex",alignItems:"center",gap:8 }}>
-            <span style={{ fontSize:11,fontWeight:500,color:cntCol,letterSpacing:"0.04em",
-              fontFamily:"'DM Sans',sans-serif" }}>
+
+          {/* Counter + arrows — right side */}
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontSize:11, fontWeight:500, color:NS.muted, letterSpacing:"0.04em", fontFamily:"'DM Sans',sans-serif" }}>
               {idx+1} / {total}
             </span>
             <button onClick={prev}
-              onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
-              onMouseLeave={e => e.currentTarget.style.background=btnBg}
-              style={{ width:36,height:36,borderRadius:3,border:"none",background:btnBg,
-                color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-                transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif",
-                WebkitTapHighlightColor:"transparent" }}>
+              onMouseEnter={e => e.currentTarget.style.background=`${accent}22`}
+              onMouseLeave={e => e.currentTarget.style.background=`${accent}0e`}
+              style={{ width:32, height:32, borderRadius:3, border:"none", background:`${accent}0e`,
+                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+                transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             <button onClick={next}
-              onMouseEnter={e => e.currentTarget.style.background=btnHovBg}
-              onMouseLeave={e => e.currentTarget.style.background=btnBg}
-              style={{ width:36,height:36,borderRadius:3,border:"none",background:btnBg,
-                color:btnCol,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-                transition:"background 0.15s",fontFamily:"'DM Sans',sans-serif",
-                WebkitTapHighlightColor:"transparent" }}>
+              onMouseEnter={e => e.currentTarget.style.background=`${accent}22`}
+              onMouseLeave={e => e.currentTarget.style.background=`${accent}0e`}
+              style={{ width:32, height:32, borderRadius:3, border:"none", background:`${accent}0e`,
+                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+                transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
 }
+
 // ─── Root ─────────────────────────────────────────────────────────
 export default function TechAlt() {
   const sector  = SECTORS.find(s => s.id === "tech");
   const hero    = INDUSTRY_HERO["tech"];
   const accent  = sector.accent;
 
-  // All tech cases
   const allItems = RESEARCH_DATA.filter(d => d.industry === "tech");
 
-  // Study Type filter
   const availableStudyTypes = STUDY_TYPES.filter(st => allItems.some(d => d.studyType === st.id));
   const [activeStudyType, setActiveStudyType] = useState(null);
 
-  // Region filter
   const availableRegions = GEO_REGIONS.filter(g => allItems.some(d => d.geo.includes(g.id)));
   const [activeRegion, setActiveRegion] = useState(null);
 
   const [viewer, setViewer] = useState(null);
 
-  // Apply both filters
   let filtered = activeStudyType ? allItems.filter(d => d.studyType === activeStudyType) : allItems;
   filtered = activeRegion ? filtered.filter(d => d.geo.includes(activeRegion)) : filtered;
 
@@ -417,12 +294,17 @@ export default function TechAlt() {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
-        @keyframes slide-fwd { from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);} }
-        @keyframes slide-bwd { from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes slide-fwd { from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:translateX(0);} }
+        @keyframes slide-bwd { from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:translateX(0);} }
+        @keyframes dot-pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.45); }
+          60%  { box-shadow: 0 0 0 5px rgba(0,95,134,0); }
+          100% { box-shadow: 0 0 0 0 rgba(0,95,134,0); }
+        }
         @media (max-width:580px) {
+          .ta-insight-grid { grid-template-columns:1fr !important; }
           .ta-filter-bar { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13); }
-          .ta-insight-grid { grid-template-columns:1fr !important; }
         }
         .casetile-summary-btn { display:none; }
         @media (pointer:coarse) { .casetile-summary-btn { display:inline-block; } }
@@ -439,7 +321,7 @@ export default function TechAlt() {
         </a>
       </div>
 
-      {/* Hero — stacked: eyebrow → h1 → desc */}
+      {/* Hero */}
       <div style={{ maxWidth:1160,margin:"0 auto",
         padding:"clamp(36px,6vw,72px) clamp(16px,4vw,44px) 20px" }}>
         <p style={{ fontSize:11,fontWeight:700,letterSpacing:"0.26em",textTransform:"uppercase",color:NS.red,marginBottom:20,display:"flex",alignItems:"center",gap:10 }}>
@@ -454,15 +336,21 @@ export default function TechAlt() {
         </p>
       </div>
 
-      {/* Two-box insight section */}
+      {/* Insight image carousel */}
       <InsightBoxes accent={accent} />
 
       {/* Filter bar — Study Type + Region */}
       <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
-        <div className="ta-filter-bar" style={{ display:"grid",gridTemplateColumns:"1fr 1fr",
-          border:`1px solid ${NS.rule}`,marginBottom:24 }}>
-          <div style={{ padding:"14px 18px",borderRight:`1px solid ${NS.rule}` }}>
-            <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Study Type</span>
+        <div className="ta-filter-bar" style={{
+          display:"grid", gridTemplateColumns:"1fr 1fr",
+          border:`1px solid ${NS.rule}`,
+          borderRadius:3,
+          marginBottom:24,
+          overflow:"hidden",
+        }}>
+          {/* Study Type */}
+          <div style={{ padding:"14px 20px", borderRight:`1px solid ${NS.rule}` }}>
+            <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:9 }}>Study Type</span>
             <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
               <PillBtn label="All" active={!activeStudyType} color={accent} onClick={() => setActiveStudyType(null)} />
               {availableStudyTypes.map(st => (
@@ -471,8 +359,10 @@ export default function TechAlt() {
               ))}
             </div>
           </div>
-          <div style={{ padding:"14px 18px" }}>
-            <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.16em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:8 }}>Region</span>
+
+          {/* Region */}
+          <div style={{ padding:"14px 20px" }}>
+            <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.18em",textTransform:"uppercase",color:NS.muted,display:"block",marginBottom:9 }}>Region</span>
             <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
               <PillBtn label="All" active={!activeRegion} color={accent} onClick={() => setActiveRegion(null)} />
               {availableRegions.map(g => (
