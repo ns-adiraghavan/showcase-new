@@ -57,9 +57,18 @@ function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
   return (
     <button onClick={onClick}
-      onMouseEnter={()=>setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-      style={{ fontSize:11,fontWeight:active?700:500,color:active?"#fff":(hov?color:NS.muted),background:active?color:(hov?`${color}10`:"transparent"),border:`1px solid ${active?color:(hov?color:NS.rule)}`,borderRadius:2,padding:"4px 11px",cursor:"pointer",transition:"all 0.15s",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        fontSize: 11.5, fontWeight: active ? 700 : 400,
+        color: active ? "#fff" : (hov ? color : NS.inkSoft),
+        background: active ? color : "transparent",
+        border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
+        borderRadius: 20, padding: "5px 14px", cursor: "pointer",
+        transition: "all 0.15s ease",
+        fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+        letterSpacing: "0.01em",
+      }}>
       {label}
     </button>
   );
@@ -160,7 +169,10 @@ function CaseTile({ item, accent, onOpen }) {
 // ─── Inline Case Panel — replaces page content when a card is clicked ──
 // Two-column 50/50 filter bar, then cases grid.
 // filterDim1 / filterDim2 = "sector" | "studyType" | "geo"
-function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose, onOpenCase }) {
+// Industry paths for the clickable title link
+const INDUSTRY_PATHS = { tech:"tech", telecom:"telecom", retail:"retail", fnb:"fnb", auto:"auto", bfsi:"bfsi", mfg:"mfg", health:"health" };
+
+function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, sectorId, onClose, onOpenCase }) {
   const [f1, setF1] = useState(null); // active pill for left filter
   const [f2, setF2] = useState(null); // active pill for right filter
 
@@ -207,7 +219,17 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, onClose
           ← Back
         </button>
         <div style={{ width:3,height:22,background:accent,borderRadius:1,flexShrink:0 }} />
-        <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0,textWrap:"balance" }}>{title}</h3>
+        {sectorId ? (
+          <a href={`/research/${INDUSTRY_PATHS[sectorId]||sectorId}`}
+            className="panel-header-title"
+            style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0,textWrap:"balance",textDecoration:"none",display:"flex",alignItems:"center",gap:6 }}
+            onMouseEnter={e=>e.currentTarget.style.textDecoration="underline"}
+            onMouseLeave={e=>e.currentTarget.style.textDecoration="none"}>
+            {title} <span style={{ fontSize:13,opacity:0.7 }}>↗</span>
+          </a>
+        ) : (
+          <h3 className="panel-header-title" style={{ fontSize:"clamp(16px,1.8vw,20px)",fontWeight:700,color:accent,letterSpacing:"-0.02em",flex:1,minWidth:0,textWrap:"balance" }}>{title}</h3>
+        )}
       </div>
 
       {/* 50/50 filter bar */}
@@ -309,8 +331,12 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
   // openPanel: null | { title, accent, items, mode (source mode), filterDim1, filterDim2 }
   const [openPanel, setOpenPanel] = useState(null);
 
-  const handleCardClick = (title, accent, items, filterDim1, filterDim2) => {
-    const panel = { title, accent, items, filterDim1, filterDim2 };
+  const handleCardClick = (title, accent, items, filterDim1OrSectorId, filterDim2) => {
+    // When called from industry mode, 4th arg is sectorId (string like "tech"); otherwise it's a filterDim
+    const isFilterDim = v => ["sector","studyType","geo"].includes(v);
+    const sectorId  = !isFilterDim(filterDim1OrSectorId) ? filterDim1OrSectorId : null;
+    const filterDim1 = sectorId ? "studyType" : filterDim1OrSectorId;
+    const panel = { title, accent, items, filterDim1, filterDim2: filterDim2||"geo", sectorId };
     setOpenPanel(panel);
     onPanelChange(true);
     setTimeout(() => {
@@ -382,6 +408,7 @@ function ExploreSection({ onOpenCase, onPanelChange }) {
               items={openPanel.items}
               filterDim1={openPanel.filterDim1}
               filterDim2={openPanel.filterDim2}
+              sectorId={openPanel.sectorId}
               onClose={handleClose}
               onOpenCase={onOpenCase}
             />
@@ -419,7 +446,7 @@ function IndustryView({ onCardClick }) {
         return (
           <SectorTile key={s.id} sector={s} index={i} total={total}
             spotlight={spotlight}
-            onClick={()=>onCardClick(s.label, s.accent, items)} />
+            onClick={()=>onCardClick(s.label, s.accent, items, s.id)} />
         );
       })}
     </div>

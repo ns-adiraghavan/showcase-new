@@ -75,11 +75,11 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        fontSize: 11.5, fontWeight: active ? 700 : 500,
+        fontSize: 11.5, fontWeight: active ? 700 : 400,
         color: active ? "#fff" : (hov ? color : NS.inkSoft),
-        background: active ? color : NS.surface,
+        background: active ? color : "transparent",
         border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
-        borderRadius: 3, padding: "5px 13px", cursor: "pointer",
+        borderRadius: 20, padding: "5px 14px", cursor: "pointer",
         transition: "all 0.15s ease",
         fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
         letterSpacing: "0.01em",
@@ -407,15 +407,14 @@ const INDUSTRY_ICONS = {
 };
 
 // ─── Single carousel panel ────────────────────────────────────────
-function SlidePanel({ src, bold, rest, dark, visible, accent }) {
+function SlidePanel({ src, bold, rest, dark, accent }) {
   const bg      = dark ? "#096388" : "#ffffff";
   const textCol = dark ? "#ffffff" : NS.ink;
   const restCol = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
   const ruleCol = dark ? "rgba(255,255,255,0.22)" : `${NS.blue}25`;
   const tintColor = dark ? `${accent}28` : `${accent}22`;
   return (
-    <div style={{ background:bg, display:"flex", flexDirection:"column",
-      opacity:visible?1:0, transition:"opacity 0.55s ease", position:"relative" }}>
+    <div style={{ background:bg, display:"flex", flexDirection:"column", position:"relative", width:"100%", height:"100%" }}>
       <div style={{ width:"100%", aspectRatio:"2.07/1", overflow:"hidden", flexShrink:0, position:"relative" }}>
         <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }} />
         <div style={{ position:"absolute", inset:0, background:tintColor, mixBlendMode:"multiply", pointerEvents:"none" }} />
@@ -430,20 +429,60 @@ function SlidePanel({ src, bold, rest, dark, visible, accent }) {
   );
 }
 
+// ─── Crossfading slide pair ───────────────────────────────────────
+// Renders two absolutely-stacked copies of the panel grid; the outgoing
+// one fades out while the incoming one fades in — no flash.
+function CrossfadeSlides({ current, next: nextSlide, accent, transitioning }) {
+  return (
+    <div style={{ position:"relative", display:"grid", gridTemplateColumns:"1fr 1fr" }} className="ir-insight-grid">
+      {/* Outgoing layer — fades out when transitioning starts */}
+      <div style={{
+        display:"contents",
+        opacity: transitioning ? 0 : 1,
+        transition: "opacity 0.45s ease",
+        pointerEvents: transitioning ? "none" : "auto",
+      }}>
+        <SlidePanel src={current.bottleneckImg} bold={current.bottleneckBold} rest={current.bottleneckRest} dark={true}  accent={accent} />
+        <SlidePanel src={current.solutionImg}   bold={current.solutionBold}   rest={current.solutionRest}   dark={false} accent={accent} />
+      </div>
+
+      {/* Incoming layer — absolutely stacked, fades in when transitioning */}
+      {nextSlide && (
+        <div style={{
+          position:"absolute", inset:0,
+          display:"grid", gridTemplateColumns:"1fr 1fr",
+          opacity: transitioning ? 1 : 0,
+          transition: "opacity 0.45s ease",
+          pointerEvents: transitioning ? "auto" : "none",
+        }} className="ir-insight-grid">
+          <SlidePanel src={nextSlide.bottleneckImg} bold={nextSlide.bottleneckBold} rest={nextSlide.bottleneckRest} dark={true}  accent={accent} />
+          <SlidePanel src={nextSlide.solutionImg}   bold={nextSlide.solutionBold}   rest={nextSlide.solutionRest}   dark={false} accent={accent} />
+        </div>
+      )}
+    </div>
+  );
+}
 // ─── Insight carousel ─────────────────────────────────────────────
 function InsightCarousel({ accent, industryId }) {
   const slides = INDUSTRY_SLIDES[industryId] || INDUSTRY_SLIDES.tech;
   const icons  = INDUSTRY_ICONS[industryId]  || INDUSTRY_ICONS.tech;
   const total  = slides.length;
-  const [idx, setIdx]         = useState(0);
-  const [visible, setVisible] = useState(true);
+
+  const [idx,           setIdx]          = useState(0);
+  const [nextIdx,       setNextIdx]      = useState(null);
+  const [transitioning, setTransitioning] = useState(false);
   const paused = useRef(false);
   const timer  = useRef(null);
 
   const goTo = i => {
-    if (i === idx) return;
-    setVisible(false);
-    setTimeout(() => { setIdx(i); setVisible(true); }, 280);
+    if (i === idx || transitioning) return;
+    setNextIdx(i);
+    setTransitioning(true);
+    setTimeout(() => {
+      setIdx(i);
+      setNextIdx(null);
+      setTransitioning(false);
+    }, 480);
   };
   const next = () => goTo((idx + 1) % total);
 
@@ -451,12 +490,9 @@ function InsightCarousel({ accent, industryId }) {
     if (timer.current) clearInterval(timer.current);
     timer.current = setInterval(() => { if (!paused.current) next(); }, 6000);
     return () => clearInterval(timer.current);
-  }, [idx]);
+  }, [idx, transitioning]);
 
-  // reset on industry change
-  useEffect(() => { setIdx(0); setVisible(true); }, [industryId]);
-
-  const slide = slides[idx];
+  useEffect(() => { setIdx(0); setNextIdx(null); setTransitioning(false); }, [industryId]);
 
   return (
     <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 clamp(16px,4vw,44px)", marginBottom:36 }}
@@ -464,10 +500,14 @@ function InsightCarousel({ accent, industryId }) {
       onMouseLeave={() => { paused.current = false; }}>
       <div style={{ borderRadius:4, overflow:"hidden", boxShadow:"0 4px 28px rgba(0,95,134,0.13)", border:`1px solid ${NS.rule}` }}>
 
-        {/* Two panels + vertical seam icon strip */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", position:"relative" }} className="ir-insight-grid">
-          <SlidePanel src={slide.bottleneckImg} bold={slide.bottleneckBold} rest={slide.bottleneckRest} dark={true}  visible={visible} accent={accent} />
-          <SlidePanel src={slide.solutionImg}   bold={slide.solutionBold}   rest={slide.solutionRest}   dark={false} visible={visible} accent={accent} />
+        {/* Crossfading panels + seam icon strip */}
+        <div style={{ position:"relative" }}>
+          <CrossfadeSlides
+            current={slides[idx]}
+            next={nextIdx !== null ? slides[nextIdx] : null}
+            accent={accent}
+            transitioning={transitioning}
+          />
 
           {/* Vertical icon strip — desktop only, hidden ≤640px */}
           <div className="ir-seam-icons" style={{
