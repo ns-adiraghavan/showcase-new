@@ -1,14 +1,10 @@
-// ─── /research/:industry — shared industry research layout (alt) ───
-// Same insight carousel on top for every industry; samples below are
-// filtered to the active industry. Accepts industryId prop.
+// ─── /research/tech1 — Technology industry filtered view (alt layout) ──
 
 import { useState, useEffect, useRef } from "react";
 import logoSrc from "./assets/netscribes-logo.png";
 import {
   NS, SECTORS, STUDY_TYPES, RESEARCH_DATA, GEO_REGIONS, INDUSTRY_HERO,
 } from "./researchData";
-
-const CAROUSEL = NS.blue; // carousel chrome stays NS-blue (images are blue-themed)
 
 // ─── Logo ─────────────────────────────────────────────────────────
 function Logo({ height = 19, opacity = 0.85 }) {
@@ -21,38 +17,6 @@ function useLock(on) {
     document.body.style.overflow = on ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [on]);
-}
-
-// ─── Typewriter ───────────────────────────────────────────────────
-// Types out `bold` then `rest`. Retypes whenever the combined text
-// changes (i.e. on slide change). Bold portion styled distinctly.
-function Typewriter({ bold, rest = "", boldStyle, restStyle, speed = 18, showCursor = true }) {
-  const full    = bold + rest;
-  const boldLen = bold.length;
-  const [n, setN] = useState(0);
-
-  useEffect(() => {
-    setN(0);
-    let i = 0;
-    const id = setInterval(() => {
-      i += 1;
-      setN(i);
-      if (i >= full.length) clearInterval(id);
-    }, speed);
-    return () => clearInterval(id);
-  }, [full, speed]);
-
-  const visBold = full.slice(0, Math.min(n, boldLen));
-  const visRest = n > boldLen ? full.slice(boldLen, n) : "";
-  const done    = n >= full.length;
-
-  return (
-    <span>
-      <strong style={boldStyle}>{visBold}</strong>
-      <span style={restStyle}>{visRest}</span>
-      {showCursor && !done && <span className="tw-cursor" aria-hidden="true">|</span>}
-    </span>
-  );
 }
 
 // ─── Case Viewer ──────────────────────────────────────────────────
@@ -104,7 +68,8 @@ function CaseViewer({ item, accent, onClose }) {
 // ─── Pill button ──────────────────────────────────────────────────
 function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
-  const bg     = active ? color : NS.surface;
+  // Active: filled with color. Inactive: white bg, color border on hover, NS.rule border default
+  const bg     = active ? color : (hov ? NS.surface : NS.surface);
   const border = active ? color : (hov ? color : NS.rule);
   const col    = active ? "#fff" : (hov ? color : NS.inkSoft);
   return (
@@ -112,13 +77,13 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        fontSize:11.5, fontWeight:active?700:500,
-        color:col, background:bg,
-        border:`1.5px solid ${border}`,
-        borderRadius:3, padding:"5px 13px", cursor:"pointer",
-        transition:"all 0.15s ease",
-        fontFamily:"'DM Sans',sans-serif", whiteSpace:"nowrap",
-        letterSpacing:"0.01em",
+        fontSize: 11.5, fontWeight: active ? 700 : 500,
+        color: col, background: bg,
+        border: `1.5px solid ${border}`,
+        borderRadius: 3, padding: "5px 13px", cursor: "pointer",
+        transition: "all 0.15s ease",
+        fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+        letterSpacing: "0.01em",
       }}>
       {label}
     </button>
@@ -159,19 +124,7 @@ function CaseTile({ item, accent, onOpen }) {
   );
 }
 
-// ─── Slide icons (one per slide, themed) ──────────────────────────
-const SLIDE_ICONS = [
-  // 1 · technology / chip
-  (<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>),
-  // 2 · market entry / compass
-  (<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>),
-  // 3 · competitive / bar chart
-  (<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>),
-  // 4 · IP / innovation / lightbulb
-  (<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6H8.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/></svg>),
-];
-
-// ─── Slide data ───────────────────────────────────────────────────
+// ─── Slide data — cropped illustration + separate caption text ────
 const SLIDES = [
   {
     bottleneckImg: "/tech-slides/illus-01.png",
@@ -207,107 +160,47 @@ const SLIDES = [
   },
 ];
 
-// ─── Panel header label ───────────────────────────────────────────
-function PanelHeader({ text, dark }) {
-  const col  = dark ? "#fff" : NS.ink;
-  const bar  = dark ? "#fff" : CAROUSEL;
-  return (
-    <div style={{ display:"flex", alignItems:"center", gap:9 }}>
-      <span style={{ display:"inline-block", width:18, height:2, background:bar, borderRadius:2, flexShrink:0, opacity:dark?0.9:0.85 }} />
-      <span style={{ fontSize:12, fontWeight:700, letterSpacing:"0.08em", textTransform:"uppercase", color:col }}>
-        <Typewriter bold={text} boldStyle={{ fontWeight:700 }} speed={26} showCursor={false} />
-      </span>
-    </div>
-  );
-}
-
 // ─── Single carousel panel ─────────────────────────────────────────
-function SlidePanel({ src, header, bold, rest, dark, visible }) {
-  const bg      = dark ? "#096388" : "#ffffff";
-  const textCol = dark ? "#ffffff" : NS.ink;
-  const restCol = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
-  const ruleCol = dark ? "rgba(255,255,255,0.22)" : `${CAROUSEL}25`;
+function SlidePanel({ src, bold, rest, dark, visible }) {
+  // dark = left (teal bg), light = right (white bg)
+  const bg       = dark ? "#096388" : "#ffffff";
+  const textCol  = dark ? "#ffffff" : NS.ink;
+  const restCol  = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
+  const ruleCol  = dark ? "rgba(255,255,255,0.22)" : `${NS.blue}25`;
 
-  return (
-    <div style={{ background:bg, display:"flex", flexDirection:"column" }}>
-      {/* Header */}
-      <div style={{ padding:"18px 26px 14px", flexShrink:0 }}>
-        <PanelHeader text={header} dark={dark} />
-      </div>
-
-      {/* Illustration */}
-      <div style={{
-        width:"100%", aspectRatio:"2.2/1", overflow:"hidden", flexShrink:0,
-        opacity: visible ? 1 : 0, transition:"opacity 0.5s ease",
-      }}>
-        <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }} />
-      </div>
-
-      {/* Caption (typewriter) */}
-      <div style={{ padding:"20px 26px 24px", flex:1, opacity: visible ? 1 : 0, transition:"opacity 0.5s ease" }}>
-        <p style={{ fontSize:13.5, lineHeight:1.6, margin:0, minHeight:"3.2em" }}>
-          {visible && (
-            <Typewriter
-              bold={bold}
-              rest={rest}
-              boldStyle={{ color:textCol, fontWeight:700 }}
-              restStyle={{ color:restCol, fontWeight:400 }}
-              speed={15}
-            />
-          )}
-        </p>
-        <div style={{ height:1, background:ruleCol, marginTop:16 }} />
-      </div>
-    </div>
-  );
-}
-
-// ─── Center pulsing icon nav ──────────────────────────────────────
-function IconNav({ idx, goTo, orientation }) {
-  const vertical = orientation === "vertical";
   return (
     <div style={{
-      display:"flex",
-      flexDirection: vertical ? "column" : "row",
-      gap: vertical ? 14 : 12,
-      alignItems:"center",
+      background: bg,
+      display: "flex",
+      flexDirection: "column",
+      opacity: visible ? 1 : 0,
+      transition: "opacity 0.55s ease",
+      position: "relative",
     }}>
-      {SLIDES.map((_, i) => {
-        const active = i === idx;
-        return (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            aria-label={`Slide ${i + 1}`}
-            style={{
-              width: active ? 38 : 32,
-              height: active ? 38 : 32,
-              borderRadius:"50%",
-              border: active ? "none" : `1.5px solid ${CAROUSEL}22`,
-              background: active ? CAROUSEL : "rgba(255,255,255,0.92)",
-              color: active ? "#fff" : CAROUSEL,
-              display:"flex", alignItems:"center", justifyContent:"center",
-              cursor:"pointer",
-              boxShadow: active ? "0 4px 14px rgba(0,95,134,0.32)" : "0 2px 8px rgba(0,0,0,0.10)",
-              transition:"all 0.32s cubic-bezier(0.4,0,0.2,1)",
-              animation: active ? "icon-pulse 2.2s ease-in-out infinite" : "none",
-              opacity: active ? 1 : 0.78,
-              padding:0,
-              WebkitTapHighlightColor:"transparent",
-            }}
-          >
-            {SLIDE_ICONS[i]}
-          </button>
-        );
-      })}
+      {/* Illustration — fixed aspect ratio container */}
+      <div style={{ width:"100%", aspectRatio:"2.07/1", overflow:"hidden", flexShrink:0 }}>
+        <img
+          src={src}
+          alt=""
+          style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }}
+        />
+      </div>
+
+      {/* Caption */}
+      <div style={{ padding:"22px 28px 26px" }}>
+        <p style={{ fontSize:14, lineHeight:1.6, margin:0, color:restCol }}>
+          <strong style={{ color:textCol, fontWeight:700 }}>{bold}</strong>{rest}
+        </p>
+        <div style={{ height:1, background:ruleCol, marginTop:18 }} />
+      </div>
     </div>
   );
 }
 
 // ─── Insight carousel ─────────────────────────────────────────────
-function InsightBoxes() {
+function InsightBoxes({ accent }) {
   const total  = SLIDES.length;
-  const [idx, setIdx]         = useState(0);
+  const [idx, setIdx]       = useState(0);
   const [visible, setVisible] = useState(true);
   const paused = useRef(false);
   const timer  = useRef(null);
@@ -315,14 +208,21 @@ function InsightBoxes() {
   const goTo = (i) => {
     if (i === idx) return;
     setVisible(false);
-    setTimeout(() => { setIdx(i); setVisible(true); }, 260);
+    setTimeout(() => {
+      setIdx(i);
+      setVisible(true);
+    }, 280); // half the transition duration — swap during dark phase
   };
+
   const next = () => goTo((idx + 1) % total);
   const prev = () => goTo((idx - 1 + total) % total);
 
+  // Autoplay
   useEffect(() => {
     if (timer.current) clearInterval(timer.current);
-    timer.current = setInterval(() => { if (!paused.current) next(); }, 6500);
+    timer.current = setInterval(() => {
+      if (!paused.current) next();
+    }, 6000);
     return () => clearInterval(timer.current);
   }, [idx]);
 
@@ -335,77 +235,100 @@ function InsightBoxes() {
       onMouseLeave={() => { paused.current = false; }}
     >
       <div style={{
-        borderRadius:4, overflow:"hidden",
-        boxShadow:"0 4px 28px rgba(0,95,134,0.13)",
-        border:`1px solid ${NS.rule}`,
+        borderRadius: 4,
+        overflow: "hidden",
+        boxShadow: "0 4px 28px rgba(0,95,134,0.13)",
+        border: `1px solid ${NS.rule}`,
       }}>
-        {/* Panels + floating center icon strip */}
-        <div style={{ position:"relative" }}>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
-            <SlidePanel src={slide.bottleneckImg} header="Industry Bottlenecks"
-              bold={slide.bottleneckBold} rest={slide.bottleneckRest} dark={true} visible={visible} />
-            <SlidePanel src={slide.solutionImg} header="How Netscribes Solves This"
-              bold={slide.solutionBold} rest={slide.solutionRest} dark={false} visible={visible} />
-          </div>
-
-          {/* Vertical icon strip — centred on the seam (desktop only) */}
-          <div className="ta-iconstrip-vert" style={{
-            position:"absolute", left:"50%", top:"50%",
-            transform:"translate(-50%, -50%)", zIndex:5,
-          }}>
-            <IconNav idx={idx} goTo={goTo} orientation="vertical" />
-          </div>
+        {/* Two panels side by side */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
+          <SlidePanel
+            src={slide.bottleneckImg}
+            bold={slide.bottleneckBold}
+            rest={slide.bottleneckRest}
+            dark={true}
+            visible={visible}
+          />
+          <SlidePanel
+            src={slide.solutionImg}
+            bold={slide.solutionBold}
+            rest={slide.solutionRest}
+            dark={false}
+            visible={visible}
+          />
         </div>
 
-        {/* Controls bar */}
+        {/* Controls bar — 3-column: empty | dots (centre) | counter+arrows (right) */}
         <div style={{
           background: NS.paperDeep,
-          padding: "12px 24px",
+          padding: "13px 24px",
           display: "grid",
           gridTemplateColumns: "1fr auto 1fr",
           alignItems: "center",
-          borderTop: `1px solid ${CAROUSEL}18`,
+          borderTop: `1px solid ${accent}18`,
         }}>
+          {/* Left spacer */}
           <div />
-          {/* Horizontal icon strip — mobile only (centre column) */}
-          <div className="ta-iconstrip-horz" style={{ justifyContent:"center" }}>
-            <IconNav idx={idx} goTo={goTo} orientation="horizontal" />
+
+          {/* Centre: dot indicators */}
+          <div style={{ display:"flex", gap:8, alignItems:"center", justifyContent:"center" }}>
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Slide ${i + 1}`}
+                style={{
+                  width: i === idx ? 22 : 8,
+                  height: 8,
+                  borderRadius: 4,
+                  background: i === idx ? accent : `${accent}30`,
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
+                  animation: i === idx ? "dot-pulse 2.2s ease-in-out infinite" : "none",
+                  outline: "none",
+                }}
+              />
+            ))}
           </div>
-          {/* Counter + arrows */}
+
+          {/* Right: counter + arrows */}
           <div style={{ display:"flex", alignItems:"center", gap:7, justifyContent:"flex-end" }}>
             <span style={{ fontSize:11, fontWeight:500, color:NS.muted, letterSpacing:"0.04em", fontFamily:"'DM Sans',sans-serif", minWidth:32, textAlign:"right" }}>
               {idx+1} / {total}
             </span>
             <button onClick={prev}
-              onMouseEnter={e => e.currentTarget.style.background=`${CAROUSEL}20`}
-              onMouseLeave={e => e.currentTarget.style.background=`${CAROUSEL}0c`}
-              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${CAROUSEL}0c`,
-                color:CAROUSEL, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              onMouseEnter={e => e.currentTarget.style.background=`${accent}20`}
+              onMouseLeave={e => e.currentTarget.style.background=`${accent}0c`}
+              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${accent}0c`,
+                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             <button onClick={next}
-              onMouseEnter={e => e.currentTarget.style.background=`${CAROUSEL}20`}
-              onMouseLeave={e => e.currentTarget.style.background=`${CAROUSEL}0c`}
-              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${CAROUSEL}0c`,
-                color:CAROUSEL, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+              onMouseEnter={e => e.currentTarget.style.background=`${accent}20`}
+              onMouseLeave={e => e.currentTarget.style.background=`${accent}0c`}
+              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${accent}0c`,
+                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
                 transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );
 }
 
 // ─── Root ─────────────────────────────────────────────────────────
-export default function TechAlt({ industryId = "tech" }) {
-  const sector  = SECTORS.find(s => s.id === industryId) || SECTORS[0];
-  const hero    = INDUSTRY_HERO[sector.id];
-  const accent  = sector.accent;
+export default function TechAlt() {
+  const sector  = SECTORS.find(s => s.id === "tech");
+  const hero    = INDUSTRY_HERO["tech"];
+  const accent  = sector.accent; // NS.blue = #005F86
 
-  const allItems = RESEARCH_DATA.filter(d => d.industry === sector.id);
+  const allItems = RESEARCH_DATA.filter(d => d.industry === "tech");
 
   const availableStudyTypes = STUDY_TYPES.filter(st => allItems.some(d => d.studyType === st.id));
   const [activeStudyType, setActiveStudyType] = useState(null);
@@ -414,9 +337,6 @@ export default function TechAlt({ industryId = "tech" }) {
   const [activeRegion, setActiveRegion] = useState(null);
 
   const [viewer, setViewer] = useState(null);
-
-  // reset filters when industry changes
-  useEffect(() => { setActiveStudyType(null); setActiveRegion(null); }, [sector.id]);
 
   let filtered = activeStudyType ? allItems.filter(d => d.studyType === activeStudyType) : allItems;
   filtered = activeRegion ? filtered.filter(d => d.geo.includes(activeRegion)) : filtered;
@@ -430,22 +350,14 @@ export default function TechAlt({ industryId = "tech" }) {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes rc-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
-        @keyframes icon-pulse {
-          0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.45), 0 4px 14px rgba(0,95,134,0.32); }
-          65%  { box-shadow: 0 0 0 9px rgba(0,95,134,0),   0 4px 14px rgba(0,95,134,0.32); }
-          100% { box-shadow: 0 0 0 0 rgba(0,95,134,0),     0 4px 14px rgba(0,95,134,0.32); }
+        @keyframes dot-pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.5); }
+          65%  { box-shadow: 0 0 0 6px rgba(0,95,134,0); }
+          100% { box-shadow: 0 0 0 0 rgba(0,95,134,0); }
         }
-        @keyframes tw-blink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
-        .tw-cursor { display:inline-block; margin-left:1px; font-weight:400; animation:tw-blink 0.9s steps(1) infinite; opacity:0.7; }
-
-        /* icon strip: vertical on desktop, horizontal in control bar on mobile */
-        .ta-iconstrip-vert { display:block; }
-        .ta-iconstrip-horz { display:none; }
         @media (max-width:640px) {
           .ta-insight-grid { grid-template-columns:1fr !important; }
-          .ta-iconstrip-vert { display:none; }
-          .ta-iconstrip-horz { display:flex; }
-          .ta-filter-bar { grid-template-columns:1fr !important; }
+          .ta-filter-bar   { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13) !important; }
         }
       `}</style>
@@ -476,33 +388,69 @@ export default function TechAlt({ industryId = "tech" }) {
         </p>
       </div>
 
-      {/* Insight carousel — identical across industries */}
-      <InsightBoxes />
+      {/* Insight carousel */}
+      <InsightBoxes accent={accent} />
 
       {/* Filter bar */}
       <div style={{ maxWidth:1160,margin:"0 auto",padding:"0 clamp(16px,4vw,44px)" }}>
         <div className="ta-filter-bar" style={{
-          display:"grid", gridTemplateColumns:"1fr 1fr",
-          background:NS.surface, border:`1px solid ${NS.rule}`,
-          borderRadius:4, marginBottom:28, overflow:"hidden",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          background: NS.surface,
+          border: `1px solid ${NS.rule}`,
+          borderRadius: 4,
+          marginBottom: 28,
+          overflow: "hidden",
         }}>
+
+          {/* Study Type */}
           <div style={{ padding:"16px 22px", borderRight:`1px solid ${NS.rule}` }}>
-            <span style={{ display:"block", marginBottom:11, fontSize:9, fontWeight:700, letterSpacing:"0.20em", textTransform:"uppercase", color:NS.muted }}>Study Type</span>
+            <span style={{
+              display:"block", marginBottom:11,
+              fontSize:9, fontWeight:700, letterSpacing:"0.20em",
+              textTransform:"uppercase", color:NS.muted,
+            }}>Study Type</span>
             <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-              <PillBtn label="All" active={!activeStudyType} color={accent} onClick={() => setActiveStudyType(null)} />
+              <PillBtn
+                label="All"
+                active={!activeStudyType}
+                color={accent}
+                onClick={() => setActiveStudyType(null)}
+              />
               {availableStudyTypes.map(st => (
-                <PillBtn key={st.id} label={st.label} active={activeStudyType === st.id} color={st.accent}
-                  onClick={() => setActiveStudyType(activeStudyType === st.id ? null : st.id)} />
+                <PillBtn
+                  key={st.id}
+                  label={st.label}
+                  active={activeStudyType === st.id}
+                  color={st.accent}
+                  onClick={() => setActiveStudyType(activeStudyType === st.id ? null : st.id)}
+                />
               ))}
             </div>
           </div>
+
+          {/* Region */}
           <div style={{ padding:"16px 22px" }}>
-            <span style={{ display:"block", marginBottom:11, fontSize:9, fontWeight:700, letterSpacing:"0.20em", textTransform:"uppercase", color:NS.muted }}>Region</span>
+            <span style={{
+              display:"block", marginBottom:11,
+              fontSize:9, fontWeight:700, letterSpacing:"0.20em",
+              textTransform:"uppercase", color:NS.muted,
+            }}>Region</span>
             <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-              <PillBtn label="All" active={!activeRegion} color={accent} onClick={() => setActiveRegion(null)} />
+              <PillBtn
+                label="All"
+                active={!activeRegion}
+                color={accent}
+                onClick={() => setActiveRegion(null)}
+              />
               {availableRegions.map(g => (
-                <PillBtn key={g.id} label={g.label} active={activeRegion === g.id} color={g.accent}
-                  onClick={() => setActiveRegion(activeRegion === g.id ? null : g.id)} />
+                <PillBtn
+                  key={g.id}
+                  label={g.label}
+                  active={activeRegion === g.id}
+                  color={g.accent}
+                  onClick={() => setActiveRegion(activeRegion === g.id ? null : g.id)}
+                />
               ))}
             </div>
           </div>
@@ -510,9 +458,16 @@ export default function TechAlt({ industryId = "tech" }) {
 
         {/* Cases grid */}
         {filtered.length === 0 ? (
-          <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>No studies match these filters.</div>
+          <div style={{ padding:"48px 0",textAlign:"center",color:NS.muted,fontSize:14 }}>
+            No studies match these filters.
+          </div>
         ) : (
-          <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",gap:10,animation:"rc-pop 0.22s ease both" }}>
+          <div style={{
+            display:"grid",
+            gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))",
+            gap:10,
+            animation:"rc-pop 0.22s ease both",
+          }}>
             {filtered.map((item, i) => (
               <CaseTile key={item.title + i} item={item} accent={accent} onOpen={setViewer} />
             ))}
@@ -528,7 +483,9 @@ export default function TechAlt({ industryId = "tech" }) {
         <span style={{ fontSize:11,color:NS.muted,letterSpacing:"0.12em",textTransform:"uppercase" }}>Research · {sector.label}</span>
       </footer>
 
-      {viewer && <CaseViewer item={viewer} accent={accent} onClose={() => setViewer(null)} />}
+      {viewer && (
+        <CaseViewer item={viewer} accent={accent} onClose={() => setViewer(null)} />
+      )}
     </div>
   );
 }
