@@ -3,17 +3,27 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import Research from "./Research.jsx";
 import IndustryResearch from "./IndustryResearch.jsx";
-import TechAlt from "./TechAlt.jsx";
-import TechAlt2 from "./TechAlt2-full.jsx";
 
 // ─── Minimal path router ──────────────────────────────────────────
-// Watches window.location.pathname and re-renders on popstate/pushstate.
-//   /research                → Research index (existing page, untouched)
+//   /research                → Research index
 //   /research/:industry      → IndustryResearch for that industry slug
-//   /research/tech1          → Alt layout for Tech & Software (team comparison)
+//   /research/tech1          → IndustryResearch with industryId="tech" (alt layout, now the standard)
 //   everything else          → main App
 
 const INDUSTRY_SLUGS = ["tech","telecom","retail","fnb","auto","bfsi","mfg","health"];
+
+const SLUG_ALIASES = {
+  automotive:          "auto",
+  finance:             "bfsi",
+  "food-and-beverage": "fnb",
+  manufacturing:       "mfg",
+  healthcare:          "health",
+  technology:          "tech",
+  telecommunications:  "telecom",
+  "retail-ecommerce":  "retail",
+  tech1:               "tech",
+  tech2:               "tech",
+};
 
 function usePathname() {
   const [path, setPath] = useState(window.location.pathname);
@@ -32,42 +42,18 @@ function usePathname() {
 function Root() {
   const path = usePathname();
 
-  // /research/automotive  →  industryId = "auto"  (slug aliases below)
-  // /research/tech        →  industryId = "tech"
-  // etc.
-  const SLUG_ALIASES = {
-    automotive: "auto",
-    finance:    "bfsi",
-    "food-and-beverage": "fnb",
-    manufacturing: "mfg",
-    healthcare: "health",
-    technology: "tech",
-    telecommunications: "telecom",
-    "retail-ecommerce": "retail",
-  };
-
   if (path === "/research") {
     return <Research />;
   }
 
-  // Alt layout: Tech & Software — team comparison build
-  if (path === "/research/tech1") {
-    return <TechAlt industryId="tech" />;
-  }
-
-  // Alt layout v2: full-width boxes, no sample count, hover point effect
-  if (path === "/research/tech2") {
-    return <TechAlt2 industryId="tech" />;
-  }
-
   if (path.startsWith("/research/")) {
     const slug = path.replace("/research/", "").toLowerCase();
-    // Accept both the short id ("auto") and friendly aliases ("automotive")
+
     const industryId = SLUG_ALIASES[slug] || (INDUSTRY_SLUGS.includes(slug) ? slug : null);
     if (industryId) {
       return <IndustryResearch industryId={industryId} />;
     }
-    // Unknown slug — fall back to Research index
+
     return <Research />;
   }
 
