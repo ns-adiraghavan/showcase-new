@@ -197,6 +197,31 @@ function SlidePanel({ src, bold, rest, dark, visible }) {
   );
 }
 
+// ─── Slide icons (chip / compass / bar-chart / lightbulb) ─────────
+const SLIDE_ICONS = [
+  // Chip — Technology adoption
+  <svg key="chip" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="7" y="7" width="10" height="10" rx="1"/>
+    <path d="M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3"/>
+  </svg>,
+  // Compass — Market entry / ecosystem mapping
+  <svg key="compass" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+  </svg>,
+  // Bar chart — Competitive intelligence
+  <svg key="bar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="20" x2="18" y2="10"/>
+    <line x1="12" y1="20" x2="12" y2="4"/>
+    <line x1="6"  y1="20" x2="6"  y2="14"/>
+    <line x1="3"  y1="20" x2="21" y2="20"/>
+  </svg>,
+  // Lightbulb — Patent / IP innovation
+  <svg key="bulb" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.4-1.4 4.5-3 5.7V17a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1v-2.3C7.4 13.5 6 11.4 6 9a6 6 0 0 1 6-6z"/>
+  </svg>,
+];
+
 // ─── Insight carousel ─────────────────────────────────────────────
 function InsightBoxes({ accent }) {
   const total  = SLIDES.length;
@@ -211,13 +236,12 @@ function InsightBoxes({ accent }) {
     setTimeout(() => {
       setIdx(i);
       setVisible(true);
-    }, 280); // half the transition duration — swap during dark phase
+    }, 280);
   };
 
   const next = () => goTo((idx + 1) % total);
   const prev = () => goTo((idx - 1 + total) % total);
 
-  // Autoplay
   useEffect(() => {
     if (timer.current) clearInterval(timer.current);
     timer.current = setInterval(() => {
@@ -240,8 +264,8 @@ function InsightBoxes({ accent }) {
         boxShadow: "0 4px 28px rgba(0,95,134,0.13)",
         border: `1px solid ${NS.rule}`,
       }}>
-        {/* Two panels side by side */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }} className="ta-insight-grid">
+        {/* Two panels side by side — with vertical icon strip in seam */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", position:"relative" }} className="ta-insight-grid">
           <SlidePanel
             src={slide.bottleneckImg}
             bold={slide.bottleneckBold}
@@ -256,9 +280,55 @@ function InsightBoxes({ accent }) {
             dark={false}
             visible={visible}
           />
+
+          {/* Vertical icon strip — centred on the seam, desktop only */}
+          <div className="ta-seam-icons" style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+            zIndex: 10,
+          }}>
+            {SLIDES.map((_, i) => {
+              const isActive = i === idx;
+              return (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: "50%",
+                    border: `2px solid ${isActive ? "#fff" : "rgba(255,255,255,0.35)"}`,
+                    background: isActive ? accent : "rgba(9,99,136,0.72)",
+                    backdropFilter: "blur(8px)",
+                    color: "#fff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 0,
+                    transition: "all 0.3s ease",
+                    boxShadow: isActive
+                      ? `0 0 0 0 ${accent}80, 0 4px 14px rgba(0,0,0,0.28)`
+                      : "0 2px 8px rgba(0,0,0,0.22)",
+                    animation: isActive ? "seam-pulse 2.2s ease-in-out infinite" : "none",
+                    outline: "none",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                >
+                  {SLIDE_ICONS[i]}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Controls bar — 3-column: empty | dots (centre) | counter+arrows (right) */}
+        {/* Controls bar — 3-column: mobile icons (left) | dots (centre) | counter+arrows (right) */}
         <div style={{
           background: NS.paperDeep,
           padding: "13px 24px",
@@ -267,8 +337,37 @@ function InsightBoxes({ accent }) {
           alignItems: "center",
           borderTop: `1px solid ${accent}18`,
         }}>
-          {/* Left spacer */}
-          <div />
+          {/* Left: mobile icon row (hidden on desktop) */}
+          <div className="ta-mobile-icons" style={{ display:"none", gap:6, alignItems:"center" }}>
+            {SLIDES.map((_, i) => {
+              const isActive = i === idx;
+              return (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: "50%",
+                    border: `1.5px solid ${isActive ? accent : NS.rule}`,
+                    background: isActive ? accent : NS.surface,
+                    color: isActive ? "#fff" : NS.muted,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 0,
+                    transition: "all 0.25s ease",
+                    outline: "none",
+                    flexShrink: 0,
+                  }}
+                >
+                  {SLIDE_ICONS[i]}
+                </button>
+              );
+            })}
+          </div>
 
           {/* Centre: dot indicators */}
           <div style={{ display:"flex", gap:8, alignItems:"center", justifyContent:"center" }}>
@@ -355,10 +454,17 @@ export default function TechAlt() {
           65%  { box-shadow: 0 0 0 6px rgba(0,95,134,0); }
           100% { box-shadow: 0 0 0 0 rgba(0,95,134,0); }
         }
+        @keyframes seam-pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.55), 0 4px 14px rgba(0,0,0,0.28); }
+          65%  { box-shadow: 0 0 0 7px rgba(0,95,134,0), 0 4px 14px rgba(0,0,0,0.28); }
+          100% { box-shadow: 0 0 0 0 rgba(0,95,134,0), 0 4px 14px rgba(0,0,0,0.28); }
+        }
         @media (max-width:640px) {
           .ta-insight-grid { grid-template-columns:1fr !important; }
           .ta-filter-bar   { grid-template-columns:1fr !important; }
           .ta-filter-bar > div:first-child { border-right:none !important; border-bottom:1px solid rgba(0,95,134,0.13) !important; }
+          .ta-seam-icons   { display:none !important; }
+          .ta-mobile-icons { display:flex !important; }
         }
       `}</style>
 
