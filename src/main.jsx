@@ -2,7 +2,6 @@ import { StrictMode, useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import Research from "./Research.jsx";
-import IndustryResearch from "./IndustryResearch.jsx";
 import TechAlt from "./TechAlt.jsx";
 import TechAlt2 from "./TechAlt2-full.jsx";
 
@@ -65,7 +64,8 @@ function Root() {
     // Accept both the short id ("auto") and friendly aliases ("automotive")
     const industryId = SLUG_ALIASES[slug] || (INDUSTRY_SLUGS.includes(slug) ? slug : null);
     if (industryId) {
-      return <IndustryResearch industryId={industryId} />;
+      // All 8 industry pages now use the shared alt layout (carousel + samples)
+      return <TechAlt industryId={industryId} />;
     }
     // Unknown slug — fall back to Research index
     return <Research />;
