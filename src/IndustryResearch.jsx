@@ -407,16 +407,18 @@ const INDUSTRY_ICONS = {
 };
 
 // ─── Single carousel panel ────────────────────────────────────────
-function SlidePanel({ src, bold, rest, dark, visible }) {
+function SlidePanel({ src, bold, rest, dark, visible, accent }) {
   const bg      = dark ? "#096388" : "#ffffff";
   const textCol = dark ? "#ffffff" : NS.ink;
   const restCol = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
   const ruleCol = dark ? "rgba(255,255,255,0.22)" : `${NS.blue}25`;
+  const tintColor = dark ? `${accent}28` : `${accent}22`;
   return (
     <div style={{ background:bg, display:"flex", flexDirection:"column",
       opacity:visible?1:0, transition:"opacity 0.55s ease", position:"relative" }}>
-      <div style={{ width:"100%", aspectRatio:"2.07/1", overflow:"hidden", flexShrink:0 }}>
+      <div style={{ width:"100%", aspectRatio:"2.07/1", overflow:"hidden", flexShrink:0, position:"relative" }}>
         <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }} />
+        <div style={{ position:"absolute", inset:0, background:tintColor, mixBlendMode:"multiply", pointerEvents:"none" }} />
       </div>
       <div style={{ padding:"22px 28px 26px" }}>
         <p style={{ fontSize:14, lineHeight:1.6, margin:0, color:restCol }}>
@@ -444,7 +446,6 @@ function InsightCarousel({ accent, industryId }) {
     setTimeout(() => { setIdx(i); setVisible(true); }, 280);
   };
   const next = () => goTo((idx + 1) % total);
-  const prev = () => goTo((idx - 1 + total) % total);
 
   useEffect(() => {
     if (timer.current) clearInterval(timer.current);
@@ -465,8 +466,8 @@ function InsightCarousel({ accent, industryId }) {
 
         {/* Two panels + vertical seam icon strip */}
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", position:"relative" }} className="ir-insight-grid">
-          <SlidePanel src={slide.bottleneckImg} bold={slide.bottleneckBold} rest={slide.bottleneckRest} dark={true}  visible={visible} />
-          <SlidePanel src={slide.solutionImg}   bold={slide.solutionBold}   rest={slide.solutionRest}   dark={false} visible={visible} />
+          <SlidePanel src={slide.bottleneckImg} bold={slide.bottleneckBold} rest={slide.bottleneckRest} dark={true}  visible={visible} accent={accent} />
+          <SlidePanel src={slide.solutionImg}   bold={slide.solutionBold}   rest={slide.solutionRest}   dark={false} visible={visible} accent={accent} />
 
           {/* Vertical icon strip — desktop only, hidden ≤640px */}
           <div className="ir-seam-icons" style={{
@@ -497,70 +498,27 @@ function InsightCarousel({ accent, industryId }) {
           </div>
         </div>
 
-        {/* Controls bar */}
-        <div style={{
-          background:NS.paperDeep, padding:"13px 24px",
-          display:"grid", gridTemplateColumns:"1fr auto 1fr",
-          alignItems:"center", borderTop:`1px solid ${accent}18`,
+        {/* Mobile icon row — only visible ≤640px when seam strip is hidden */}
+        <div className="ir-mobile-icons" style={{
+          display:"none", gap:8, alignItems:"center", justifyContent:"center",
+          padding:"12px 24px", background:NS.paperDeep, borderTop:`1px solid ${accent}18`,
         }}>
-          {/* Left: mobile icon row (flex hidden on desktop, shown ≤640px) */}
-          <div className="ir-mobile-icons" style={{ display:"none", gap:6, alignItems:"center" }}>
-            {slides.map((_, i) => {
-              const isActive = i === idx;
-              return (
-                <button key={i} onClick={() => goTo(i)} aria-label={`Slide ${i+1}`}
-                  style={{
-                    width:30, height:30, borderRadius:"50%",
-                    border:`1.5px solid ${isActive?accent:NS.rule}`,
-                    background: isActive ? accent : NS.surface,
-                    color: isActive ? "#fff" : NS.muted,
-                    cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-                    padding:0, outline:"none", flexShrink:0, transition:"all 0.25s ease",
-                  }}>
-                  {icons[i]}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Centre: dot indicators */}
-          <div style={{ display:"flex", gap:8, alignItems:"center", justifyContent:"center" }}>
-            {slides.map((_, i) => (
+          {slides.map((_, i) => {
+            const isActive = i === idx;
+            return (
               <button key={i} onClick={() => goTo(i)} aria-label={`Slide ${i+1}`}
                 style={{
-                  width: i===idx?22:8, height:8, borderRadius:4,
-                  background: i===idx?accent:`${accent}30`,
-                  border:"none", padding:0, cursor:"pointer",
-                  transition:"all 0.35s cubic-bezier(0.4,0,0.2,1)",
-                  animation: i===idx?"ir-dot-pulse 2.2s ease-in-out infinite":"none",
-                  outline:"none",
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Right: counter + arrows */}
-          <div style={{ display:"flex", alignItems:"center", gap:7, justifyContent:"flex-end" }}>
-            <span style={{ fontSize:11, fontWeight:500, color:NS.muted, letterSpacing:"0.04em", minWidth:32, textAlign:"right" }}>
-              {idx+1} / {total}
-            </span>
-            <button onClick={prev}
-              onMouseEnter={e => e.currentTarget.style.background=`${accent}20`}
-              onMouseLeave={e => e.currentTarget.style.background=`${accent}0c`}
-              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${accent}0c`,
-                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-                transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button onClick={next}
-              onMouseEnter={e => e.currentTarget.style.background=`${accent}20`}
-              onMouseLeave={e => e.currentTarget.style.background=`${accent}0c`}
-              style={{ width:30, height:30, borderRadius:3, border:"none", background:`${accent}0c`,
-                color:accent, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
-                transition:"background 0.15s", WebkitTapHighlightColor:"transparent" }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
+                  width:32, height:32, borderRadius:"50%",
+                  border:`1.5px solid ${isActive?accent:NS.rule}`,
+                  background: isActive ? accent : NS.surface,
+                  color: isActive ? "#fff" : NS.muted,
+                  cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center",
+                  padding:0, outline:"none", flexShrink:0, transition:"all 0.25s ease",
+                }}>
+                {icons[i]}
+              </button>
+            );
+          })}
         </div>
 
       </div>
@@ -603,11 +561,6 @@ export default function IndustryResearch({ industryId = "tech" }) {
         body { background:#F5F1EA; font-family:'DM Sans',system-ui,sans-serif; color:#0F1B27; -webkit-font-smoothing:antialiased; }
         button, a { font-family:'DM Sans',system-ui,sans-serif; }
         @keyframes ir-pop { from{opacity:0;transform:scale(0.97) translateY(10px);}to{opacity:1;transform:none;} }
-        @keyframes ir-dot-pulse {
-          0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.5); }
-          65%  { box-shadow: 0 0 0 6px rgba(0,95,134,0); }
-          100% { box-shadow: 0 0 0 0 rgba(0,95,134,0); }
-        }
         @keyframes ir-seam-pulse {
           0%   { box-shadow: 0 0 0 0 rgba(0,95,134,0.55), 0 4px 14px rgba(0,0,0,0.28); }
           65%  { box-shadow: 0 0 0 7px rgba(0,95,134,0),  0 4px 14px rgba(0,0,0,0.28); }
