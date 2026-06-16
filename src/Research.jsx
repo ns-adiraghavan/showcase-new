@@ -53,8 +53,6 @@ function CaseViewer({ item, accent, onClose }) {
 }
 
 // ─── Pill Button ──────────────────────────────────────────────────
-const PILL_ACTIVE_COLOR = "#005F86"; // unified active color across all filter pills
-
 function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
   return (
@@ -63,9 +61,9 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseLeave={() => setHov(false)}
       style={{
         fontSize: 11.5, fontWeight: active ? 700 : 400,
-        color: active ? "#fff" : (hov ? PILL_ACTIVE_COLOR : NS.inkSoft),
-        background: active ? PILL_ACTIVE_COLOR : "transparent",
-        border: `1.5px solid ${active ? PILL_ACTIVE_COLOR : (hov ? PILL_ACTIVE_COLOR : NS.rule)}`,
+        color: active ? "#fff" : (hov ? color : NS.inkSoft),
+        background: active ? color : "transparent",
+        border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
         borderRadius: 20, padding: "5px 14px", cursor: "pointer",
         transition: "all 0.15s ease",
         fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
@@ -241,7 +239,7 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, sectorI
           <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
             <PillBtn label="All" active={!f1} color={accent} onClick={()=>setF1(null)} />
             {pills1.map(p=>(
-              <PillBtn key={p.id} label={p.label} active={f1===p.id} color={p.accent}
+              <PillBtn key={p.id} label={p.label} active={f1===p.id} color={accent}
                 onClick={()=>setF1(f1===p.id?null:p.id)} />
             ))}
           </div>
@@ -251,7 +249,7 @@ function InlineCasePanel({ title, accent, items, filterDim1, filterDim2, sectorI
           <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
             <PillBtn label="All" active={!f2} color={accent} onClick={()=>setF2(null)} />
             {pills2.map(p=>(
-              <PillBtn key={p.id} label={p.label} active={f2===p.id} color={p.accent}
+              <PillBtn key={p.id} label={p.label} active={f2===p.id} color={accent}
                 onClick={()=>setF2(f2===p.id?null:p.id)} />
             ))}
           </div>
@@ -442,12 +440,10 @@ function IndustryView({ onCardClick }) {
         const items = RESEARCH_DATA.filter(d=>d.industry===s.id).sort((a,b)=>SECTOR_ORDER.indexOf(a.industry)-SECTOR_ORDER.indexOf(b.industry));
         const spotlight = items.find(d=>d.title===s.spotlight) || items[0];
         const total = SECTORS.length;
-        const COLS = 4;
-        const isRight  = (i % COLS) === COLS-1 || i === total-1;
-        const isBottom = i >= total-COLS;
         return (
           <SectorTile key={s.id} sector={s} index={i} total={total}
             spotlight={spotlight}
+            showPopout={true}
             onClick={()=>onCardClick(s.label, s.accent, items, s.id)} />
         );
       })}
@@ -455,43 +451,72 @@ function IndustryView({ onCardClick }) {
   );
 }
 
-function SectorTile({ sector, index, total, spotlight, onClick }) {
+function SectorTile({ sector, index, total, spotlight, showPopout, onClick }) {
   const [hov, setHov] = useState(false);
   const COLS = 4;
   const isRight  = (index % COLS) === COLS-1 || index === total-1;
   const isBottom = index >= total-COLS;
   return (
-    <button onClick={onClick}
+    <div style={{ position:"relative" }}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>setHov(false)}
-      style={{
-        textAlign:"left",
-        background: hov ? sector.accent : NS.surface,
-        border:"none",
-        borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
-        borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
-        padding:"clamp(18px,2.5vw,28px) clamp(16px,2vw,24px) clamp(16px,2vw,22px)",
-        cursor:"pointer", position:"relative", overflow:"hidden",
-        minHeight:"clamp(160px,20vw,220px)", display:"flex", flexDirection:"column", justifyContent:"space-between", gap:16,
-        transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
-        fontFamily:"'DM Sans',sans-serif", width:"100%",
-      }}
     >
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:8 }}>
-        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
-      </div>
-      <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{sector.label}</h2>
-      <div style={{ flex:1 }} />
-      {spotlight && (
-        <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
-          <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Featured work</p>
-          <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
-            <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden" }}>{spotlight.title}</p>
-            <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:15,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
-          </div>
+      <button onClick={onClick}
+        style={{
+          textAlign:"left",
+          background: hov ? sector.accent : NS.surface,
+          border:"none",
+          borderRight: !isRight ? `1px solid ${NS.rule}` : "none",
+          borderBottom: !isBottom ? `1px solid ${NS.rule}` : "none",
+          padding:"clamp(18px,2.5vw,28px) clamp(16px,2vw,24px) clamp(16px,2vw,22px)",
+          cursor:"pointer", position:"relative", overflow:"hidden",
+          minHeight:"clamp(160px,20vw,220px)", display:"flex", flexDirection:"column", justifyContent:"space-between", gap:16,
+          transition:"background 0.32s cubic-bezier(0.22,1,0.36,1)",
+          fontFamily:"'DM Sans',sans-serif", width:"100%",
+        }}
+      >
+        <div style={{ display:"flex",alignItems:"center",justifyContent:"flex-end",gap:8 }}>
+          <span style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.78)":sector.accent,padding:"3px 8px",border:`1px solid ${hov?"rgba(255,255,255,0.35)":sector.accent+"50"}`,transition:"color 0.32s,border-color 0.32s",whiteSpace:"nowrap",lineHeight:"16px" }}>{sector.tag}</span>
         </div>
+        <h2 style={{ fontWeight:700,fontSize:"clamp(15px,1.8vw,22px)",letterSpacing:"-0.02em",lineHeight:1.15,color:hov?"#FFFFFF":NS.ink,transition:"color 0.32s",textWrap:"balance" }}>{sector.label}</h2>
+        <div style={{ flex:1 }} />
+        {spotlight && (
+          <div style={{ borderTop:`1px solid ${hov?"rgba(255,255,255,0.22)":NS.ruleSoft}`,paddingTop:12,transition:"border-color 0.32s" }}>
+            <p style={{ fontSize:9,fontWeight:700,letterSpacing:"0.14em",textTransform:"uppercase",color:hov?"rgba(255,255,255,0.45)":NS.muted,marginBottom:4 }}>Featured work</p>
+            <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8 }}>
+              <p style={{ fontSize:11,fontWeight:500,color:hov?"rgba(255,255,255,0.88)":NS.inkSoft,lineHeight:1.4,flex:1,transition:"color 0.32s",minWidth:0,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden" }}>{spotlight.title}</p>
+              <span style={{ color:hov?"rgba(255,255,255,0.7)":sector.accent,fontSize:15,transform:hov?"translateX(3px)":"none",transition:"all 0.32s",flexShrink:0 }}>→</span>
+            </div>
+          </div>
+        )}
+      </button>
+
+      {/* Popout link — only in industry mode, navigates to subpage */}
+      {showPopout && (
+        <a
+          href={`/research/${INDUSTRY_PATHS[sector.id] || sector.id}`}
+          target="_blank" rel="noreferrer"
+          onClick={e => e.stopPropagation()}
+          title={`Open ${sector.label} research page`}
+          style={{
+            position:"absolute", top:8, left:8,
+            width:22, height:22,
+            display:"flex", alignItems:"center", justifyContent:"center",
+            color: hov ? "rgba(255,255,255,0.8)" : sector.accent,
+            opacity: hov ? 1 : 0.5,
+            transition:"color 0.32s, opacity 0.32s",
+            textDecoration:"none",
+            zIndex:10,
+          }}
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
       )}
-    </button>
+    </div>
   );
 }
 

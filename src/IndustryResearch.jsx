@@ -68,8 +68,6 @@ function CaseViewer({ item, accent, onClose }) {
 }
 
 // ─── Pill button ──────────────────────────────────────────────────
-const PILL_ACTIVE_COLOR = "#005F86"; // unified active color across all filter pills
-
 function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
   return (
@@ -78,9 +76,9 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseLeave={() => setHov(false)}
       style={{
         fontSize: 11.5, fontWeight: active ? 700 : 400,
-        color: active ? "#fff" : (hov ? PILL_ACTIVE_COLOR : NS.inkSoft),
-        background: active ? PILL_ACTIVE_COLOR : "transparent",
-        border: `1.5px solid ${active ? PILL_ACTIVE_COLOR : (hov ? PILL_ACTIVE_COLOR : NS.rule)}`,
+        color: active ? "#fff" : (hov ? color : NS.inkSoft),
+        background: active ? color : "transparent",
+        border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
         borderRadius: 20, padding: "5px 14px", cursor: "pointer",
         transition: "all 0.15s ease",
         fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
@@ -621,11 +619,11 @@ export default function IndustryResearch({ industryId = "tech" }) {
       <div style={{ position:"sticky",top:0,zIndex:100,background:"rgba(245,241,234,0.95)",
         backdropFilter:"blur(14px)",borderBottom:`1px solid ${NS.rule}`,
         display:"flex",alignItems:"center",height:52,padding:"0 clamp(16px,4vw,44px)" }}>
-        <a href="/research" style={{ display:"flex",alignItems:"center",gap:9,textDecoration:"none" }}>
+        <div style={{ display:"flex",alignItems:"center",gap:9 }}>
           <Logo height={19} opacity={0.85} />
           <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:NS.muted }}> / Research</span>
           <span style={{ fontSize:10,fontWeight:700,letterSpacing:"0.22em",textTransform:"uppercase",color:accent }}> / {sector.tag}</span>
-        </a>
+        </div>
       </div>
 
       {/* Hero */}
@@ -660,7 +658,7 @@ export default function IndustryResearch({ industryId = "tech" }) {
             <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
               <PillBtn label="All" active={!activeStudyType} color={accent} onClick={() => setActiveStudyType(null)} />
               {availableStudyTypes.map(st => (
-                <PillBtn key={st.id} label={st.label} active={activeStudyType===st.id} color={st.accent}
+                <PillBtn key={st.id} label={st.label} active={activeStudyType===st.id} color={accent}
                   onClick={() => setActiveStudyType(activeStudyType===st.id?null:st.id)} />
               ))}
             </div>
@@ -673,7 +671,7 @@ export default function IndustryResearch({ industryId = "tech" }) {
             <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
               <PillBtn label="All" active={!activeRegion} color={accent} onClick={() => setActiveRegion(null)} />
               {availableRegions.map(g => (
-                <PillBtn key={g.id} label={g.label} active={activeRegion===g.id} color={g.accent}
+                <PillBtn key={g.id} label={g.label} active={activeRegion===g.id} color={accent}
                   onClick={() => setActiveRegion(activeRegion===g.id?null:g.id)} />
               ))}
             </div>
