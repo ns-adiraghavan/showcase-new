@@ -53,6 +53,8 @@ function CaseViewer({ item, accent, onClose }) {
 }
 
 // ─── Pill Button ──────────────────────────────────────────────────
+const PILL_ACTIVE_COLOR = "#005F86"; // unified active color across all filter pills
+
 function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
   return (
@@ -61,9 +63,9 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseLeave={() => setHov(false)}
       style={{
         fontSize: 11.5, fontWeight: active ? 700 : 400,
-        color: active ? "#fff" : (hov ? color : NS.inkSoft),
-        background: active ? color : "transparent",
-        border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
+        color: active ? "#fff" : (hov ? PILL_ACTIVE_COLOR : NS.inkSoft),
+        background: active ? PILL_ACTIVE_COLOR : "transparent",
+        border: `1.5px solid ${active ? PILL_ACTIVE_COLOR : (hov ? PILL_ACTIVE_COLOR : NS.rule)}`,
         borderRadius: 20, padding: "5px 14px", cursor: "pointer",
         transition: "all 0.15s ease",
         fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",

@@ -68,6 +68,8 @@ function CaseViewer({ item, accent, onClose }) {
 }
 
 // ─── Pill button ──────────────────────────────────────────────────
+const PILL_ACTIVE_COLOR = "#005F86"; // unified active color across all filter pills
+
 function PillBtn({ label, active, color, onClick }) {
   const [hov, setHov] = useState(false);
   return (
@@ -76,9 +78,9 @@ function PillBtn({ label, active, color, onClick }) {
       onMouseLeave={() => setHov(false)}
       style={{
         fontSize: 11.5, fontWeight: active ? 700 : 400,
-        color: active ? "#fff" : (hov ? color : NS.inkSoft),
-        background: active ? color : "transparent",
-        border: `1.5px solid ${active ? color : (hov ? color : NS.rule)}`,
+        color: active ? "#fff" : (hov ? PILL_ACTIVE_COLOR : NS.inkSoft),
+        background: active ? PILL_ACTIVE_COLOR : "transparent",
+        border: `1.5px solid ${active ? PILL_ACTIVE_COLOR : (hov ? PILL_ACTIVE_COLOR : NS.rule)}`,
         borderRadius: 20, padding: "5px 14px", cursor: "pointer",
         transition: "all 0.15s ease",
         fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
@@ -152,7 +154,7 @@ const INDUSTRY_SLIDES = {
     {
       bottleneckImg: "/tech-slides/illus-07.png", solutionImg: "/tech-slides/illus-08.png",
       bottleneckBold: "Fragmented innovation and IP ecosystem,",
-      bottleneckRest: " making whitespace identification, patentability assessment, and competitive benchmarking challenging",
+      bottleneckRest: " making whitespace identification, patentability assessment, and benchmarking challenging",
       solutionBold: "Patent landscaping and IP intelligence",
       solutionRest: " to uncover innovation white spaces, and mitigate risks",
     },
@@ -521,14 +523,14 @@ function InsightCarousel({ accent, industryId }) {
                 <button key={i} onClick={() => goTo(i)} aria-label={`Slide ${i+1}`}
                   style={{
                     width:38, height:38, borderRadius:"50%",
-                    border:`2px solid ${isActive?"#fff":"rgba(255,255,255,0.35)"}`,
-                    background: isActive ? accent : "rgba(9,99,136,0.72)",
+                    border:`2px solid ${isActive ? accent : "rgba(255,255,255,0.6)"}`,
+                    background: isActive ? accent : "#ffffff",
                     backdropFilter:"blur(8px)",
-                    color:"#fff", cursor:"pointer",
+                    color: isActive ? "#fff" : accent, cursor:"pointer",
                     display:"flex", alignItems:"center", justifyContent:"center",
                     padding:0, outline:"none", WebkitTapHighlightColor:"transparent",
                     transition:"all 0.3s ease",
-                    boxShadow: isActive ? `0 0 0 0 ${accent}80,0 4px 14px rgba(0,0,0,0.28)` : "0 2px 8px rgba(0,0,0,0.22)",
+                    boxShadow: isActive ? `0 0 0 0 ${accent}80,0 4px 14px rgba(0,0,0,0.28)` : "0 2px 10px rgba(0,0,0,0.18)",
                     animation: isActive ? "ir-seam-pulse 2.2s ease-in-out infinite" : "none",
                   }}>
                   {icons[i]}
@@ -636,7 +638,7 @@ export default function IndustryResearch({ industryId = "tech" }) {
         <h1 style={{ fontWeight:400,fontSize:"clamp(36px,6.4vw,76px)",lineHeight:1.02,letterSpacing:"-0.025em",color:NS.ink,textWrap:"balance",marginBottom:14 }}>
           {hero.noun} <em style={{ fontStyle:"normal",color:accent }}>Insights</em>
         </h1>
-        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,fontWeight:400,maxWidth:680 }}>
+        <p style={{ color:NS.inkSoft,fontSize:14,lineHeight:1.6,fontWeight:400 }}>
           {hero.desc}
         </p>
       </div>
