@@ -413,8 +413,29 @@ function SlidePanel({ src, bold, rest, dark, accent }) {
   const restCol = dark ? "rgba(255,255,255,0.88)" : NS.inkSoft;
   const ruleCol = dark ? "rgba(255,255,255,0.22)" : `${NS.blue}25`;
   const tintColor = dark ? `${accent}28` : `${accent}22`;
+
+  const headerLabel = dark ? "Industry Bottlenecks" : "How Netscribes Solves This";
+  const headerBg    = dark ? "rgba(0,0,0,0.22)" : `${accent}14`;
+  const headerCol   = dark ? "#ffffff" : accent;
+
   return (
     <div style={{ background:bg, display:"flex", flexDirection:"column", position:"relative", width:"100%", height:"100%" }}>
+      {/* Panel header */}
+      <div style={{
+        padding: "10px 22px",
+        background: headerBg,
+        borderBottom: dark ? "1px solid rgba(255,255,255,0.12)" : `1px solid ${accent}22`,
+        flexShrink: 0,
+      }}>
+        <span style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          color: headerCol,
+        }}>{headerLabel}</span>
+      </div>
       <div style={{ width:"100%", aspectRatio:"2.07/1", overflow:"hidden", flexShrink:0, position:"relative" }}>
         <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", display:"block" }} />
         <div style={{ position:"absolute", inset:0, background:tintColor, mixBlendMode:"multiply", pointerEvents:"none" }} />
