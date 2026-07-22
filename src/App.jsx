@@ -178,6 +178,7 @@ const CURATED = {
       { title: "Music Concerts: A Guide to Attending Live Events", desc: "Article on the live events and concerts landscape — booking strategies, artist trends, and fan experience insights.", industry: "retail", ...driveFile("1NdC-bkIwRFIO3YOI1dZU2l2ZC042HOaw") },
       { title: "Cinema, Bollywood and the Lifestyle Economy", desc: "Article exploring Bollywood's cultural and commercial influence — content trends, digital platforms, and lifestyle crossovers.", industry: "retail", ...driveFile("17tXROqO7LpS7sD4yhTKXzECqvK-Xw4h-") },
       { title: "Comic Con, Whisky and the Pop Culture Economy", desc: "Article on the intersection of pop culture events and premium consumer categories — fandom, brand activations, and experiential marketing.", industry: "retail", ...driveFile("1jygUA1hE464QoVXOSsSjA0KIRocXfeP3") },
+      { title: "Blog: CapEx and OpEx FinOps for Telecom", desc: "Thought leadership blog on governing cloud infrastructure spend through FinOps frameworks and CoE models for telecom operators.", industry: "telecom", ...driveFile("10GEbcSjHpGdpCFQG8_Iam5IFdisWNHko") },
     ],
     "eBooks": [
       { title: "Thought Leadership eBook: The Future of Healthcare", desc: "Full-length designed eBook on digital health, precision medicine, and the next decade of healthcare delivery.", industry: "health", ...driveFile("1wdUpR8X9YZ2Dd4bhL56Veyph8l3evcKj") },
@@ -252,6 +253,7 @@ const CURATED = {
       { title: "Survey Report: Finance Data & Analytics", desc: "Research survey report on the state of finance data and analytics — maturity assessment, key challenges, and technology adoption insights.", industry: "bfsi", ...driveFile("1EiGBG_7uXdLd8lRpgXfryMV-I2DZoUAs") },
       { title: "SlideShare: Multi-Modal Insurance", desc: "SlideShare-format presentation on multi-modal insurance delivery models — consumer trends, channel mix, and digital-first distribution.", industry: "bfsi", ...driveFile("15O5QlCaDiJLjm6VYQ1ldk7o7RiFk91JO") },
       { title: "PPT Template: Event Design", desc: "Branded PowerPoint event template design — layout versatility demonstrated across agenda, speaker, and data slides.", industry: "tech", ...driveFile("15UeBuvKK4Nxi-4Ia6SfQzcPLo6c5aQKx") },
+      { title: "Brochure: HPE Collaborative Success", desc: "Sanitised capability brochure for HPE collaborative success — service model overview, delivery approach, and client value proposition.", industry: "tech", ...driveFile("1o-eQJ1oi16sCaUnD8iIymVa-MiOq618i") },
     ],
   },
   design: {
@@ -289,6 +291,7 @@ const CURATED = {
       { title: "SlideShare: Eyesight Case Study", desc: "Visual case study deck on an eyecare brand's digital transformation — patient journey, technology adoption, and outcomes.", industry: "health", ...driveFile("1r6ILJ7X1sObejNem76V0agEG6gLxXjvj") },
       { title: "PPT Template Design: Event", desc: "Branded PowerPoint event template — flexible slide layouts, visual hierarchy, and identity-consistent design for large-format presentations.", industry: "tech", ...driveFile("15UeBuvKK4Nxi-4Ia6SfQzcPLo6c5aQKx") },
       { title: "Survey Summary Report: Financial and Management Reporting", desc: "Designed PPT report on finance function benchmarking — reporting automation, data quality, and CFO priorities.", industry: "bfsi", ...driveFile("1597R2c7j2uozhcZyrlTvVSuea5tkhW7X") },
+      { title: "Slide Design: Philippines Country Deck", desc: "Designed country presentation deck for the Philippines — market overview, investment landscape, and opportunity highlights.", industry: "tech", ...driveFile("1TeKM352r6obLKSAqzc6vkp18hJ8KBbnn") },
     ],
     "Report Designs": [
       { title: "Survey Summary Report: Enterprise Content and Collaboration in the Cloud", desc: "Research report with designed data visualisation on cloud adoption patterns across enterprise content management.", industry: "tech", ...driveFile("1hkUIVi9f2vWqkW6wj3DqV2-xIqidRNYF") },
@@ -325,9 +328,13 @@ const CURATED = {
       { title: "Web Banner: Fashion Knitted Tank Top", desc: "Fashion retail banner showcasing a summer essentials campaign — clean product visual with aspirational copy.", industry: "retail", ...driveFile("1eM4C5bJN8gTv-vRH4OA7unLZdqc05Ofv") },
       { title: "Web Banner: Designed to Flatter", desc: "Apparel web banner with conversion-focused messaging — body-positive campaign for a women's fashion brand.", industry: "retail", ...driveFile("1SmHljDO6prjYJmMTIardcCv62GfR-cfZ") },
       { title: "Web Banner: The Dress You Will Love Forever", desc: "Fashion banner for an evergreen product line — emotional copy with visual storytelling for a retail apparel brand.", industry: "retail", ...driveFile("1pFrWSJGVIDoeLVuQowmCpOhoP8isUeU4") },
+      { title: "Web Banner: Sample Email Header", desc: "Designed email header banner for a tech brand campaign — clean layout with strong visual hierarchy and brand identity.", industry: "tech", ...driveFile("1NtjKNvqJltVy5dek2QaAW89CTrY9y-sD") },
+      { title: "Web Banner: LinkedIn Banner", desc: "Professional LinkedIn banner design for a tech brand — bold visual identity with concise brand messaging optimised for the platform.", industry: "tech", ...driveFile("1BgHCxp0bHFbzi7GdeW5VUixW5MmO0eJZ") },
     ],
     "Event Based Assets": [
       { title: "Standee: Hi-Tech Industry Event", desc: "Large-format pull-up standee design for a hi-tech trade event — brand identity applied to print at scale.", industry: "tech", ...driveFile("1eNfZ-Ev3nF5-HZSVA2aG6GdiA98sR59Z") },
+      { title: "Standee: Event Display Design", desc: "Large-format standee for a tech brand event — bold design with strong brand presence for exhibition and conference environments.", industry: "tech", ...driveFile("180RQ-GUx0oMNsxUcYZmKGoeuKGIHXYyk") },
+      { title: "Flyer: France Hackathon", desc: "Event flyer for a France-based hackathon — energetic design with event details, participation CTA, and sponsor branding.", industry: "tech", ...driveFile("19WYa6Cvr9bhCJFFtcSRxHg80n3I1uNAw") },
     ],
     "Print Publications": [
       { title: "Water Pollution Awareness Poster Series", desc: "Multi-page designed poster series — bold environmental editorial design demonstrating print publication capabilities.", industry: "tech", ...driveFile("14XuWA1wZNUskNQwaHFz5_hF1WZc0scbn") },
@@ -341,6 +348,8 @@ const CURATED = {
       { title: "Infographic Video: ABC SD-WAN", desc: "90-second animated infographic explainer on SD-WAN architecture and enterprise network benefits.", industry: "telecom", ...driveFile("1l9uZ39A1r32kW0Pf1Xs-yFFJE00WG-KE") },
       { title: "Managing Large Workforce", desc: "Motion graphics video on workforce management platform capabilities — animated data flows and ROI highlights.", industry: "tech", ...driveFile("11CxwH0FbhJ0gf-qcLZkZUv8g8apofEms") },
       { title: "Managing Certificates of Insurance", desc: "Animated explainer on certificate of insurance management — workflow automation, compliance tracking, and risk reduction for enterprise procurement.", industry: "mfg", ...driveFile("183l25tAVM_ZRxmkyNuF-NSEWSDCese6f") },
+      { title: "Video: Wealth Management", desc: "Motion graphics video showcasing wealth management services — investment strategy, portfolio diversification, and client value proposition for BFSI audiences.", industry: "bfsi", ...driveFile("1QF6Yfa_cwabPllCcDKKxr0dd_8BC-KTd") },
+      { title: "Video: Consumer Goods", desc: "Motion graphics brand video for a consumer goods brand — product storytelling, brand values, and retail channel messaging.", industry: "retail", ...driveFile("1OzrxWWl2zXEpk9CKzKQ7TZDB6oryGapz") },
     ],
     "Footage / Image-Based": [
       { title: "Terra OQSURE Brand Video", desc: "Footage and image-based brand video for OQSURE supply chain risk management platform.", industry: "mfg", ...driveFile("1TjpEuHa2c0TRsQon2ouGRUkbIhFmDIp_") },
@@ -362,6 +371,7 @@ const CURATED = {
       { title: "Whiteboard Animation: Mind the Gap", desc: "Whiteboard-style animated video bridging the gap between business expectations and technology delivery.", industry: "tech", ...driveFile("1q-19U7s37sc7B2SIZzNi0llUn_kNdvyt") },
       { title: "Whiteboard Training Video", desc: "Whiteboard animation for internal training — process walkthrough with illustrated scenes and voice-over.", industry: "tech", ...driveFile("1L2g6Mrl0C-UZE1zv10suFQjjVrbhrhMn") },
       { title: "Whiteboard Animation: Interview Promotion", desc: "Promotional whiteboard video driving registrations for an executive interview content series.", industry: "tech", ...driveFile("12d6Wu-_mJHDpAWf5EqZdsd6X3kdEG54C") },
+      { title: "Whiteboard Video: Mind the Gap (Automotive)", desc: "Whiteboard-style animated video on closing the gap between automotive engineering expectations and real-world delivery timelines.", industry: "auto", ...driveFile("1j4WbBMVkPl_3jaRlqtjsmTegmd39x37v") },
     ],
     "Character Animations": [
       // ── BFSI ──
