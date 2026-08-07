@@ -502,7 +502,10 @@ const CURATED = {
       { title: "Brand & Product Performance Tracking Study for Cleaning Wipes", desc: "Ongoing competitive benchmarking of brand health and product performance metrics for a cleaning wipes brand across retail channels.", industry: "retail", ...driveFile("1a_RNWEMmh-BMaSQAfBipJlVOreO52Ajs") },
       { title: "Competitive Landscape Analysis for Juice Market", desc: "Competitive intelligence study mapping the juice market landscape — key players, share dynamics, innovation trends, and positioning white spaces.", industry: "retail", ...driveFile("1LZ9NgNpvyJ-VKqJAgALbZUK5AD9ADwI7") },
       // ── Manufacturing ──
-      { title: "Middle East Portable Air Compressor and Hand-held Tool Market and Rivalry", desc: "Competitive intelligence on the Middle East market for portable air compressors and handheld power tools — rival capabilities and channel strategies.", industry: "mfg", ...driveFile("1-uxzXR3sRlI3sFlnvTeX2mWHRDRA0nvn") },
+      { title: "Middle East Portable Air Compressor and Hand-held Tool Market and Rivalry", desc: "Competitive intelligence on the Middle East market for portable air compressors and handheld power tools — rival capabilities and channel strategies.", industry: "mfg", ...driveFile("1GIeKLwH_MkghIy9C0J2oQE4eoaSYlZUT") },
+      // ── Technology & Software (Battle Cards) ──
+      { title: "Battle Card Development for Enterprise Automation Platforms", desc: "Battle card development for enterprise automation platforms — competitive positioning, differentiation narratives, and sales enablement intelligence for CIOs and digital transformation leaders.", industry: "tech", ...driveFile("1UNVrC8hJD_f8wb_QziUzpYbWoq-_1_ft") },
+      { title: "Strengthening Competitive Positioning Through Battle Card Benchmarking", desc: "Battle card benchmarking study designed to sharpen competitive positioning — rival capability mapping, messaging gaps, and enablement frameworks for enterprise sales teams.", industry: "tech", ...driveFile("1TVKWzSgwuaCf6UvMcOgh_YyID-6Cwy48") },
     ],
     "Consumer Research": [
       // ── BFSI ──
@@ -533,10 +536,10 @@ const CURATED = {
     ],
     "Sales Enablement": [
       // ── Technology & Software ──
-      { title: "Account Intelligence Sample Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1C82FObYTfQFAtKJMayW8FOspiTttbGBI") },
-      { title: "Account Intelligence Sample Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1imHUtJa8JXcGgUqXPCv8q0FshFmcZqR2") },
-      { title: "Account Intelligence Sample Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1YH67vPO9frOLkqFDYzBoyYNQIw-D0bDu") },
-      { title: "Account Intelligence Sample Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1LVtwTga9Z8ZWoMn8vzx9epB09jk3aCU1") },
+      { title: "Account Intelligence Sample Report – Level 1: Netflix", desc: "Level 1 account intelligence profile for Netflix — firmographic overview, strategic priorities, and key buying signals for sales engagement.", industry: "tech", ...driveFile("1RkeXUCrJGtOlOZcTmUlJbxNnlaljYJai") },
+      { title: "Account Intelligence Sample Report – Level 2: Home Depot", desc: "Level 2 account intelligence report for Home Depot — organisational mapping, technology landscape, and procurement signals.", industry: "tech", ...driveFile("1WwCo1mYXMHjSUuq4vkaCG-rDb4qf1Dip") },
+      { title: "Account Intelligence Sample Report – Level 3: Tesco", desc: "Level 3 account intelligence report for Tesco — deep-dive competitive positioning, initiative tracking, and stakeholder mapping.", industry: "tech", ...driveFile("1Co7Gn1pBrvhQwgBYGWf2W7Y-of7CHhrW") },
+      { title: "Account Intelligence Sample Report – Level 4: DuPont", desc: "Level 4 account intelligence report for DuPont — comprehensive strategic intelligence covering M&A signals, innovation pipeline, and executive priorities.", industry: "tech", ...driveFile("1SxfS1kpQ9UMyPbsGIUHvSrTE1LhpbTI2") },
     ],
     "AI Readiness Assessment": [
       // ── Telecommunication ──
