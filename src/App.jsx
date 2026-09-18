@@ -363,6 +363,7 @@ const CURATED = {
     ],
     "Podcasts": [
       { title: "Terra Supply Chain Podcast", desc: "Edited podcast interview on supply chain resilience and contractor management — captioned, with branded title cards.", industry: "mfg", ...driveFile("1toPnFOS2PQz-0Ck6xmLCm0uJjq3mB2YZ") },
+      { title: "Salesforce Podcast: Thought Leadership Interview", desc: "Produced thought leadership podcast for Salesforce — expert interview format with branded editing and captions.", industry: "tech", ...driveFile("1fXgEkScvlU2815jWqNHZ2R8juBsMqadz") },
     ],
     "Training Videos": [
       { title: "Training Video: Use Cases on Rule 9you", desc: "Internal training video on compliance rule-sets — screencast with motion title cards and structured module breaks.", industry: "bfsi", ...driveFile("17348wZOD4jTpso8YO8u6FBRYNxSlK3zl") },
