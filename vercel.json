@@ -1,1 +1,16 @@
-{"rewrites": [{"source": "/(.*)", "destination": "/index.html"}]}
+{
+  "rewrites": [
+    { "source": "/demos/tcpl-ccm", "destination": "/demo-files/tcpl-ccm.html" },
+    { "source": "/demos/tcpl-ccm/", "destination": "/demo-files/tcpl-ccm.html" },
+    { "source": "/demos/tcpl-audit-mentor", "destination": "/demo-files/tcpl-audit-mentor.html" },
+    { "source": "/demos/tcpl-audit-mentor/", "destination": "/demo-files/tcpl-audit-mentor.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    { "source": "/demo-files/(.*)", "headers": [
+      { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+      { "key": "Referrer-Policy", "value": "no-referrer" },
+      { "key": "Cache-Control", "value": "no-cache" }
+    ] }
+  ]
+}
