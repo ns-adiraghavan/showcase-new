@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Audit Mentor, Tata Consumer Products Internal Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rail:#E9EDF1;--rail-ic:#4F5B66;--rail-on:#005F86;
+  --bg:#FFFFFF;--chrome:#F5F7F9;--panel:#F2F6F8;--hov:#EDF2F5;
+  --bd:#DCE3E8;--bd-soft:#E9EEF1;
+  --tx:#042D49;--tx2:#4F5B66;--tx3:#6A7783;
+  --brand:#005F86;--brand-soft:#E6F1F6;--brand-line:#B9D6E4;
+  --ink:#042D49;--cyan:#19BED1;
+  --me:#E6F1F6;--warn:#8C5A00;--warn-soft:#FBF1DE;--warn-line:#E8D2A6;
+  --ok:#1D7350;--ok-soft:#E7F3EC;--err:#B3362B;--err-soft:#FBECEA;
+  --disp:"Open Sans","Segoe UI",Arial,sans-serif;--sans:"Manrope","Segoe UI",Arial,sans-serif;
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --rail:#0A1620;--rail-ic:#93A6B5;--rail-on:#5CC3DE;
+  --bg:#0F1D29;--chrome:#0C1822;--panel:#142533;--hov:#183041;
+  --bd:#22384A;--bd-soft:#1A2D3C;--tx:#E4EDF3;--tx2:#A9B9C6;--tx3:#8698A7;
+  --brand:#5CC3DE;--brand-soft:#0F2E3E;--brand-line:#1E4C61;--me:#123447;
+  --warn:#E8B35A;--warn-soft:#33260E;--warn-line:#5A4318;--ok:#6FCF9F;--ok-soft:#10301F;--err:#F08A7E;--err-soft:#3A1A17;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --rail:#0A1620;--rail-ic:#93A6B5;--rail-on:#5CC3DE;
+  --bg:#0F1D29;--chrome:#0C1822;--panel:#142533;--hov:#183041;
+  --bd:#22384A;--bd-soft:#1A2D3C;--tx:#E4EDF3;--tx2:#A9B9C6;--tx3:#8698A7;
+  --brand:#5CC3DE;--brand-soft:#0F2E3E;--brand-line:#1E4C61;--me:#123447;
+  --warn:#E8B35A;--warn-soft:#33260E;--warn-line:#5A4318;--ok:#6FCF9F;--ok-soft:#10301F;--err:#F08A7E;--err-soft:#3A1A17;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--chrome)}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.tm{display:flex;height:100%}
+.rail{width:68px;flex:none;background:var(--rail);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;border-right:1px solid var(--bd)}
+.ri{width:58px;padding:7px 0 6px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--rail-ic);font-size:10.5px;font-weight:600}
+.ri:hover{background:var(--hov)}
+.ri svg{width:20px;height:20px}
+.ri.on{color:var(--rail-on)}
+.ri.on::before{content:"";position:absolute;left:0;width:3px;height:30px;border-radius:2px;background:var(--rail-on)}
+.ri{position:relative}
+.rsp{flex:1}
+.rav{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:4px}
+.app{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--bg)}
+.hdr{flex:none;border-bottom:1px solid var(--bd);background:var(--chrome)}
+.hdr-t{display:flex;align-items:center;gap:12px;padding:12px 22px 6px;flex-wrap:wrap}
+.appic{width:36px;height:36px;border-radius:9px;background:var(--ink);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:17px;flex:none}
+.appnm{font-family:var(--disp);font-weight:700;font-size:16px;line-height:1.2}
+.appsub{font-size:12px;color:var(--tx3)}
+.viewas{margin-left:auto;display:flex;align-items:center;gap:12px}
+.viewas-l{font-size:11.5px;color:var(--tx3)}
+.viewas-v{font-size:13px}
+.viewas-b{font-size:12.5px;font-weight:700;color:var(--brand);border:1px solid var(--brand-line);background:var(--brand-soft);padding:6px 12px;border-radius:7px}
+.tabs{display:flex;gap:4px;padding:0 16px;overflow-x:auto}
+.tab{padding:9px 10px 10px;font-weight:600;color:var(--tx2);border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--tx);border-bottom-color:var(--brand)}
+.thr{flex:1;overflow-y:auto;padding:24px 24px 8px}
+.thr-in{max-width:820px;margin:0 auto}
+.wel h1{font-family:var(--disp);font-size:clamp(24px,3vw,30px);font-weight:800;letter-spacing:-.015em;margin:8px 0 6px;line-height:1.15}
+.wel>p{color:var(--tx2);max-width:64ch;margin:0}
+.grp{margin-top:22px}
+.gk{font-size:12.5px;font-weight:700;color:var(--tx3);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--bd);border-radius:18px;padding:7px 13px;font-size:13px;text-align:left;background:var(--bg)}
+.chip:hover{border-color:var(--brand);background:var(--brand-soft)}
+.wel>p.hint{margin-top:22px;font-size:12.5px;color:var(--tx3)}
+.ctxban{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--brand-line);background:var(--brand-soft);border-radius:10px;padding:12px 14px;margin-bottom:18px}
+.ctxban b{font-weight:700}
+.row{display:flex;gap:12px;margin-top:20px}
+.row.me{justify-content:flex-end}
+.col{min-width:0;max-width:100%}
+.row.me .col{max-width:78%}
+.bub{background:var(--me);border-radius:10px;padding:9px 13px}
+.bub-t{font-size:11.5px;color:var(--tx3);text-align:right;margin-top:3px}
+.quote{font-size:12px;color:var(--tx2);border-left:3px solid var(--brand);padding:2px 0 2px 9px;margin-bottom:6px}
+.av{width:32px;height:32px;border-radius:8px;background:var(--ink);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;flex:none}
+.nm{font-size:12.5px;margin-bottom:5px;display:flex;gap:8px;align-items:baseline}
+.nm i{font-style:normal;color:var(--tx3);font-size:11.5px}
+.rolepill{font-size:11px;font-weight:700;color:var(--brand);border:1px solid var(--brand-line);border-radius:10px;padding:0 7px}
+.card{border:1px solid var(--bd);border-radius:10px;background:var(--bg);overflow:hidden}
+.card.refuse{border-color:var(--warn-line)}
+.sec{padding:13px 16px;border-bottom:1px solid var(--bd-soft)}
+.sec:last-child{border-bottom:none}
+.sk{font-size:12px;font-weight:700;color:var(--tx3);margin-bottom:4px}
+.sk.head{color:var(--brand)}
+.card.refuse .sk.head{color:var(--warn)}
+.card.refuse .sec:first-child{background:var(--warn-soft)}
+.lead{font-size:15px;font-weight:600;margin:0;line-height:1.5}
+.sec p{margin:0}
+.sec ul{margin:0;padding-left:18px}
+.sec li{margin-bottom:4px}
+.sec ul.ask li{color:var(--tx2)}
+.src{display:flex;gap:9px;align-items:baseline;font-size:13px;padding:3px 0}
+.src i{color:var(--tx3);font-style:normal}
+.tier{font-size:11px;font-weight:700;border-radius:4px;padding:0 6px;flex:none;color:var(--tx2);background:var(--panel);border:1px solid var(--bd)}
+.tier.t1{color:var(--brand);background:var(--brand-soft);border-color:var(--brand-line)}
+.tier.t3{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.act{font-size:12.5px;border:1px solid var(--bd);border-radius:16px;padding:5px 11px;color:var(--tx2);text-align:left}
+.act:hover{border-color:var(--brand);color:var(--tx)}
+.typ{display:flex;gap:4px;padding:10px 2px}
+.typ i{width:6px;height:6px;border-radius:50%;background:var(--tx3);animation:tp 1.2s infinite ease-in-out}
+.typ i:nth-child(2){animation-delay:.16s}.typ i:nth-child(3){animation-delay:.32s}
+@keyframes tp{0%,72%,100%{opacity:.3;transform:translateY(0)}36%{opacity:1;transform:translateY(-3px)}}
+.cmp{flex:none;padding:0 24px 14px;background:var(--bg)}
+.cmp-in{max-width:820px;margin:0 auto;position:relative}
+.sug{position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--bg);border:1px solid var(--bd);border-radius:10px;box-shadow:0 6px 20px rgba(4,45,73,.16);overflow:hidden;z-index:30}
+.sug-h{font-size:12px;font-weight:600;color:var(--tx3);padding:8px 14px;background:var(--chrome);border-bottom:1px solid var(--bd-soft)}
+.sug-i{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:9px 14px;border-bottom:1px solid var(--bd-soft)}
+.sug-i:last-child{border-bottom:none}
+.sug-i:hover,.sug-i.on{background:var(--brand-soft)}
+.sug-q mark{background:#FFF0B8;color:inherit;border-radius:2px}
+.sug-s{margin-left:auto;flex:none;font-size:11.5px;color:var(--tx3)}
+.cbox{border:1px solid var(--bd);border-radius:10px;background:var(--bg);display:flex;align-items:center;gap:6px;padding:4px 6px 4px 4px}
+.cbox:focus-within{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
+.cbox input{flex:1;min-width:0;border:none;background:none;padding:10px 12px;font:inherit;color:var(--tx);outline:none}
+.cbox input::placeholder{color:var(--tx3)}
+.send{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--tx3)}
+.send.hot{color:var(--brand)}.send.hot:hover{background:var(--brand-soft)}
+.send svg{width:19px;height:19px}
+.foot{margin-top:7px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--tx3)}
+.foot button{color:var(--tx3);text-decoration:underline;font-size:12px}
+.body{flex:1;overflow-y:auto;padding:26px 24px 40px}
+.body-in{max-width:880px;margin:0 auto}
+.pg-h{font-family:var(--disp);font-size:24px;font-weight:800;margin:0;letter-spacing:-.01em}
+.pg-s{color:var(--tx2);margin:6px 0 0;max-width:72ch}
+.lib{border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.lib-row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 16px;border-bottom:1px solid var(--bd-soft)}
+.lib-row:last-child{border-bottom:none}
+.lib-row:hover{background:var(--hov)}
+.lib-q{font-weight:600}
+.lib-d{font-size:12.5px;color:var(--tx3)}
+.lib-go{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--brand);flex:none}
+.rtag{font-size:11px;font-weight:700;color:var(--brand);border:1px dashed var(--brand-line);border-radius:5px;padding:0 5px;margin-left:6px;white-space:nowrap}
+.tierhead{margin-top:28px}
+.tierhead h3{font-family:var(--disp);font-size:16px;margin:0}
+table.st{width:100%;border-collapse:collapse;margin-top:10px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.st th{text-align:left;font-size:12px;font-weight:700;color:var(--tx3);background:var(--chrome);padding:9px 12px;border-bottom:1px solid var(--bd)}
+.st td{padding:9px 12px;border-bottom:1px solid var(--bd-soft);vertical-align:top;font-size:13px}
+.st tr:last-child td{border-bottom:none}
+.st .meta{font-size:12px;color:var(--tx3)}
+.tblw{overflow-x:auto}
+.pill{font-size:11.5px;font-weight:700;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.pill.idx{background:var(--ok-soft);color:var(--ok)}.pill.exc{background:var(--err-soft);color:var(--err)}
+.note{border-left:3px solid var(--brand);background:var(--brand-soft);border-radius:0 6px 6px 0;padding:12px 14px;font-size:13px;color:var(--tx2);margin-top:20px}
+.ab{margin-top:24px}
+.ab h3{font-family:var(--disp);font-size:16px;margin:0 0 8px}
+.ab ul{margin:0;padding-left:18px}.ab li{margin-bottom:6px}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+@media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+.fl{border:1px solid var(--bd);border-radius:10px;padding:12px 13px}
+.fl b{display:block;font-family:var(--disp);font-size:14px;margin-bottom:3px}
+.fl span{font-size:12.5px;color:var(--tx2)}
+.demo{font-size:11.5px;color:var(--tx3);text-align:center;padding:5px 12px;background:var(--chrome);border-bottom:1px solid var(--bd-soft)}
+@media(max-width:700px){
+  .rail{display:none}
+  .hdr-t{padding:10px 14px 4px}
+  .viewas{margin-left:0;width:100%;justify-content:space-between}
+  .thr,.body{padding-left:14px;padding-right:14px}
+  .cmp{padding:0 12px 10px}
+  .row.me .col{max-width:90%}
+  .av{display:none}
+}
+</style>
+</head>
+<body>
+<div class="tm">
+  <nav class="rail" aria-label="Teams">
+    <button class="ri" aria-label="Activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h4l2 5 4-12 2 7h4"/></svg><span>Activity</span></button>
+    <button class="ri" aria-label="Chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7 7 0 0 1-9.9 6.4L4 20l1.6-6A7 7 0 1 1 20 12z"/></svg><span>Chat</span></button>
+    <button class="ri" aria-label="Teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="10" r="2.2"/><path d="M16 15.5A5 5 0 0 1 21 20"/></svg><span>Teams</span></button>
+    <button class="ri" aria-label="Calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3"/></svg><span>Calendar</span></button>
+    <button class="ri on" aria-current="page" aria-label="Mentor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 4 8l8 4 8-4-8-4z"/><path d="M6.5 10.5V15c0 1.7 2.5 3 5.5 3s5.5-1.3 5.5-3v-4.5"/></svg><span>Mentor</span></button>
+    <div class="rsp"></div><div class="rav" id="rav"></div>
+  </nav>
+  <div class="app">
+    <div class="demo">Demonstration build for Tata Consumer Products. Answers are prepared in advance and document names are illustrative.</div>
+    <header class="hdr">
+      <div class="hdr-t">
+        <div class="appic" aria-hidden="true">M</div>
+        <div><div class="appnm">Audit Mentor</div><div class="appsub">Tata Consumer Internal Audit and ERM, by Netscribes</div></div>
+        <div class="viewas"><div><div class="viewas-l">Signed in with Microsoft Entra</div><div class="viewas-v" id="whoami"></div></div>
+          <button class="viewas-b" id="switchRole">Switch role</button></div>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab on" data-tab="chat" role="tab">Chat</button>
+        <button class="tab" data-tab="library" role="tab">Prompt library</button>
+        <button class="tab" data-tab="sources" role="tab">Sources</button>
+        <button class="tab" data-tab="about" role="tab">About</button>
+      </div>
+    </header>
+    <div id="view" style="flex:1;min-height:0;display:flex;flex-direction:column"></div>
+  </div>
+</div>
+<script>
+/* ================= people and sources ================= */
+const ROLES={
+  junior:{key:"junior",who:"Ritika P",initials:"RP",title:"Associate Manager, Internal Audit",short:"Associate Manager"},
+  lead:{key:"lead",who:"Vikram N",initials:"VN",title:"Manager, Internal Audit",short:"Manager"}};
+const SRC={
+  std:{t:1,n:"IIA Global Internal Audit Standards",i:"2024 edition"},
+  sia:{t:1,n:"ICAI Standards on Internal Audit",i:"as issued"},
+  gtag:{t:1,n:"IIA GTAG: Continuous Auditing and Monitoring",i:"3rd edition"},
+  lines:{t:1,n:"IIA Three Lines Model",i:"2020"},
+  coa:{t:1,n:"Companies Act 2013, internal financial controls",i:"Section 134(5)(e)"},
+  charter:{t:2,n:"TCPL Internal Audit Charter",i:"version 4.0"},
+  meth:{t:2,n:"TCPL Internal Audit Methodology",i:"version 5.1"},
+  risk:{t:2,n:"TCPL 10-factor Risk Assessment Model",i:"FY27"},
+  wp:{t:2,n:"TCPL IA Workpaper and Reporting Standard",i:"version 2.3"},
+  comp:{t:2,n:"TCPL IA Competency Framework",i:"version 1.2"},
+  doa:{t:2,n:"TCPL Delegation of Authority Matrix",i:"FY27"},
+  tcoc:{t:2,n:"Tata Code of Conduct",i:"current"},
+  scheme:{t:2,n:"TCPL Trade Scheme and Claims Policy",i:"version 3.2"},
+  trdap:{t:2,n:"TCPL Distributor and Trade Spend Audit Programme FY27",i:"version 1.1"},
+  tea:{t:2,n:"TCPL Tea Buying and Blending Control Procedure",i:"version 2.4"},
+  cpk:{t:2,n:"TCPL Co-packer Management SOP",i:"version 1.6"},
+  fsqa:{t:2,n:"TCPL Food Safety and Quality Audit Programme FY27",i:"version 1.0"},
+  p2p:{t:2,n:"TCPL P2P Audit Programme FY27",i:"version 2.0"},
+  o2c:{t:2,n:"TCPL O2C and Modern Trade Audit Programme FY27",i:"version 1.3"},
+  inv:{t:2,n:"TCPL CFA and Inventory Audit Programme FY27",i:"version 1.2"},
+  hr:{t:2,n:"TCPL Contract Labour Compliance Procedure",i:"version 1.4"},
+  rpt:{t:2,n:"TCPL Policy on Related Party Transactions",i:"current"},
+  integ:{t:2,n:"TCPL Acquired Entity Integration Control Plan",i:"FY27"},
+  tgo:{t:2,n:"Tgo Analytics Catalogue",i:"maintained by Internal Audit"},
+  rclaims:{t:3,n:"India Beverages Distributor Claims Audit FY26",i:"issued Sep 2025"},
+  rcopack:{t:3,n:"RTD Co-packer Audit FY26",i:"issued Dec 2025"},
+  rcap:{t:3,n:"Capital Foods Integration Review FY26",i:"issued Feb 2026"}};
+const y=(k,d)=>({...SRC[k],i:d||SRC[k].i});
+
+const SOURCE_TIERS=[
+ {tier:1,label:"Tier 1: external standards and law",note:"These outrank everything below. Where TCPL methodology and a standard disagree, the standard wins and the answer says so.",
+  docs:[["IIA Global Internal Audit Standards","2024 edition","Jan 2025","The IIA",412],["ICAI Standards on Internal Audit","as issued","various","ICAI",236],
+        ["IIA GTAG: Continuous Auditing and Monitoring","3rd edition","Sep 2025","The IIA",96],["IIA Three Lines Model","2020","Jul 2020","The IIA",24],
+        ["Companies Act 2013, internal financial controls","Section 134(5)(e)","2013","Government of India",18]]},
+ {tier:2,label:"Tier 2: TCPL internal audit authority",note:"Owned and version-controlled by Internal Audit and ERM. A change here is an approved change, recorded with who made it and when.",
+  docs:[["TCPL Internal Audit Charter","4.0","Apr 2026","Audit Committee",21],["TCPL Internal Audit Methodology","5.1","Apr 2026","Global Internal Audit Head",294],
+        ["TCPL 10-factor Risk Assessment Model","FY27","Apr 2026","Global Internal Audit Head",38],["TCPL IA Workpaper and Reporting Standard","2.3","Apr 2026","Global Internal Audit Head",66],
+        ["TCPL IA Competency Framework","1.2","Apr 2026","Global Internal Audit Head",52],["TCPL Delegation of Authority Matrix","FY27","Apr 2026","Corporate Finance",47],
+        ["Tata Code of Conduct","current","2025","Tata Sons",64],["TCPL Trade Scheme and Claims Policy","3.2","Jun 2026","Sales Finance",88],
+        ["TCPL Distributor and Trade Spend Audit Programme FY27","1.1","May 2026","IA Lead, Sales and Distribution",142],["TCPL Tea Buying and Blending Control Procedure","2.4","Jan 2026","Tea Buying",76],
+        ["TCPL Co-packer Management SOP","1.6","Mar 2026","Manufacturing",91],["TCPL Food Safety and Quality Audit Programme FY27","1.0","May 2026","IA Lead, FSQA",104],
+        ["TCPL P2P Audit Programme FY27","2.0","May 2026","IA Lead, P2P",168],["TCPL O2C and Modern Trade Audit Programme FY27","1.3","May 2026","IA Lead, O2C",117],
+        ["TCPL CFA and Inventory Audit Programme FY27","1.2","May 2026","IA Lead, Supply Chain",98],["TCPL Contract Labour Compliance Procedure","1.4","Feb 2026","HR Operations",44],
+        ["TCPL Policy on Related Party Transactions","current","2025","Company Secretary",19],["TCPL Acquired Entity Integration Control Plan","FY27","Apr 2026","Integration Office",57],
+        ["Tgo Analytics Catalogue","live","Oct 2026","Internal Audit",132],["TCPL ITGC Audit Programme FY27","1.0","pending","IA Lead, IT",0]]},
+ {tier:3,label:"Tier 3: prior engagement precedent",note:"Issued reports only. Used to show how something was handled before, never as authority for how it should be handled.",
+  docs:[["India Beverages Distributor Claims Audit FY26","issued","Sep 2025","Internal Audit",48],["RTD Co-packer Audit FY26","issued","Dec 2025","Internal Audit",39],
+        ["Capital Foods Integration Review FY26","issued","Feb 2026","Internal Audit",33]]}];
+const NOT_LOADED=[["Corporate treasury and dealing policy","Owned by Treasury, outside the internal audit corpus"],
+ ["Draft audit reports not yet issued","Excluded until issued, so the mentor never cites a conclusion that may still change"],
+ ["HR personnel, performance and investigation files","Out of scope for this application"],
+ ["The open web","No external retrieval. The mentor cannot reach anything not listed above"]];
+
+/* ================= topics =================
+   Each answer has five parts: lead, why, consider, askNext, sources; plus follow-ups. */
+const D={
+/* ---------- planning ---------- */
+scopeclaims:{ask:"How do I scope a distributor claims audit?",blurb:"Start from the scheme risk and what Tgo and continuous monitoring already cover.",stage:"Planning",
+ keys:["scope","scoping","plan the audit","distributor audit","claims audit"],
+ byRole:{
+  junior:{lead:"Start from the schemes, not the distributors. List the schemes live in the period, rank them by spend and complexity, and scope the claim flow end to end: scheme setup, claim submission in MAVIC, validation by Sales Finance, credit note, settlement.",
+   why:"Claim risk is created when a scheme is designed and approved. A scheme with loose eligibility or unclear slabs produces bad claims however carefully each claim is checked. Scoping by distributor tends to send you to the largest accounts, which are rarely where the leakage is.",
+   consider:["Check which rules in the TRD control area already run nightly. Those claims are tested in full, so your fieldwork moves to the exceptions and to whatever the rules do not cover.","Include credit notes in scope. A credit note with no linked claim is a common way around claim validation.","Agree with your lead whether Capital Foods distributors are in scope, since they may still sit on a separate system.","Note any scheme circulars issued mid-period, because changed slabs are a common source of exceptions."],
+   askNext:["Which schemes had the highest spend against budget this quarter","Which TRD rules are currently handed to Sales Finance, and which stay with Internal Audit","Whether the FY26 claims audit raised anything that is due for follow-up"]},
+  lead:{lead:"Scope on scheme risk and on the gap between continuous coverage and the claim lifecycle. Continuous monitoring already tests every claim against validity, slab and duplicate rules, so the engagement should spend its days on scheme design, the claims the rules cannot see, and whether Sales Finance is clearing what it has been handed.",
+   why:"Once TS2.1 and TS2.2 run on the full population, re-testing claims on a sample adds no assurance. The residual risk sits upstream in scheme approval and downstream in settlement and credit notes, and in the quality of the first-line response to exceptions. Scoping around that is what makes the engagement defensible to the Audit Committee.",
+   consider:["Treat the open TRD exception population as a planning input. Concentration by region or scheme type tells you where to go.","Test the handover. If Sales Finance owns TS2.2-R2, the audit question is whether they clear it, not whether the rule fires.","Decide early whether the recommendation is likely to be about scheme design. If so, Trade Marketing needs to be in the opening meeting, not just Sales Finance.","Record in the scope memo what the nightly rules cover, or a reviewer will look for a sampling rationale and not find one."],
+   askNext:["What share of claim value sits in schemes with mid-period changes","Whether exception ageing for owner-held TRD rules is within the agreed response time","Whether any distributor appears across TS2.1, TS3.1 and TS5.2 together"]}},
+ sources:[y("trdap","scope and objectives"),y("scheme","scheme lifecycle"),y("meth","engagement planning"),y("std","Standard 13.2, engagement risk assessment")],
+ fups:["claimvalidity","coverage","riskmodel"]},
+
+riskmodel:{ask:"How do I apply the 10-factor risk model to an audit area?",blurb:"Rate inherent risk first, then let control evidence move the residual rating.",stage:"Planning",
+ keys:["risk model","10-factor","10 factor","risk assessment","inherent risk","rate the risk"],
+ r:{lead:"Rate each factor on inherent risk before you look at controls, then use control evidence, including continuous monitoring results, to arrive at residual risk. The model is a structured judgement, not a calculator.",
+  why:"Rating residual risk first builds your conclusion into your planning, because it assumes the controls work. The 10-factor model exists so that two auditors looking at the same area reach a comparable rating and can explain the difference if they do not.",
+  consider:["Factors such as transaction volume, value at risk and change in the period move most for FMCG areas. A GTM rebuild or a new channel like quick commerce is a change factor in its own right.","Acquired entities often rate high on control environment even when transaction value is low, because policies are not yet harmonised.","Use the nightly exception rate as evidence for the control factor, but check whether the rule has been validated before you rely on it.","Record where you disagree with management's own risk register. That gap is often worth reporting."],
+  askNext:["Which factors changed most since the last assessment, and why","Whether any area has no control mapped against a high-rated risk","How the rating would change if the top exception rule were switched off"],
+  sources:[y("risk","factor definitions and weights"),y("meth","risk assessment and rating"),y("std","Standard 9.4, internal audit plan")],
+  fups:["scopeclaims","materiality","coverage"]}},
+
+materiality:{ask:"How do I set materiality for trade spend findings?",blurb:"Why a single value threshold rarely works for claims, and what to use instead.",stage:"Planning",
+ keys:["materiality","threshold","significance","how much matters"],
+ r:{lead:"Set significance per rule family rather than once for the engagement. Value works for claim overpayment rules. Nature works for duplicate claims, KYC gaps and related-party links, where one instance can matter regardless of amount.",
+  why:"Distributor claims are high in volume and low in value per item, so a value floor suppresses exactly the patterns worth seeing. Twenty small duplicate claims from one distributor are a more serious signal than one large late claim.",
+  consider:["Aggregate before you apply a floor. Group claims by distributor and scheme, then test the group against the threshold.","Use exposure figures from the nightly run rather than a percentage of revenue, because the run gives you the actual population.","Agree the basis with Sales Finance before fieldwork. It decides which exceptions you raise with them.","Keep the same basis across quarters, or trend comparisons stop meaning anything."],
+  askNext:["Whether your basis would let through a pattern you would not want to explain to the Audit Committee","How you will treat many individually small exceptions that are large together","Whether the FY26 claims audit used the same basis"],
+  sources:[y("meth","significance and materiality"),y("trdap","exception thresholds"),y("std","Standard 14.3, evaluation of findings")],
+  fups:["scopeclaims","falsepositive","rating"]}},
+
+coverage:{ask:"If every claim is tested nightly, do I still need to sample?",blurb:"How sampling changes when the control test runs on the full population.",stage:"Planning",
+ keys:["sample","sampling","population","coverage","every transaction","100%","full population"],
+ r:{lead:"Not for the control test itself. The rule already runs on every record, so there is no sampling risk to manage there. You still select, but you select exceptions to investigate rather than transactions to test.",
+  why:"Sampling exists to infer something about a population you cannot examine in full. When the rule covers every record, the conclusion about the control rests on complete evidence. What remains is judgement about which exceptions to work, and that judgement needs its own documented basis.",
+  consider:["Say in the workpaper that the population was tested in full, with the run reference from the evidence log. Otherwise a reviewer will look for a sampling rationale.","Choose exceptions by value, severity and pattern, and write that basis down. Taking the first twenty in the list is not a basis.","Check the skipped records on the evidence log. Records that were not tested are outside your conclusion and need saying so.","The statutory auditor may still want their own sample for reliance. Agree that early, especially with the auditor transition coming in 2027."],
+  askNext:["What basis you will record for choosing exceptions","Whether the exception rate is stable against prior runs","Whether the rule logic has been validated, since full testing of a wrong rule is still wrong"],
+  sources:[y("gtag","coverage and reliance"),y("meth","sampling and population testing"),y("sia","SIA 530, audit sampling")],
+  fups:["evidence","falsepositive","tgo"]}},
+
+tgo:{ask:"How should I use Tgo and continuous monitoring output in planning?",blurb:"Treat analytics output as planning evidence, not as a finished conclusion.",stage:"Planning",
+ keys:["tgo","analytics","continuous monitoring","ccm","dashboard","use the output"],
+ r:{lead:"Use it to decide where to look, then test the parts it cannot see. Analytics output tells you where exceptions concentrate. It does not tell you why, and it says nothing about risks that no rule covers.",
+  why:"A rule tests what it was written to test. The most common planning error with analytics is treating a clean dashboard as a clean area. A risk with no rule against it will always look clean.",
+  consider:["Map each high-rated risk in the area to a rule. Any risk without one needs fieldwork.","Look at rules marked as built on Tgo analytics and check whether their logic was updated when the source moved to S/4HANA or MAVIC.","Check the evidence log for skipped records before relying on a clean result.","Where a control has been handed to the business, plan to test whether the owner actually clears exceptions."],
+  askNext:["Which high risks in the area have no rule against them","When each rule you plan to rely on was last validated","Whether skipped records on recent runs are concentrated in one source"],
+  sources:[y("tgo","catalogue and rule versions"),y("gtag","using continuous auditing in planning"),y("meth","use of analytics")],
+  fups:["coverage","evidence","riskmodel"]}},
+
+/* ---------- trade and distribution ---------- */
+claimvalidity:{ask:"What is rule TS2.1-R1 actually testing?",blurb:"Claims paid outside a scheme's validity window or above its approved slab.",stage:"Fieldwork: trade and distribution",
+ keys:["ts2.1-r1","scheme validity","slab","outside validity","claim validity"],context:{rule:"TS2.1-R1",count:"642 exceptions"},
+ byRole:{
+  junior:{lead:"It checks two things on every paid claim. First, that the claim date falls inside the scheme's validity window. Second, that the rate claimed does not exceed the slab approved for that distributor's class in the scheme circular.",
+   why:"A scheme is a promise to pay under set conditions. Paying outside those conditions is a direct leak of trade spend. Because the claim is still approved in MAVIC, nothing looks wrong in the approval trail. The breach only shows when the claim is compared with the circular.",
+   consider:["Check whether the scheme was extended. A valid extension that was not updated in MAVIC produces a false exception.","Distributor class can change mid-scheme. Confirm which class applied on the claim date.","A claim a few days outside the window may be a timing issue with the invoice date. Look at the invoice, not just the claim."],
+   askNext:["Whether the circular was amended after launch","Which distributor class applied on the claim date","Whether the same distributor appears under TS2.1-R2 for duplicates"]},
+  lead:{lead:"It catches claims paid outside scheme validity or above slab. Treat the 642 hits as a population to stratify. The useful question is whether they come from a few schemes with poor circulars or from a validation step that is not working.",
+   why:"If the exceptions cluster in a handful of schemes, the finding is about scheme design and circular quality, and the owner is Trade Marketing. If they are spread across schemes, the validation control in Sales Finance is not working. The two lead to different recommendations and different people in the closing meeting.",
+   consider:["Group by scheme first, then by region. Concentration tells you the root cause faster than reading individual claims.","Separate amended schemes from others. Extensions not reflected in MAVIC inflate the count without representing leakage.","Quantify the excess paid, not just the count. The Audit Committee will ask how much.","Check whether TS2.1 was raised in the FY26 claims audit and what management committed to then."],
+   askNext:["What share of the exception value sits in the top five schemes","Whether the scheme setup control TS1.1 is also failing for those schemes","Whether recovery from distributors is practical, or whether the fix is forward-looking only"]}},
+ sources:[y("scheme","section 4, scheme validity and slabs"),y("trdap","claims testing"),y("rclaims","scheme validity observation"),y("std","Standard 14.2, analysis")],
+ fups:["dupclaim","claimvsales","rootcause"]},
+
+dupclaim:{ask:"How do I investigate potential duplicate claims?",blurb:"Rule TS2.1-R2, and the variants an exact match will miss.",stage:"Fieldwork: trade and distribution",
+ keys:["ts2.1-r2","duplicate claim","claimed twice","double claim"],context:{rule:"TS2.1-R2",count:"218 exceptions"},
+ byRole:{
+  junior:{lead:"Start by confirming whether each pair is a true duplicate: same distributor, same invoice reference, same SKU and quantity, claimed under two schemes or in two periods. Then check whether both were paid.",
+   why:"A duplicate claim is paid twice for one sale. It rarely looks wrong on its own, because each claim passed validation separately. The rule finds it by comparing claims with each other, which no single approver can do.",
+   consider:["Some schemes legitimately stack, for example a volume scheme and a visibility scheme on the same invoice. Check the circulars before concluding.","Look for references with a character changed or a suffix added. Those are rarely accidental.","If both claims were paid, the recovery amount is the second payment."],
+   askNext:["Whether the two schemes were allowed to stack","Whether both claims were settled by credit note","Whether the same distributor appears in other duplicate pairs"]},
+  lead:{lead:"Separate permitted stacking from true duplicates first, then look for patterns by distributor and by Sales Finance approver. A cluster around one approver is a different finding from a cluster around one distributor.",
+   why:"Duplicates driven by a distributor suggest gaming. Duplicates passed by one approver suggest a validation gap or worse. Either way the recommendation changes: tighter scheme rules in MAVIC in the first case, review and segregation in the second.",
+   consider:["Ask whether the rule should also match on near-identical references. If the current rule is exact-match only, it understates the problem.","Consider whether a preventive block in MAVIC is the right recommendation rather than better detection.","Agree the recovery approach with Sales Finance before raising the finding.","Check for repeat appearance in TS5.2-R1, where a distributor shares details with an employee."],
+   askNext:["How much was paid twice, net of any recovery","Whether one approver accounts for a large share","Whether MAVIC can block a second claim on the same invoice reference"]}},
+ sources:[y("scheme","section 6, claim validation"),y("trdap","duplicate testing"),y("std","Standard 14.2")],
+ fups:["claimvalidity","fraudflag","writeup"]},
+
+claimvsales:{ask:"Why compare claimed quantity with secondary sales?",blurb:"Rule TS2.2-R1, and what secondary sales in MAVIC can and cannot prove.",stage:"Fieldwork: trade and distribution",
+ keys:["ts2.2-r1","secondary sales","claimed quantity","mavic","dms"],context:{rule:"TS2.2-R1",count:"387 exceptions"},
+ r:{lead:"Because a quantity-based claim should never exceed what the distributor actually sold on to retailers. Secondary sales in MAVIC are the only independent record of that, so the rule compares the two for each distributor, SKU and period.",
+  why:"Primary sales, from TCPL to the distributor, prove nothing about sell-out. A distributor can buy stock and claim on it without selling it. Secondary sales recorded through the DMS and SFA show what reached the market.",
+  consider:["Secondary sales are only as good as distributor data entry. Check whether the distributor was fully live on MAVIC for the whole period.","Stock held at the distributor at period end can explain a timing gap. Look at closing stock before concluding.","A persistent gap in one region may point to a DMS integration issue rather than inflated claims.","For distributors moved in the GTM rebuild, check the cut-over date carefully."],
+  askNext:["Whether the distributor was fully on MAVIC throughout the period","What the distributor's closing stock was","Whether the gap recurs across periods for the same distributor"],
+  sources:[y("trdap","claims against secondary sales"),y("scheme","quantity-based schemes"),y("gtag","using independent data sources")],
+  fups:["claimvalidity","rootcause","falsepositive"]}},
+
+retailerpay:{ask:"What should I look for in Retailer App payouts?",blurb:"Rules TS4.1-R1 and TS4.1-R2: payouts to inactive outlets and shared bank details.",stage:"Fieldwork: trade and distribution",
+ keys:["retailer app","payout","ts4.1","outlet","shared bank","mobile number"],context:{rule:"TS4.1-R2",count:"886 exceptions"},
+ r:{lead:"Two patterns. Payouts to outlets that are not billing, and payouts to different outlet IDs that share a bank account or mobile number. The first suggests outlets that exist only on paper. The second suggests one person collecting for many outlets.",
+  why:"Retailer payouts are small and very numerous, so no one looks at them one by one. That makes them a natural place for leakage. The risk is created when outlets are added to the master, often by field staff, with weak verification.",
+  consider:["Shared mobile numbers are common in family-run shops. Look for clusters of four or more before concluding.","Check who created the outlets in each cluster. A pattern by salesperson matters more than a pattern by outlet.","Inactive outlets can be seasonal. Compare with the same period last year.","This is a high-volume, low-value area, so the finding is usually about the onboarding control rather than individual payouts."],
+  askNext:["Who created the outlets in the largest clusters","Whether the outlet master has a verification step at all","How much in total went to non-billing outlets this quarter"],
+  sources:[y("scheme","retailer programmes"),y("trdap","outlet master testing"),y("tcoc","conflict of interest")],
+  fups:["fraudflag","distkyc","rootcause"]}},
+
+distkyc:{ask:"A distributor was activated without KYC. What do I test?",blurb:"Rule TS5.1-R1, and why the window before KYC was completed matters.",stage:"Fieldwork: trade and distribution",
+ keys:["ts5.1-r1","kyc","distributor onboarding","gst registration","security deposit","activated"],context:{rule:"TS5.1-R1",count:"41 exceptions"},
+ r:{lead:"Establish what was missing, whether the distributor traded while it was missing, and who activated the account. The gap in documents is the condition. The exposure is what happened in the window.",
+  why:"Distributor activation opens credit, scheme eligibility and claim rights at once. A distributor without verified identity, GST registration or a security deposit can receive stock on credit and claim on it. During the GTM rebuild many distributors were onboarded quickly, which is when this gap tends to appear.",
+  consider:["A distributor completed two days after activation is a different risk from one that traded for months without KYC.","Check the credit extended in the window, not just the sales.","Look for a pattern by the person who activated accounts.","A missing GST registration also affects input credit, so finance may already know about it."],
+  askNext:["How much credit was extended before KYC was complete","Whether the same activator appears repeatedly","Whether the distributor also appears under TS5.2-R1"],
+  sources:[y("trdap","distributor onboarding"),y("doa","credit limit approval"),y("std","Standard 14.2")],
+  fups:["retailerpay","fraudflag","materiality"]}},
+
+creditnote:{ask:"Why does a credit note with no linked claim matter?",blurb:"Rule TS3.1-R1: the route around claim validation.",stage:"Fieldwork: trade and distribution",
+ keys:["ts3.1-r1","credit note","no linked claim","settlement"],context:{rule:"TS3.1-R1",count:"96 exceptions"},
+ r:{lead:"Because a credit note is money paid to a distributor. If it is not tied to a claim, a return or an approved price difference, it has bypassed every check that a claim goes through.",
+  why:"Claim validation is the main control over trade spend. A credit note raised directly in S/4HANA is outside that flow. That makes it the easiest way to pay a distributor without anyone validating why.",
+  consider:["Some credit notes are legitimate, such as rate differences approved by email. Ask for the approval and check it predates the note.","Look at who raised them. Credit notes from outside Sales Finance deserve the most attention.","Check whether the same distributors appear under the claims rules.","Consider recommending a mandatory reference field in S/4HANA as a preventive fix."],
+  askNext:["Who raised the credit notes and under what authority","Whether the approval predates the credit note","Whether a mandatory claim reference is technically possible"],
+  sources:[y("scheme","settlement"),y("doa","credit note approval"),y("trdap","settlement testing")],
+  fups:["dupclaim","controltype","writeup"]}},
+
+/* ---------- sourcing and manufacturing ---------- */
+auction:{ask:"How do I test tea purchases above the price band?",blurb:"Rule CS1.1-R1: auction buying discipline and deviation approvals.",stage:"Fieldwork: sourcing and manufacturing",
+ keys:["cs1.1-r1","auction","tea buying","price band","grade","broker"],context:{rule:"CS1.1-R1",count:"142 exceptions"},
+ r:{lead:"For each lot bought above the band for its grade, check whether a deviation approval exists and predates the purchase. Then look at why the price was paid: quality need, shortage, or a pattern by buyer or broker.",
+  why:"Tea is bought at auction under time pressure, so buyers need discretion. The price band and deviation approval exist to keep that discretion visible. Paying above band is not wrong in itself. Paying above band without a recorded reason is.",
+  consider:["Bands are set per grade and centre. Check you are comparing against the right band for Guwahati, Kolkata or Kochi.","A shortage season can push many lots above band. Compare with market averages for the week.","Look at broker concentration alongside. Above-band buying through one broker is a stronger signal than either alone.","Tea buying has used AI tools since FY23. Ask whether the price recommendation was followed or overridden."],
+  askNext:["Whether deviation approvals were recorded before or after purchase","Whether the above-band lots concentrate with one buyer or broker","How the price paid compared with the auction average that week"],
+  sources:[y("tea","section 3, auction buying"),y("doa","purchase approvals"),y("std","Standard 14.2")],
+  fups:["blend","fraudflag","rootcause"]}},
+
+blend:{ask:"What does rule CS2.1-R1 on blend recipes protect?",blurb:"Recipe tolerance and why it matters for both cost and quality.",stage:"Fieldwork: sourcing and manufacturing",
+ keys:["cs2.1-r1","blend","recipe","tasting panel","component tea"],context:{rule:"CS2.1-R1",count:"64 exceptions"},
+ r:{lead:"It protects the brand promise and the cost of goods at the same time. A blend made outside its recipe tolerance either tastes different from what the consumer expects or costs more than standard, often both.",
+  why:"Blending lets a few component teas stand in for each other within limits. Outside those limits, the product changes. Because blending happens at the packeting centres under production pressure, deviations can become routine without anyone deciding they should.",
+  consider:["Check whether a substitute was approved by the tasting panel. Approved substitutions are legitimate.","Compare cost variance on the blend with the recipe deviation. If cost went up, someone paid for the change.","Look for repeat deviations at one packeting centre.","Quality complaints for the brand in the period may corroborate the finding."],
+  askNext:["Whether the tasting panel approved each deviation","Whether deviations concentrate at one packeting centre","Whether consumer complaints rose for the affected blend"],
+  sources:[y("tea","section 5, blending and recipes"),y("fsqa","sensory release"),y("std","Standard 14.2")],
+  fups:["auction","rootcause","controltype"]}},
+
+copacker:{ask:"How should I audit co-packer invoices against receipts?",blurb:"Rule M1.1-R1, and why the match alone is not enough.",stage:"Fieldwork: sourcing and manufacturing",
+ keys:["m1.1-r1","co-packer","copacker","conversion","contract manufacturing","third party manufacturing"],context:{rule:"M1.1-R1",count:"112 exceptions"},
+ byRole:{
+  junior:{lead:"Match the co-packer's invoice to goods received at the CFA for the same batch, then check the conversion rate against the agreement. The rule flags invoices for more cases than were received.",
+   why:"TCPL pays co-packers per unit produced, but only receives what reaches the CFA. Any gap between the two is paid for and not received. Because invoices and receipts sit with different teams, nobody sees both unless the rule matches them.",
+   consider:["Transit losses are real. Check the transit norm before concluding.","Some batches are split across CFAs. Make sure you matched all receipts for the batch.","Check whether the co-packer's agreement and FSSAI licence were valid on the production date."],
+   askNext:["Whether all receipts for the batch were found","What the agreed transit loss norm is","Whether the co-packer also appears under M1.1-R2 for rate"]},
+  lead:{lead:"Use the invoice-to-receipt gap to rank co-packers, then audit the arrangement as a whole: material issued to them, yield, conversion rate and quality release. The invoice gap is a symptom, and the material reconciliation is usually where the money is.",
+   why:"TCPL often supplies tea, packaging or ingredients to co-packers. If material issued is not reconciled to finished goods received plus allowed loss, excess material disappears quietly. That exposure is usually larger than the invoice gap.",
+   consider:["Reconcile material issued to output for the top three co-packers by exception value.","Check whether the RTD co-packer audit in FY26 raised material reconciliation, and what was agreed.","A co-packer with an expired FSSAI licence is a compliance finding regardless of value.","Consider whether quality release before dispatch is happening at the co-packer or only at the CFA."],
+   askNext:["How much material was issued to the co-packer against output received","Whether actions from the FY26 co-packer audit were closed","Whether quality release is evidenced before dispatch"]}},
+ sources:[y("cpk","section 4, invoicing and receipts"),y("rcopack","material reconciliation observation"),y("fsqa","co-packer quality")],
+ fups:["processloss","qualityrelease","repeatfinding"]},
+
+processloss:{ask:"How do I test process loss above norm?",blurb:"Rule M2.1-R1: when loss is a cost, a control or a quality issue.",stage:"Fieldwork: sourcing and manufacturing",
+ keys:["m2.1-r1","process loss","yield","wastage","loss norm"],context:{rule:"M2.1-R1",count:"186 exceptions"},
+ r:{lead:"Check whether each excess loss has an approved deviation, then look at whether the norm itself is reasonable. Loss above norm with no approval is the finding. A norm that is breached every week is a different finding.",
+  why:"Loss norms are set once and rarely revisited. Set too loose, they hide waste and pilferage. Set too tight, they produce exceptions that everyone ignores. Either way the control stops working, and the cause is a configuration decision rather than daily practice.",
+  consider:["Compare the loss with the same line and SKU over several months. A sudden rise matters more than a steady level.","New lines and new SKUs often run above norm at first. Check commissioning dates.","Loss on high-value inputs such as premium tea or saffron deserves more attention than packaging film.","Ask who reviews the deviations and whether they ever reject one."],
+  askNext:["When the loss norm was last reviewed","Whether deviations are ever rejected","Whether the loss trend changed after a line or SKU change"],
+  sources:[y("cpk","yield and loss norms"),y("fsqa","process control"),y("std","Standard 14.2")],
+  fups:["copacker","controltype","rootcause"]}},
+
+qualityrelease:{ask:"Why is release before the quality result a high-severity exception?",blurb:"Rule M4.1-R1: the food safety consequence of a timing gap.",stage:"Fieldwork: sourcing and manufacturing",
+ keys:["m4.1-r1","quality release","inspection","released before","usage decision"],context:{rule:"M4.1-R1",count:"36 exceptions"},
+ r:{lead:"Because once a batch leaves for the CFA, a failed result means a recall rather than a hold. For a food company that is a consumer safety and brand issue, not just a process gap.",
+  why:"The control exists to make sure nothing unsafe reaches the market. Release before the result removes that protection, even if the result later passes. Severity is set by what could have happened, not by what did.",
+  consider:["Check whether any of the batches later failed. That turns the finding into an incident.","Some tests take days. Ask whether there is an approved positive release procedure for those parameters.","Look for a pattern by site or shift.","This rule links to FSSAI compliance, so the Food Safety and Quality team should see the finding."],
+  askNext:["Whether any released batch later failed a test","Whether a positive release procedure exists for slow tests","Whether early release concentrates at one site"],
+  sources:[y("fsqa","release and positive release"),y("cpk","quality at co-packers"),y("std","Standard 14.3, severity")],
+  fups:["fssai","rating","rootcause"]}},
+
+/* ---------- other processes ---------- */
+splitting:{ask:"What is rule 4.1-R2 actually testing?",blurb:"Order splitting, and why it leaves no trace in the approval record.",stage:"Fieldwork: other processes",
+ keys:["4.1-r2","split","splitting","order split"],context:{rule:"4.1-R2",count:"1,517 exceptions"},
+ byRole:{
+  junior:{lead:"Order splitting. The rule looks for several purchase orders to the same vendor within 7 days that together cross an approval limit a single order of that value would have needed.",
+   why:"Delegation of authority limits apply per purchase order. Staying under the limit leaves no override in the record, because each order was approved at its own level. The pattern only shows across orders, which is why it is tested analytically.",
+   consider:["Separate genuine needs raised by different cost centres a few days apart. Those are legitimate.","Call-off orders against a rate contract often trigger this rule and are explained by the contract.","A deliberate splitter may space orders just outside the 7-day window."],
+   askNext:["Which threshold the combined value crossed, and by how much","Whether one person raised all the orders","Whether a rate contract should have been used"]},
+  lead:{lead:"Treat the 1,517 hits as a population to stratify, not a list to work through. Group by vendor and requester, and rank by how far the combined value cleared the threshold.",
+   why:"Per-order limits mean splitting leaves no override, so the population will be large and mostly harmless. The judgement sits in stratification. Working the list in order is the most common way teams lose three weeks on this rule.",
+   consider:["Cross-check vendors against 1.1-R1 and 6.1-R2. Repeat appearance across unrelated rules is the signal worth escalating.","Agree the floor with Procurement before fieldwork.","Decide whether to recommend tighter detection or a block in the S/4HANA release strategy.","Check whether the FY26 P2P audit raised splitting and what was agreed."],
+   askNext:["What share of the population is above your floor once grouped","Whether splitting concentrates in one cost centre","What management committed to last time"]}},
+ sources:[y("p2p","section 4.1, purchase orders"),y("doa","approval bands"),y("std","Standard 14.2")],
+ fups:["controltype","opinion","repeatfinding"]},
+
+qcommerce:{ask:"How do I audit quick commerce chargebacks?",blurb:"Rule O4.1-R2: deductions taken without a matching agreement clause.",stage:"Fieldwork: other processes",
+ keys:["o4.1-r2","quick commerce","chargeback","marketplace","settlement","penalty","listing fee"],context:{rule:"O4.1-R2",count:"1,142 exceptions"},
+ r:{lead:"Match each deduction in the settlement file to a clause in the agreement with that platform. A deduction with no clause behind it is money conceded without a contractual basis.",
+  why:"Quick commerce grew fast, and settlement files arrive net of many deductions: penalties, listing fees, shortages, promotions. Each is small, and receivables teams tend to accept them to keep the account moving. Together they can reach a material sum.",
+  consider:["Agreements change often in this channel. Check you are using the version in force on the settlement date.","Some deductions are agreed by email with the key account team. Ask for that evidence.","Look at the trend. Rising deductions with flat sales suggest leakage.","Recommend a dispute window and owner if none exists."],
+  askNext:["Which agreement version applied on each settlement date","Whether disputed deductions are ever recovered","How deductions moved as a share of sales over the last four quarters"],
+  sources:[y("o2c","section 4, marketplace settlements"),y("doa","commercial terms approval"),y("std","Standard 14.2")],
+  fups:["materiality","rootcause","writeup"]}},
+
+nearexpiry:{ask:"What should I check on near-expiry stock at CFAs?",blurb:"Rule I3.1-R1: shelf life, liquidation and provisioning.",stage:"Fieldwork: other processes",
+ keys:["i3.1-r1","near expiry","near-expiry","shelf life","expiry","liquidation","cfa"],context:{rule:"I3.1-R1",count:"196 exceptions"},
+ r:{lead:"Check that stock nearing expiry was blocked for normal sale or moved to the liquidation channel in time, and that it was provided for at period end. The risk is both selling short-dated stock and carrying it at full value.",
+  why:"Foods and beverages have shelf lives measured in months. Stock that sits at a CFA past its saleable window becomes a write-off, and stock dispatched too close to expiry comes back as market returns. Both cost money and the second can harm the brand.",
+  consider:["Check first-expiry-first-out practice at the CFA in SAP EWM.","Look at the distributor channel norm for remaining shelf life, which differs by channel.","Compare provisioning at period end with the near-expiry list.","Repeat issues at one CFA usually point to demand planning, not the CFA."],
+  askNext:["Whether FEFO is enforced in SAP EWM","Whether near-expiry stock was provided for at month end","Whether issues concentrate at one CFA or one SKU"],
+  sources:[y("inv","near-expiry and liquidation"),y("fsqa","shelf life"),y("std","Standard 14.2")],
+  fups:["processloss","rootcause","rating"]}},
+
+contractlabour:{ask:"How do I test contract labour wage compliance?",blurb:"Rule H3.1-R1: minimum wage, PF and ESI for off-roll workers.",stage:"Fieldwork: other processes",
+ keys:["h3.1-r1","contract labour","contractor","minimum wage","off-roll","pf","esi","plantation"],context:{rule:"H3.1-R1",count:"124 exceptions"},
+ r:{lead:"Compare wages paid by each contractor with the state minimum wage for the category, then check PF and ESI challans for the same month. As principal employer, TCPL carries liability if the contractor does not pay.",
+  why:"TCPL has a large off-roll workforce in sales, supply chain and plantations. The company pays the contractor, and the contractor pays workers. If the second step fails, the liability comes back to TCPL under contract labour law, along with a reputational risk.",
+  consider:["Minimum wages change twice a year in many states. Check the rate in force for the wage month.","Gate attendance is the independent check on headcount. Compare it with the contractor invoice.","Plantation workers fall under the Plantations Labour Act, with separate entitlements.","The revised labour codes are a live priority, so confirm which rules applied in the period."],
+  askNext:["Which minimum wage notification applied for the wage month","Whether gate attendance supports the invoiced headcount","Whether PF and ESI challans match the wage register"],
+  sources:[y("hr","contractor payments"),y("tcoc","fair labour"),y("coa","compliance with laws")],
+  fups:["rating","rootcause","writeup"]}},
+
+fssai:{ask:"What does an FSSAI release exception mean for the audit?",blurb:"Rule C1.1-R1: when a missing test record becomes a compliance finding.",stage:"Fieldwork: other processes",
+ keys:["c1.1-r1","fssai","food safety","test result","product standard"],context:{rule:"C1.1-R1",count:"22 exceptions"},
+ r:{lead:"A batch dispatched without a recorded result for the parameters in its FSSAI product standard is a compliance gap, even if the batch was safe. The audit question is whether the test was done and not recorded, or not done at all.",
+  why:"Regulators judge on records. A test that was done but not recorded cannot be shown to an inspector, so for compliance purposes it did not happen. That is why the rule is high severity regardless of outcome.",
+  consider:["Check the lab records directly. Results kept outside the system are a documentation finding, not a testing failure.","Co-packer batches may be tested at the co-packer's lab. Confirm where the record should sit.","Bring in the Food Safety and Quality team early. They own the remediation.","Check whether any affected batch was later the subject of a complaint."],
+  askNext:["Whether the test was done and simply not recorded","Where co-packer test records are held","Whether any affected batch drew complaints"],
+  sources:[y("fsqa","release testing"),y("cpk","co-packer testing"),y("coa","compliance with laws")],
+  fups:["qualityrelease","rating","writeup"]}},
+
+rpt:{ask:"How do I test related party transactions with Capital Foods?",blurb:"Rule G1.1-R1: Audit Committee approval and the omnibus limit.",stage:"Fieldwork: other processes",
+ keys:["g1.1-r1","related party","rpt","omnibus","capital foods","organic india"],context:{rule:"G1.1-R1",count:"6 exceptions"},
+ r:{lead:"Check that every related party transaction falls within an Audit Committee approval, either specific or omnibus, and that cumulative value stays within the approved limit. A transaction outside approval is a governance finding however small.",
+  why:"Related party transactions require prior Audit Committee approval under the listing regulations and the company's own policy. Transactions with Capital Foods crossed the material threshold in FY26 and went to shareholders, so this area has board attention.",
+  consider:["Check cumulative value against the omnibus limit, not just individual transactions.","Confirm the arm's length basis is documented for pricing.","Transactions booked in the acquired entity's system may not be flagged as related party. Check both sides.","Report findings here to the Audit Committee directly. They own the approval."],
+  askNext:["How close cumulative value is to the omnibus limit","Whether pricing has a documented arm's length basis","Whether both sides of the transaction are flagged"],
+  sources:[y("rpt","approval and limits"),y("charter","reporting to the Audit Committee"),y("std","Standard 11.3, communicating with the board")],
+  fups:["integration","rating","mgmtresponse"]}},
+
+integration:{ask:"How do I audit an acquired entity that isn't fully integrated yet?",blurb:"Rule G2.1-R1: harmonisation gaps at Capital Foods and Organic India.",stage:"Fieldwork: other processes",
+ keys:["g2.1-r1","integration","acquired","acquisition","harmonise","harmonisation"],context:{rule:"G2.1-R1",count:"9 exceptions"},
+ r:{lead:"Audit against the integration control plan, not against TCPL's full policy set. The question is whether each control is on track to be harmonised by its committed date, and what the interim control is until then.",
+  why:"Auditing an acquired entity against policies it has not yet adopted produces a long list of findings that management already knows about. Auditing the plan tells the Audit Committee whether integration risk is being managed.",
+  consider:["Delegation of authority and vendor onboarding are usually the highest-risk gaps. Start there.","Check for vendors and customers present in both masters with different bank details.","Ask what interim control covers each gap.","Use the FY26 Capital Foods integration review as the baseline for follow-up."],
+  askNext:["Which integration milestones are overdue","What interim control covers each open gap","Whether actions from the FY26 review were closed"],
+  sources:[y("integ","milestones and interim controls"),y("rcap","DOA observation"),y("doa","applicability to subsidiaries")],
+  fups:["rpt","repeatfinding","riskmodel"]}},
+
+/* ---------- technique ---------- */
+controltype:{ask:"Is this a preventive or a detective control?",blurb:"Why the answer changes how you test and what you recommend.",stage:"Technique",
+ keys:["preventive","detective","control type","type of control"],
+ r:{lead:"A preventive control stops the error before it happens, such as MAVIC blocking a claim after the scheme ends. A detective control finds it afterwards, such as a nightly rule flagging the paid claim. Most continuous monitoring rules are detective.",
+  why:"The distinction decides what an exception means. An exception on a preventive control means it failed. An exception on a detective control means it worked, and the question becomes whether anyone acted on it.",
+  consider:["For detective rules, test the response: who received the exception, and was it cleared in time.","A recurring detective exception often points to a missing preventive control.","Recommending a preventive fix in S/4HANA or MAVIC usually needs Digital in the conversation.","Document the control type in the workpaper, since reviewers test against it."],
+  askNext:["Who responds to this rule's exceptions, and how quickly","Whether a preventive block is technically possible","Whether the business would accept the friction a block adds"],
+  sources:[y("meth","control classification"),y("gtag","detective analytics"),y("std","Standard 14.2")],
+  fups:["opinion","rootcause","writeup"]}},
+
+evidence:{ask:"What evidence do I need for a continuous control test?",blurb:"What to put in the workpaper when the rule, not the auditor, did the testing.",stage:"Technique",
+ keys:["evidence","workpaper","documentation","what to document"],
+ r:{lead:"Four things: the rule as written and its version, the run reference showing population and records tested, the skipped records with reasons, and your own evidence for the exceptions you investigated.",
+  why:"When a rule does the testing, the evidence of testing is the run log, not your tick marks. A reviewer, or the statutory auditor, needs to be able to re-perform the conclusion from what you recorded.",
+  consider:["Reference the evidence log entry rather than exporting the whole population.","Record the rule version. Rules change, and a later reviewer needs to know which logic ran.","Explain skipped records. They are outside your conclusion.","Keep your own investigation evidence for the exceptions you worked, as you would in any audit."],
+  askNext:["Whether the rule changed during the period","Whether skipped records affect your conclusion","Whether the statutory auditor will rely on your work"],
+  sources:[y("wp","evidence for analytics-based testing"),y("gtag","evidence and documentation"),y("sia","SIA 230, documentation")],
+  fups:["coverage","opinion","writeup"]}},
+
+rootcause:{ask:"How do I get to the root cause of an exception pattern?",blurb:"From condition to cause, without stopping at human error.",stage:"Technique",
+ keys:["root cause","why did it happen","cause"],
+ r:{lead:"Ask why until you reach something management can change: a policy, a system setting, a role design or an incentive. Human error is never the root cause. It is a description of where the cause showed up.",
+  why:"A finding with a weak cause produces a weak action, usually training. That rarely changes anything, and the same exception comes back next quarter. The cause decides the recommendation.",
+  consider:["Look for concentration. If exceptions cluster by scheme, site or approver, the cause is local.","Check incentives. Sales targets often explain claim and credit note patterns.","Ask the process owner first. They usually know, and asking builds trust.","Test your cause: if it were fixed, would the exceptions stop?"],
+  askNext:["Where the exceptions concentrate","What incentive the people involved are working to","What would have to change for the exception rate to fall"],
+  sources:[y("meth","root cause analysis"),y("wp","finding construction"),y("std","Standard 14.3")],
+  fups:["writeup","falsepositive","mgmtresponse"]}},
+
+falsepositive:{ask:"Most of these exceptions look like false positives. What now?",blurb:"When to tune the rule and when to accept the noise.",stage:"Technique",
+ keys:["false positive","false positives","noise","too many exceptions","not real"],
+ r:{lead:"Prove it on a sample, document why, and then propose a rule change through Internal Audit's change process. Do not quietly ignore the population.",
+  why:"A rule producing mostly false positives trains everyone to ignore it, including the real exceptions. Changing it informally removes the evidence trail. The fix is a versioned change that someone approves.",
+  consider:["Classify a sample of exceptions into true, false and unclear. Keep the classification.","Common causes include scheme extensions not updated in MAVIC, permitted stacking and transit norms.","A tolerance change is a control change. Record who approved it.","Rerun the tuned rule on the same period to show the effect."],
+  askNext:["What share of a sample was truly false","Which data issue causes most of the false positives","Who approves changes to this rule"],
+  sources:[y("tgo","rule change process"),y("gtag","tuning analytics"),y("meth","use of analytics")],
+  fups:["coverage","evidence","rootcause"]}},
+
+fraudflag:{ask:"When should I escalate an exception as possible fraud?",blurb:"The signals that move a finding from control gap to investigation.",stage:"Technique",
+ keys:["fraud","escalate","investigation","suspicious","whistleblower"],
+ r:{lead:"Escalate when the pattern points to intent rather than error: concealment, one person benefiting, or the same party across unrelated rules. Escalate to your lead first, and stop testing that thread until they decide.",
+  why:"Once you suspect fraud, further fieldwork can tip off the people involved or contaminate evidence. Investigations follow a different process with different rules on evidence, and the Audit Committee Chair is informed.",
+  consider:["Shared bank details between a distributor and an employee are a strong signal.","Repeated small amounts just under a threshold suggest someone knows the threshold.","Do not interview the people involved about the suspicion.","Record what you found and when you escalated."],
+  askNext:["Whether the same party appears in unrelated rules","Whether there are signs of concealment","Who in your team owns investigations"],
+  sources:[y("charter","investigations"),y("tcoc","reporting concerns"),y("std","Standard 4.3, due professional care")],
+  fups:["dupclaim","retailerpay","rootcause"]}},
+
+opinion:{ask:"Does this exception mean the control has failed?",stage:"Technique",blurb:"Where the mentor stops and your judgement starts.",refuse:true,
+ keys:["has the control failed","control failed","is this a finding","did it fail","pass or fail"],
+ r:{lead:"I can't conclude that, and I'm not built to. Whether a control failed is an audit opinion, and it carries your name on the signoff, not mine.",
+  why:"What I can do is help you frame the question. A detective rule raising exceptions may be working exactly as designed. The judgement turns on what happened next, and on whether the exception rate is within what management accepted.",
+  consider:["Start with the control type. An exception on a detective control is evidence it ran.","Look at the response. Exceptions cleared within the agreed time support effective operation.","Compare with the tolerance management set, if one exists.","Talk it through with your lead before concluding."],
+  askNext:["Is the control preventive or detective","How quickly were exceptions cleared","What exception rate did management accept"],
+  sources:[y("meth","forming a conclusion"),y("std","Standard 14.3")],
+  fups:["controltype","rating","writeup"]}},
+
+/* ---------- reporting ---------- */
+writeup:{ask:"How do I write this up as a finding?",blurb:"Criteria, condition, cause, effect and recommendation, in that order.",stage:"Reporting",
+ keys:["write up","writeup","write the finding","finding format","draft a finding"],
+ r:{lead:"Use the five elements: what should happen (criteria), what does happen (condition), why (cause), what it costs or risks (effect), and what to change (recommendation). Write the cause before you write anything else.",
+  why:"A finding missing its cause gets a generic action. A finding missing its effect gets deprioritised. The structure exists because management responds to findings it can understand and act on.",
+  consider:["Quote the criteria from policy, such as the scheme circular or DOA, with its section.","Quantify the effect from the nightly run, including value where you have it.","Address the recommendation to an owner who can act on it.","Keep the condition factual. Save the judgement for the effect and the rating."],
+  askNext:["Can you quote the criteria from policy","What is the cause in one sentence","Who can actually fix this"],
+  sources:[y("wp","finding construction"),y("meth","reporting"),y("std","Standard 15.1, final engagement communication")],
+  fups:["rating","mgmtresponse","draftit"]}},
+
+rating:{ask:"How do I rate a finding?",blurb:"Impact and likelihood, and how continuous monitoring evidence changes the rating.",stage:"Reporting",
+ keys:["rate","rating","severity","high medium low"],
+ r:{lead:"Rate on impact and likelihood using the methodology's scale, then check the rating against the evidence. Continuous monitoring gives you actual frequency and value, so use them rather than estimates.",
+  why:"Ratings drive what the Audit Committee sees. An overrated finding wastes attention, and an underrated one hides risk. Full-population data removes much of the guesswork about likelihood.",
+  consider:["Use the exception value from the run to support impact.","Repeat findings usually rate higher by policy. Check the prior year.","Compliance findings such as FSSAI or contract labour often rate high on impact even at low value.","Calibrate with your lead before the closing meeting, not after."],
+  askNext:["What value is attached to the exceptions","Is this a repeat finding","Does the rating match similar findings last year"],
+  sources:[y("meth","rating scale"),y("wp","rating calibration"),y("std","Standard 14.3")],
+  fups:["writeup","repeatfinding","mgmtresponse"]}},
+
+mgmtresponse:{ask:"Management disagrees with my finding. What do I do?",blurb:"Separate disagreement on facts from disagreement on judgement.",stage:"Reporting",
+ keys:["management disagrees","disagree","pushback","push back","dispute"],
+ r:{lead:"Find out whether they dispute the facts or the judgement. Facts you resolve with evidence. Judgement you record, with both views, and let the rating stand or move on its merits.",
+  why:"Disagreement on facts usually means something was missed, and fixing it strengthens the report. Disagreement on judgement is legitimate, and the report should show it rather than hide it. The Audit Committee is better served by a recorded difference than a softened finding.",
+  consider:["Re-check the facts first, without being defensive.","Full-population evidence is hard to dispute. Use the run data.","If management accepts the risk, record who accepted it and at what level.","Escalate through your lead, not around the business."],
+  askNext:["Is the disagreement about facts or judgement","Who has authority to accept this risk","Has this happened with this owner before"],
+  sources:[y("meth","management responses"),y("charter","escalation"),y("std","Standard 11.4, escalation")],
+  fups:["writeup","rating","firstclosing"]}},
+
+repeatfinding:{ask:"A prior year finding was never closed. How do I handle it?",blurb:"Repeat findings, and what to say about the action plan that did not work.",stage:"Reporting",
+ keys:["repeat","prior year","not closed","open action","follow up","follow-up"],
+ r:{lead:"Report it as a repeat finding, state what was committed and by when, and ask why it did not happen. The failure of the action is now part of the finding.",
+  why:"A repeat finding tells the Audit Committee something different from a new one: that management's response did not work. That is often more important than the original issue.",
+  consider:["Quote the original commitment and date.","Check whether the action was done but did not work, or was not done.","Continuous monitoring shows whether the exception rate actually changed after the action.","Repeat findings usually rate higher by policy."],
+  askNext:["Was the action done and ineffective, or not done","Did the exception rate change after the committed date","Who owned the action"],
+  sources:[y("meth","follow-up of actions"),y("rclaims","prior commitments"),y("std","Standard 15.2, monitoring progress")],
+  fups:["rating","mgmtresponse","writeup"]}},
+
+/* ---------- development ---------- */
+ready:{ask:"Am I ready to lead an audit?",blurb:"How to measure yourself against the competency framework honestly.",stage:"Development and coaching",
+ keys:["ready to lead","readiness","promotion","career","lead an audit"],
+ r:{lead:"That isn't a question I can answer for you. But the competency framework sets out what readiness looks like, and you can measure yourself against it honestly.",
+  why:"Readiness to lead covers planning, managing a team, handling a difficult closing meeting and standing behind a rating. Technical skill is necessary but not enough.",
+  consider:["Look at the framework's lead-level behaviours and find evidence for each from your own work.","Ask to run one section of an engagement end to end, including the closing meeting.","Notice which conversations you avoid. Those are your development areas.","Ask your manager for specific feedback, not general encouragement."],
+  askNext:["Which lead-level behaviour do you have least evidence for","When did you last run a difficult conversation with a process owner","What would your manager say is your biggest gap"],
+  sources:[y("comp","lead auditor behaviours"),y("std","Standard 3.1, competency")],
+  fups:["firstclosing","feedback","jargon"]}},
+
+firstclosing:{ask:"How do I run my first closing meeting?",blurb:"Preparing for a room with Sales Finance or a plant head.",stage:"Development and coaching",
+ keys:["closing meeting","exit meeting","first closing","present findings"],
+ r:{lead:"Share the findings in writing before the meeting, so no one is surprised. Open with what works, then take findings in order of rating, and spend the time on actions rather than on defending the facts.",
+  why:"A closing meeting fails when it becomes an argument about facts. Facts should be settled before. The meeting is for agreeing actions, owners and dates.",
+  consider:["Know your numbers. Full-population data is persuasive, so bring the run figures.","Expect pushback on cause more than on condition.","Agree owners and dates in the room, and confirm in writing.","Have your lead with you the first time, but run it yourself."],
+  askNext:["Which finding is most likely to be challenged","Have the facts been agreed in advance","Who has authority to commit to actions"],
+  sources:[y("meth","closing meetings"),y("wp","agreed actions")],
+  fups:["mgmtresponse","writeup","ready"]}},
+
+feedback:{ask:"How do I give a peer feedback on their workpaper?",blurb:"Specific, tied to the standard, and about the work.",stage:"Development and coaching",
+ keys:["feedback","review notes","peer review","review workpaper"],
+ r:{lead:"Tie each comment to the workpaper standard, say what is missing rather than what is wrong, and separate what must change from what would be better.",
+  why:"Review notes that read as opinion get argued with. Notes tied to the standard get fixed. Separating must-fix from nice-to-have keeps attention on what matters.",
+  consider:["Start with whether the conclusion is supported. Everything else is secondary.","Check the analytics evidence: rule version, run reference, skipped records.","Write notes the person can act on without asking you.","Say what was done well, specifically."],
+  askNext:["Is the conclusion supported by the evidence","Is the run reference recorded","Which comments are must-fix"],
+  sources:[y("wp","review standards"),y("comp","coaching behaviours")],
+  fups:["evidence","ready","writeup"]}},
+
+jargon:{ask:"What do CFA, DMS, SFA and MT mean, and what else should I know?",blurb:"The FMCG and TCPL terms that come up in every audit.",stage:"Development and coaching",
+ keys:["jargon","acronym","what does","mean","glossary","cfa","dms","sfa","terms"],
+ r:{lead:"CFA is a carrying and forwarding agent, the warehouse that holds stock and ships to distributors. DMS is the distributor management system. SFA is sales force automation, the app field staff use to take orders. MT is modern trade, meaning organised retail chains.",
+  why:"Audit conversations at TCPL move quickly through these terms, and process owners assume you know them. Knowing them lets you ask the second question instead of the first.",
+  consider:["Primary sales are TCPL to distributor. Secondary sales are distributor to retailer.","GT is general trade, the traditional kirana channel. QC is quick commerce.","MAVIC is TCPL's AI-enabled GTM platform built on Salesforce, covering DMS and SFA.","A scheme is a trade promotion with conditions. A circular is the document that sets them out."],
+  askNext:["What is the difference between primary and secondary sales","What does a CFA do that a distributor does not","Where does MAVIC sit in the claim flow"],
+  sources:[y("trdap","glossary"),y("meth","glossary")],
+  fups:["scopeclaims","claimvsales","ready"]}},
+
+/* ---------- standards ---------- */
+independence:{ask:"I used to work in Sales Finance. Can I audit claims?",blurb:"Recent responsibility for an area and the independence standard.",stage:"Standards and independence",
+ keys:["independence","objectivity","used to work","previously worked","conflict"],
+ r:{lead:"Not for at least a year after leaving the area, and you should disclose it even then. The standards treat recent responsibility for an activity as an impairment to objectivity, not just a perception issue.",
+  why:"You may end up assessing controls you designed or operated. Even with the best intentions, that makes the assessment less reliable, and it exposes the function to challenge.",
+  consider:["Tell your lead now, before scoping, not during fieldwork.","After a year, you can usually work in the area with disclosure and supervision.","Your knowledge is valuable in planning. Use it there.","The same applies to co-sourced partners who previously advised on the area."],
+  askNext:["When did you leave the role","Did you design or operate any control in scope","Who should you disclose this to"],
+  sources:[y("std","Standard 2.2, safeguarding objectivity"),y("charter","independence"),y("tcoc","conflict of interest")],
+  fups:["cosource","ready","conformance"]}},
+
+cosource:{ask:"How do I review work done by a co-sourced partner?",blurb:"Same standard, same evidence, and who owns the conclusion.",stage:"Standards and independence",
+ keys:["co-source","cosource","co-sourced","partner","outsourced"],
+ r:{lead:"Review it against the same workpaper standard as in-house work. The partner does the work, but Internal Audit owns the conclusion and signs the report.",
+  why:"Co-sourcing adds capacity and specialist skill. It does not move accountability. If the partner's evidence would not pass your own review, the conclusion cannot stand on it.",
+  consider:["Agree the evidence standard at the start, including analytics references.","Check partner independence for the area.","Review the conclusion and the support for it, not just the format.","Make sure partner work uses the same rule versions as the evidence log."],
+  askNext:["Was the evidence standard agreed upfront","Is the partner independent of the area","Does the conclusion follow from the evidence"],
+  sources:[y("std","Standard 10.2, external service providers"),y("wp","review of third-party work"),y("charter","use of co-sourcing")],
+  fups:["feedback","independence","evidence"]}},
+
+conformance:{ask:"What does conformance with the 2024 standards actually require?",blurb:"The changes that matter most for TCPL's function.",stage:"Standards and independence",
+ keys:["conformance","2024 standards","global standards","quality assessment"],
+ r:{lead:"Conformance means the function meets the Global Internal Audit Standards in practice and can show it. For TCPL that means a documented methodology aligned to the standards, an internal quality programme, and an external quality assessment at least every five years.",
+  why:"The 2024 standards put more weight on the board's role, on strategy and on technology. A function using continuous monitoring has to show that its analytics are governed as carefully as its manual testing.",
+  consider:["Rule governance, versioning and evidence logs support conformance for analytics-based work.","The Audit Committee's oversight role is more explicit in the new standards.","Internal quality reviews should include analytics work.","Local standards from ICAI also apply in India."],
+  askNext:["When was the last external quality assessment","Does the methodology cover analytics governance","How does the Audit Committee review the function"],
+  sources:[y("std","Domain III and Standard 8.3"),y("sia","Standards on Internal Audit"),y("charter","quality assurance")],
+  fups:["independence","evidence","coverage"]}},
+
+/* ---------- guard rails ---------- */
+draftit:{ask:"Can you draft the finding for me?",stage:null,blurb:"The line between explaining the work and doing it.",refuse:true,
+ keys:["draft it for me","write it for me","can you draft","write the finding for me","do it for me"],
+ r:{lead:"No. I'll explain how a finding is built, and I'll check yours against the structure once you've written it, but I won't write it for you.",
+  why:"This tool is for learning, not for producing work. A finding you drafted is one you can defend in a closing meeting and adjust when management raises something new. A finding I drafted is one you would be reading aloud.",
+  consider:["Prompts for producing work are kept in a separate library, with their own review.","Once you have a draft, ask me to check it against the five elements.","The most common gap in a first draft is the cause, so start there."],
+  askNext:["What is your criteria, and can you quote it","What is the cause, in one sentence"],
+  sources:[y("meth","finding construction"),y("charter","role of internal audit")],
+  fups:["writeup","rootcause","rating"]}},
+
+offcorpus:{ask:"What is our policy on paying distributors in cryptocurrency?",stage:null,refuse:true,
+ keys:["crypto","cryptocurrency","bitcoin","digital asset"],
+ r:{lead:"TCPL internal audit methodology doesn't cover this, and I won't build an answer from general knowledge.",
+  why:"I answer only from the sources loaded for this department. Nothing in the methodology, the audit programmes or the trade scheme policy covers digital asset settlement. A plausible answer from outside those sources is how a tool like this becomes unreliable.",
+  consider:["Treasury policy sits outside the internal audit corpus.","If this came up in an engagement, raise it with your lead as a possible scope gap.","If it keeps coming up, the methodology may need to cover it. That is worth logging."],
+  askNext:["Did this come from something you saw in testing","Who owns treasury policy"],
+  sources:[],fups:["scopeclaims","ready","jargon"]}}};
+Object.keys(D).forEach(k=>{if(D[k].r&&!D[k].byRole){D[k].byRole={both:{...D[k].r}};}
+  const b=D[k].byRole; Object.keys(b).forEach(rk=>{b[rk].sources=b[rk].sources||D[k].sources||D[k].r&&D[k].r.sources||[];b[rk].fups=b[rk].fups||D[k].fups||D[k].r&&D[k].r.fups||[]});});
+
+const STAGES=["Planning","Fieldwork: trade and distribution","Fieldwork: sourcing and manufacturing","Fieldwork: other processes","Technique","Reporting","Development and coaching","Standards and independence"];
+const WELCOME=[{k:"From last night's run",qs:["claimvalidity","dupclaim","copacker"]},{k:"Planning and technique",qs:["scopeclaims","coverage","opinion"]},{k:"Reporting and growth",qs:["writeup","jargon"]}];
+/* map monitoring rule IDs to topics, and area prefixes to a fallback */
+const RULE_TOPIC={};Object.keys(D).forEach(k=>{if(D[k].context)RULE_TOPIC[D[k].context.rule.toUpperCase()]=k});
+Object.assign(RULE_TOPIC,{"TS4.1-R1":"retailerpay","TS2.2-R2":"claimvalidity","M1.1-R2":"copacker","H3.1-R2":"contractlabour","G1.1-R2":"rpt","I3.1-R2":"nearexpiry"});
+const PREFIX_TOPIC=[["TS","scopeclaims"],["CS","auction"],["M","copacker"],["O","qcommerce"],["I","nearexpiry"],["H","contractlabour"],["C","fssai"],["G","integration"],["R","evidence"],["T","controltype"],["","splitting"]];
+const RULE_COUNTS={"TS4.1-R1":"154 exceptions","TS2.2-R2":"1,284 exceptions","M1.1-R2":"268 exceptions","H3.1-R2":"312 exceptions","G1.1-R2":"14 exceptions","I3.1-R2":"742 exceptions"};
+
+/* ================= state ================= */
+const st={tab:"chat",role:"junior",msgs:[],typing:false,input:"",sugOn:true,sugIdx:0,ctx:null};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const now=()=>{const d=new Date();let h=d.getHours();const m=String(d.getMinutes()).padStart(2,"0"),ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+m+" "+ap};
+const FALLBACK={lead:"That's outside the corpus loaded for this demonstration build.",
+  why:"This build carries a slice of the TCPL corpus. A production build would carry the full methodology and every audit programme. Either way, when no loaded source supports an answer, the mentor says so rather than making one up.",
+  consider:["A production build answers from the complete corpus, so refusals become rarer and point to genuine gaps in the methodology.","Every refusal is logged. Repeated refusals on one theme tell the audit team what the methodology does not yet cover."],
+  askNext:["Start typing and suggestions will appear, or open the Prompt library tab for everything loaded"],sources:[],fups:["scopeclaims","claimvalidity","jargon"]};
+const ansFor=k=>k?(D[k].byRole[st.role]||D[k].byRole.both):FALLBACK;
+const roleSpecific=k=>k&&!D[k].byRole.both;
+
+/* ================= matching ================= */
+function score(q,k){const n=q.toLowerCase();let s=0;for(const kw of D[k].keys)if(n.includes(kw))s+=kw.length+4;
+  const a=D[k].ask.toLowerCase();for(const w of n.split(/\s+/))if(w.length>3&&a.includes(w))s+=2;return s}
+function best(q){if(!q.trim())return null;let b=null,bs=0;for(const k of Object.keys(D)){const s=score(q,k);if(s>bs){bs=s;b=k}}return bs>=6?b:null}
+function suggest(q){const t=q.trim();if(t.length<2)return[];return Object.keys(D).map(k=>({k,s:score(t,k)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5).map(x=>x.k)}
+function hl(text,q){const ws=q.toLowerCase().split(/\s+/).filter(w=>w.length>2).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  if(!ws.length)return esc(text);return esc(text).replace(new RegExp("("+ws.join("|")+")","ig"),"<mark>$1</mark>")}
+
+/* ================= actions ================= */
+function ask(text,key,ctx){
+  st.msgs.push({side:"u",text,at:now(),ctx});st.typing=true;render();
+  const fast=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(()=>{st.typing=false;st.msgs.push({side:"b",key,at:now()});render()},fast?120:850);
+}
+function askKey(k,ctx){st.tab="chat";st.input="";ask(D[k].ask,k,ctx||D[k].context)}
+function send(){const t=st.input.trim();if(!t)return;st.input="";ask(t,best(t))}
+
+/* ================= views ================= */
+function cardHTML(a,refuse){
+  return `<div class="card${refuse?" refuse":""}">
+   <div class="sec"><div class="sk head">${refuse?"Can't answer this":"Answer"}</div><p class="lead">${esc(a.lead)}</p></div>
+   <div class="sec"><div class="sk">Why that's the answer</div><p>${esc(a.why)}</p></div>
+   <div class="sec"><div class="sk">What else to consider</div><ul>${a.consider.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
+   <div class="sec"><div class="sk">Questions you didn't ask</div><ul class="ask">${a.askNext.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
+   <div class="sec"><div class="sk">Sources</div>${a.sources.length?[...a.sources].sort((x,y)=>x.t-y.t).map(s=>`<div class="src"><span class="tier t${s.t}">Tier ${s.t}</span><span>${esc(s.n)} <i>${esc(s.i)}</i></span></div>`).join("")
+     :'<p style="color:var(--tx2);font-size:13px">No source in the loaded corpus supports an answer to this question.</p>'}</div></div>`;
+}
+function vChat(){
+  const R=ROLES[st.role];
+  let h=`<div class="thr" id="thr"><div class="thr-in">`;
+  if(st.ctx&&!st.msgs.length){
+    h+=`<div class="ctxban"><div class="av" style="width:28px;height:28px;font-size:13px">M</div><div>Opened from <b>Continuous Controls Monitoring</b> on rule <b>${esc(st.ctx.rule)}</b>${st.ctx.count?", "+esc(st.ctx.count):""}. 
+      <div style="margin-top:8px"><button class="chip" id="ctxGo">${st.ctx.exact?"Explain rule "+esc(st.ctx.rule):"See related guidance: "+esc(D[st.ctx.key].ask)}</button></div></div></div>`;
+  }
+  if(!st.msgs.length){
+    const hr=new Date().getHours(),greet=hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
+    h+=`<div class="wel"><h1>${greet}, ${esc(R.who.split(" ")[0])}</h1>
+      <p>Ask as you would ask a colleague. I answer from TCPL's methodology, audit programmes and the IIA and ICAI standards, and cite every source. I explain, but I don't form audit opinions.</p>
+      ${WELCOME.map(g=>`<div class="grp"><div class="gk">${esc(g.k)}</div><div class="chips">${g.qs.map(k=>`<button class="chip" data-ask="${k}">${esc(D[k].ask)}</button>`).join("")}</div></div>`).join("")}
+      <p class="hint">Or type below for suggestions. Answers adjust to your role as ${esc(R.short)}.</p></div>`;
+  }
+  st.msgs.forEach(m=>{
+    if(m.side==="u") h+=`<div class="row me"><div class="col">${m.ctx?`<div class="quote">From Continuous Controls Monitoring, rule ${esc(m.ctx.rule)}, ${esc(m.ctx.count||"")}</div>`:""}<div class="bub">${esc(m.text)}</div><div class="bub-t">${m.at}</div></div></div>`;
+    else{const a=ansFor(m.key),ref=m.key&&D[m.key].refuse;
+      h+=`<div class="row"><div class="av" aria-hidden="true">M</div><div class="col" style="flex:1"><div class="nm"><b>Audit Mentor</b><i>${m.at}</i>${roleSpecific(m.key)?`<span class="rolepill">Pitched for ${esc(R.short)}</span>`:""}</div>
+        ${cardHTML(a,ref)}<div class="acts">${a.fups.filter(k=>D[k]).map(k=>`<button class="act" data-ask="${k}">${esc(D[k].ask)}</button>`).join("")}</div></div></div>`;}
+  });
+  if(st.typing) h+=`<div class="row"><div class="av" aria-hidden="true">M</div><div class="col"><div class="nm"><b>Audit Mentor</b><i>now</i></div><div class="typ" aria-label="Mentor is typing"><i></i><i></i><i></i></div></div></div>`;
+  h+=`<div id="end"></div></div></div>`;
+  const sug=st.sugOn?suggest(st.input):[];
+  if(st.sugIdx>=sug.length) st.sugIdx=0;
+  h+=`<div class="cmp"><div class="cmp-in">
+    ${sug.length?`<div class="sug" role="listbox"><div class="sug-h">Suggested questions. Tab to complete, Enter to ask.</div>${sug.map((k,i)=>`<button class="sug-i${i===st.sugIdx?" on":""}" data-sug="${k}" role="option"><span class="sug-q">${hl(D[k].ask,st.input)}</span><span class="sug-s">${esc(D[k].stage||"Guard rail")}</span></button>`).join("")}</div>`:""}
+    <div class="cbox"><input id="inp" value="${esc(st.input)}" placeholder="Ask the mentor a question" aria-label="Ask the mentor a question" autocomplete="off">
+      <button class="send${st.input.trim()?" hot":""}" id="send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 12 20 4l-4 8 4 8-16-8z"/></svg></button></div>
+    <div class="foot"><span>Answers cite their source.</span>${st.msgs.length?'<button id="clear">Clear conversation</button>':""}</div></div></div>`;
+  return h;
+}
+function vLibrary(){
+  return `<div class="body"><div class="body-in"><h2 class="pg-h">Prompt library</h2>
+   <p class="pg-s">${Object.keys(D).length} questions for the TCPL audit lifecycle. Select one to ask it. Rule numbers match Continuous Controls Monitoring.</p>
+   ${STAGES.map(s=>{const ks=Object.keys(D).filter(k=>D[k].stage===s);return ks.length?`<div style="margin-top:24px"><div class="gk">${esc(s)}</div><div class="lib">${ks.map(k=>`<button class="lib-row" data-ask="${k}"><div style="min-width:0"><div class="lib-q">${esc(D[k].ask)}${D[k].context?`<span class="rtag">${esc(D[k].context.rule)}</span>`:""}</div><div class="lib-d">${esc(D[k].blurb)}${roleSpecific(k)?" Answer differs by role.":""}</div></div><span class="lib-go">Ask</span></button>`).join("")}</div></div>`:""}).join("")}
+   <div class="note">Prompts for doing work are kept in a separate, reviewed library. This app is for understanding the work, not producing it.</div></div></div>`;
+}
+function vSources(){
+  return `<div class="body"><div class="body-in"><h2 class="pg-h">Sources</h2>
+   <p class="pg-s">Everything the mentor can answer from, and the order of authority between them. Nothing outside this list is reachable.</p>
+   ${SOURCE_TIERS.map(t=>`<div class="tierhead"><h3>${esc(t.label)}</h3></div><p class="pg-s" style="margin-top:4px">${esc(t.note)}</p>
+     <div class="tblw"><table class="st"><thead><tr><th>Document</th><th>Owner</th><th>Effective</th><th>Indexed</th></tr></thead><tbody>
+     ${t.docs.map(d=>`<tr><td><div style="font-weight:600">${esc(d[0])}</div><div class="meta">Version ${esc(d[1])}</div></td><td>${esc(d[3])}</td><td style="white-space:nowrap">${esc(d[2])}</td>
+       <td>${d[4]?`<span class="pill idx">${d[4]} sections</span>`:'<span class="pill exc">Not yet indexed</span>'}</td></tr>`).join("")}</tbody></table></div>`).join("")}
+   <div class="tierhead"><h3>Deliberately not loaded</h3></div><p class="pg-s" style="margin-top:4px">Questions touching these get a refusal, not an answer.</p>
+   <div class="tblw"><table class="st"><thead><tr><th>Source</th><th>Reason</th></tr></thead><tbody>${NOT_LOADED.map(n=>`<tr><td style="font-weight:600">${esc(n[0])}</td><td>${esc(n[1])}</td></tr>`).join("")}</tbody></table></div>
+   <div class="note">Every source carries a version and an effective date, so an answer given in May can be reconstructed in November after the methodology has changed. Internal Audit approves every change to a Tier 2 source.</div></div></div>`;
+}
+function vAbout(){
+  return `<div class="body"><div class="body-in"><h2 class="pg-h">About Audit Mentor</h2>
+   <p class="pg-s">A learning tool for Tata Consumer's internal audit team. It explains TCPL methodology and the standards behind it, pitched to who is asking. It runs inside Microsoft Teams, alongside tools the team already uses.</p>
+   <div class="ab"><h3>How an answer is built</h3><div class="flow">
+     <div class="fl"><b>1. Retrieve</b><span>Keyword and meaning search across the indexed corpus, together</span></div>
+     <div class="fl"><b>2. Rank</b><span>Higher-authority sources win where sources disagree</span></div>
+     <div class="fl"><b>3. Compose</b><span>A fixed five-part structure, pitched to the role from Entra</span></div>
+     <div class="fl"><b>4. Cite</b><span>Every claim traces to a source, or the answer is refused</span></div></div></div>
+   <div class="ab"><h3>What it won't do</h3><ul>
+     <li><b>Form an audit opinion.</b> It won't say whether a control passed or failed, or whether something is a finding. That conclusion is the auditor's and carries their name.</li>
+     <li><b>Answer from outside the corpus.</b> It can't reach the open web. If no loaded source supports an answer, it says so.</li>
+     <li><b>Flatter.</b> It critiques work against the standard and won't call work good just to encourage.</li>
+     <li><b>Do the work.</b> It explains how to build a finding. It doesn't draft one.</li></ul></div>
+   <div class="ab"><h3>Governance</h3><ul>
+     <li>Every source is versioned and effective-dated. Internal Audit approves changes to its own documents.</li>
+     <li>Every question, the sources retrieved, the corpus version and the answer are logged, so any answer can be reconstructed later.</li>
+     <li>A fixed evaluation set runs on every corpus, prompt or model change, checking retrieval accuracy, citation support, format and correct refusal.</li>
+     <li>The model version is pinned. A model change is a governed change, not an automatic upgrade.</li></ul></div>
+   <div class="ab"><h3>How it connects to continuous monitoring</h3><ul>
+     <li>Every exception in Continuous Controls Monitoring carries a rule ID. "Explain this control" opens the mentor with that rule already in context.</li>
+     <li>The rules find the exception. The mentor explains what the control exists to catch. The auditor decides what it means.</li></ul></div></div></div>`;
+}
+
+/* ================= render ================= */
+let focusInput=false;
+function render(){
+  const R=ROLES[st.role];
+  document.getElementById("whoami").innerHTML=`${esc(R.who)}, <b>${esc(R.title)}</b>`;
+  document.getElementById("rav").textContent=R.initials;document.getElementById("rav").title=R.who;
+  document.querySelectorAll(".tab").forEach(t=>{const on=t.dataset.tab===st.tab;t.classList.toggle("on",on);t.setAttribute("aria-selected",on)});
+  const v=document.getElementById("view");
+  v.innerHTML=st.tab==="chat"?vChat():st.tab==="library"?vLibrary():st.tab==="sources"?vSources():vAbout();
+  v.querySelectorAll("[data-ask]").forEach(b=>b.onclick=()=>askKey(b.dataset.ask));
+  v.querySelectorAll("[data-sug]").forEach(b=>{b.onclick=()=>{st.sugOn=true;askKey(b.dataset.sug)};b.onmouseenter=()=>{st.sugIdx=[...v.querySelectorAll("[data-sug]")].indexOf(b);v.querySelectorAll(".sug-i").forEach((x,i)=>x.classList.toggle("on",i===st.sugIdx))}});
+  const cg=document.getElementById("ctxGo");if(cg)cg.onclick=()=>askKey(st.ctx.key,{rule:st.ctx.rule,count:st.ctx.count});
+  const clr=document.getElementById("clear");if(clr)clr.onclick=()=>{st.msgs=[];render()};
+  const inp=document.getElementById("inp");
+  if(inp){
+    inp.oninput=e=>{st.input=e.target.value;st.sugOn=true;focusInput=true;const pos=e.target.selectionStart;render();const n=document.getElementById("inp");n.focus();n.setSelectionRange(pos,pos)};
+    inp.onkeydown=e=>{const sug=st.sugOn?suggest(st.input):[];
+      if(sug.length){
+        if(e.key==="ArrowDown"){e.preventDefault();st.sugIdx=(st.sugIdx+1)%sug.length;render();refocus();return}
+        if(e.key==="ArrowUp"){e.preventDefault();st.sugIdx=(st.sugIdx-1+sug.length)%sug.length;render();refocus();return}
+        if(e.key==="Tab"){e.preventDefault();st.input=D[sug[st.sugIdx]].ask;render();refocus();return}
+        if(e.key==="Escape"){st.sugOn=false;render();refocus();return}
+        if(e.key==="Enter"){e.preventDefault();askKey(sug[st.sugIdx]);return}}
+      if(e.key==="Enter")send()};
+    document.getElementById("send").onclick=send;
+    if(focusInput){refocus();focusInput=false}
+  }
+  const rows=document.querySelectorAll("#thr .row");const last=rows[rows.length-1];
+  if(last&&st.msgs.length){if(!st.typing&&st.msgs[st.msgs.length-1].side==="b"&&!scrolledFor(st.msgs.length))last.scrollIntoView({block:"start"});else if(st.typing)document.getElementById("end").scrollIntoView({block:"end"})}
+}
+let lastScrolled=0;function scrolledFor(n){if(lastScrolled===n)return true;lastScrolled=n;return false}
+function refocus(){const n=document.getElementById("inp");if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{st.tab=t.dataset.tab;render()});
+document.getElementById("switchRole").onclick=()=>{st.role=st.role==="junior"?"lead":"junior";st.msgs=[];render()};
+
+/* ================= context from continuous monitoring =================
+   The monitoring prototype links here with a hash such as #rule-ts2-1-r1 */
+function readHash(){
+  const h=(location.hash||"").replace(/^#/,"").toLowerCase();
+  const m=h.match(/^rule-([a-z]*)(\d+)-(\d+)-r(\d+)$/);
+  if(!m) return null;
+  const id=(m[1].toUpperCase()+m[2]+"."+m[3]+"-R"+m[4]);
+  let key=RULE_TOPIC[id];
+  if(!key){const p=PREFIX_TOPIC.find(x=>m[1].toUpperCase()===x[0]);key=(p||PREFIX_TOPIC[PREFIX_TOPIC.length-1])[1]}
+  const exact=D[key].context&&D[key].context.rule===id;
+  return {rule:id,key,exact:exact||!!RULE_COUNTS[id],count:exact?D[key].context.count:(RULE_COUNTS[id]||"")};
+}
+st.ctx=readHash();
+window.addEventListener("hashchange",()=>{st.ctx=readHash();st.msgs=[];st.tab="chat";render()});
+render();
+
+</script>
+</body>
+</html>
